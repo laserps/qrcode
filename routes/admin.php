@@ -91,6 +91,13 @@
         Route::post('/Test/{id}', 'Admin\TestController@update');
         Route::post('/Test/Delete/{id}', 'Admin\TestController@destroy');
 
+      Route::get('/Reward', 'Admin\RewardController@index');
+        Route::get('/Reward/Lists', 'Admin\RewardController@Lists');
+        Route::post('/Reward', 'Admin\RewardController@store');
+        Route::get('/Reward/{id}', 'Admin\RewardController@show');
+        Route::post('/Reward/{id}', 'Admin\RewardController@update');
+        Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
+
       ##ROUTEFORINSTALL##
 
     });
