@@ -17,10 +17,11 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>id</th>
-                                        <th>คำถาม</th>
-                                        <th>สถานะ</th>
-                                        <th>created_at</th>
+                                        <th>Activity Name</th>
+                                        <th>Activity Links</th>
+                                        <th>QR Code</th>
+                                        <th>Status</th>
+                                        <th>Create Date</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -31,7 +32,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="FormAdd">
             <div class="modal-header">
@@ -41,17 +42,38 @@
             <div class="modal-body">
             	
                 <div class="form-group">
-                    <!-- <label for="add_text">text</label> -->
-                    <textarea class="form-control add_text" name="text" id="add_text" class="form-control my-editor" required="" placeholder="text"></textarea>
+                    <label for="add_activity_name">Activity Name</label>
+                    <input type="text" class="form-control" name="activity_name" id="add_activity_name"  placeholder="activity_name">
                 </div>
-        
-                <div class="checkbox checkbox-primary">
+                <div class="form-group">
+                    <label for="add_activity_url">Activity Link</label>
+                    <input type="text" class="form-control" name="activity_url" id="add_activity_url"  placeholder="activity_url">
+                </div>
+                <div class="form-group">
+                    <label for="add_activity_url">Start Time</label>
+                    <input type="time" class="form-control" name="working_time_start" id="add_working_time_start"  placeholder="Start Time">
+                </div>
+                <div class="form-group">
+                    <label for="add_activity_url">End Time</label>
+                    <input type="time" class="form-control" name="working_time_end" id="add_working_time_end"  placeholder="End Time">
+                </div>
+                <!-- <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="" name="status" id="add_status"  value="T">
                     <label for="add_status">
                         status
                     </label>
+                </div> -->
+                <div class="form-group">
+                  <label for="add_guest_type_id">Status</label>
+                    <div class="radio radio-danger">
+                        <input class="radio-danger" type="radio" name="guest_type_id" id="add_guest_type_id" value="T">
+                    <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
+                    </div>
+                    <div class="radio radio-danger">
+                      <input class="radio-danger" type="radio" name="guest_type_id" id="add_guest_type_id" value="F">
+                      <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
+                    </div>
                 </div>
-        
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -63,7 +85,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <input type="hidden" name="id" id="edit_user_id">
             <form id="FormEdit">
@@ -74,15 +96,18 @@
             <div class="modal-body">
             	
                 <div class="form-group">
-                    <!-- <label for="edit_text">text</label> -->
-                    <textarea class="form-control add_text" name="text" id="edit_text" required="" placeholder="text"></textarea>
+                    <label for="edit_activity_name">activity_name</label>
+                    <input type="text" class="form-control" name="activity_name" id="edit_activity_name"  placeholder="activity_name">
                 </div>
         
-                <div class="checkbox checkbox-primary">
-                    <input type="checkbox" class="form-control" name="status" id="edit_status"  value="T">
-                    <label for="edit_status" class="form-check-label">
-                        status
-                    </label>
+                <div class="form-group">
+                    <label for="edit_status">status</label>
+                    <input type="text" class="form-control" name="status" id="edit_status"  placeholder="status">
+                </div>
+        
+                <div class="form-group">
+                    <label for="edit_activity_url">activity_url</label>
+                    <input type="text" class="form-control" name="activity_url" id="edit_activity_url"  placeholder="activity_url">
                 </div>
         
             </div>
@@ -101,7 +126,7 @@
 
      var TableList = $('#TableList').dataTable({
         "ajax": {
-            "url": url_gb+"/admin/Question/Lists",
+            "url": url_gb+"/admin/Activities/Lists",
             "data": function ( d ) {
                 //d.myKey = "myValue";
                 // d.custom = $('#myInput').val();
@@ -109,8 +134,9 @@
             }
         },
         "columns": [
-            {"data" : "id"},
-            {"data" : "text"},
+            {"data" : "activity_name"},
+            {"data" : "activity_url"},
+            {"data" : "qr_code"},
             {"data" : "status"},
             {"data" : "created_at"},
             { "data": "action","className":"action text-center" }
@@ -126,16 +152,13 @@
         $('#edit_user_id').val(id);
         $.ajax({
             method : "GET",
-            url : url_gb+"/admin/Question/"+id,
+            url : url_gb+"/admin/Activities/"+id,
             dataType : 'json'
         }).done(function(rec){
-            // $('#edit_text').val(rec.text);
-            // if(rec.status=='T'){
-            //     $('#edit_status').prop('checked','checked');
-            // }else{
-            //     $('#edit_status').removeAttr('checked');
-            // }       
-            $("textarea.add_text").append(rec.text);           
+            $('#edit_activity_name').val(rec.activity_name);
+            $('#edit_status').val(rec.status);
+            $('#edit_activity_url').val(rec.activity_url);
+            
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -150,15 +173,9 @@
         focusInvalid: false,
         rules: {
         	
-            text: {
-                required: true,
-            },
         },
         messages: {
         	
-            text: {
-                required: "กรุณาระบุ",
-            },
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -181,7 +198,7 @@
             btn.button("loading");
             $.ajax({
                 method : "POST",
-                url : url_gb+"/admin/Question",
+                url : url_gb+"/admin/Activities",
                 dataType : 'json',
                 data : $(form).serialize()
             }).done(function(rec){
@@ -210,15 +227,9 @@
         focusInvalid: false,
         rules: {
         	
-            text: {
-                required: true,
-            },
         },
         messages: {
         	
-            text: {
-                required: "กรุณาระบุ",
-            },
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -241,7 +252,7 @@
             btn.button("loading");
             $.ajax({
                 method : "POST",
-                url : url_gb+"/admin/Question/"+id,
+                url : url_gb+"/admin/Activities/"+id,
                 dataType : 'json',
                 data : $(form).serialize()
             }).done(function(rec){
@@ -282,7 +293,7 @@
             if(data){
                 $.ajax({
                     method : "POST",
-                    url : url_gb+"/admin/Question/Delete/"+id,
+                    url : url_gb+"/admin/Activities/Delete/"+id,
                     data : {ID : id}
                 }).done(function(rec){
                     if(rec.status==1){
@@ -299,91 +310,5 @@
     });
 
     
-</script>
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<script>
-    var editor_config = {
-        path_absolute : "",
-        selector: "textarea.add_text",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-        relative_urls: false,
-        file_browser_callback : function(field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if(type == 'image'){
-                cmsURL = cmsURL + "&type=Images";
-            }else{
-                cmsURL = cmsURL + "&type=Files";
-            }
-
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : 'Filemanager',
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            });
-        },
-        height : 400,
-        init_instance_callback: function (editor) {
-            editor.on('NodeChange', function (e){
-                editor.save();
-                $("textarea.add_text").val( $("textarea.add_text").val() );
-            });
-        }
-    };
-    tinymce.init(editor_config);
-</script>
-
-<script>
-    var editor_config = {
-        path_absolute : "",
-        selector: "textarea#edit_text",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-        relative_urls: false,
-        file_browser_callback : function(field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if(type == 'image'){
-                cmsURL = cmsURL + "&type=Images";
-            }else{
-                cmsURL = cmsURL + "&type=Files";
-            }
-
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : 'Filemanager',
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            });
-        },
-        height : 400,
-        init_instance_callback: function (editor) {
-            editor.on('NodeChange', function (e){
-                editor.save();
-                $("textarea#edit_text").val( $("textarea#edit_text").val() );
-            });
-        }
-    };
-    tinymce.init(editor_config);
 </script>
 @endsection
