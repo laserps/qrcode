@@ -113,7 +113,7 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\Activities::where('id',$id)->update($data_insert);
+                \App\Models\Activities::where('activity_id',$id)->update($data_insert);
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
@@ -173,6 +173,9 @@ class ActivitiesController extends Controller
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
                     <i class="ace-icon fa fa-key bigger-120"></i>
+                </button>
+                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="แก้ไข">
+                    <i class="ace-icon fa fa-edit bigger-120"></i>
                 </button>
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="ลบ">
                      <i class="ace-icon fa fa-trash bigger-120"></i>

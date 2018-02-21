@@ -19,6 +19,8 @@
                                     <tr>
                                         <th>Activity Name</th>
                                         <th>Activity Links</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
                                         <th>QR Code</th>
                                         <th>Status</th>
                                         <th>Create Date</th>
@@ -64,13 +66,13 @@
                     </label>
                 </div> -->
                 <div class="form-group">
-                  <label for="add_guest_type_id">Status</label>
-                    <div class="radio radio-danger">
-                        <input class="radio-danger" type="radio" name="guest_type_id" id="add_guest_type_id" value="T">
+                  <label for="status">Status</label>
+                    <div class="radio radio-primary">
+                        <input class="radio-danger" type="radio" name="status" id="add_status" value="T">
                     <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
                     </div>
-                    <div class="radio radio-danger">
-                      <input class="radio-danger" type="radio" name="guest_type_id" id="add_guest_type_id" value="F">
+                    <div class="radio radio-primary">
+                      <input class="radio-danger" type="radio" name="status" id="add_status" value="F">
                       <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
                     </div>
                 </div>
@@ -94,22 +96,40 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+                
                 <div class="form-group">
-                    <label for="edit_activity_name">activity_name</label>
+                    <label for="add_activity_name">Activity Name</label>
                     <input type="text" class="form-control" name="activity_name" id="edit_activity_name"  placeholder="activity_name">
                 </div>
-        
                 <div class="form-group">
-                    <label for="edit_status">status</label>
-                    <input type="text" class="form-control" name="status" id="edit_status"  placeholder="status">
-                </div>
-        
-                <div class="form-group">
-                    <label for="edit_activity_url">activity_url</label>
+                    <label for="add_activity_url">Activity Link</label>
                     <input type="text" class="form-control" name="activity_url" id="edit_activity_url"  placeholder="activity_url">
                 </div>
-        
+                <div class="form-group">
+                    <label for="add_activity_url">Start Time</label>
+                    <input type="time" class="form-control" name="working_time_start" id="edit_working_time_start"  placeholder="Start Time">
+                </div>
+                <div class="form-group">
+                    <label for="add_activity_url">End Time</label>
+                    <input type="time" class="form-control" name="working_time_end" id="edit_working_time_end"  placeholder="End Time">
+                </div>
+                <!-- <div class="checkbox checkbox-primary">
+                    <input type="checkbox" class="" name="status" id="add_status"  value="T">
+                    <label for="add_status">
+                        status
+                    </label>
+                </div> -->
+                <div class="form-group">
+                  <label for="status">Status</label>
+                    <div class="radio radio-primary">
+                        <input class="radio-danger" type="radio" name="status" id="edit_status" value="T">
+                    <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
+                    </div>
+                    <div class="radio radio-primary">
+                      <input class="radio-danger" type="radio" name="status" id="edit_status" value="F">
+                      <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -136,6 +156,8 @@
         "columns": [
             {"data" : "activity_name"},
             {"data" : "activity_url"},
+            {"data" : "working_time_start"},
+            {"data" : "working_time_end"},
             {"data" : "qr_code"},
             {"data" : "status"},
             {"data" : "created_at"},
@@ -157,7 +179,10 @@
         }).done(function(rec){
             $('#edit_activity_name').val(rec.activity_name);
             $('#edit_status').val(rec.status);
+            $('#edit_working_time_start').val(rec.working_time_start);
+            $('#edit_working_time_end').val(rec.working_time_end);
             $('#edit_activity_url').val(rec.activity_url);
+            $('input[value="'+rec.status+'"]').prop('checked',true);
             
             btn.button("reset");
             ShowModal('ModalEdit');
