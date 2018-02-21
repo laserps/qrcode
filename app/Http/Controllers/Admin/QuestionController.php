@@ -43,7 +43,7 @@ class QuestionController extends Controller
     {
         $input_all = $request->all();
         unset($input_all['id']);
-        $input_all['status'] = $request->input('status','F');
+        $input_all['status'] = $request->input('status');
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
@@ -166,6 +166,10 @@ class QuestionController extends Controller
                 </button>
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
                     <i class="ace-icon fa fa-trash bigger-120"></i>
+                </button>
+
+                <button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ">
+                    <i class="ace-icon fa fa-plus-square bigger-120"></i>
                 </button>
             ';
             return $str;
