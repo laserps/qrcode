@@ -123,6 +123,8 @@
         Route::get('/Reward', 'Admin\RewardController@index');
         Route::get('/Reward/Lists', 'Admin\RewardController@Lists');
         Route::post('/Reward', 'Admin\RewardController@store');
+        Route::post('/Reward/Import', 'Admin\RewardController@Import');
+        Route::post('/Reward/Export', 'Admin\RewardController@Export');
         Route::get('/Reward/{id}', 'Admin\RewardController@show');
         Route::post('/Reward/{id}', 'Admin\RewardController@update');
         Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
