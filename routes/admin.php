@@ -91,6 +91,27 @@
         Route::post('/Test/{id}', 'Admin\TestController@update');
         Route::post('/Test/Delete/{id}', 'Admin\TestController@destroy');
 
+      Route::get('/Employee', 'Admin\EmployeeController@index');
+        Route::get('/Employee/Lists', 'Admin\EmployeeController@Lists');
+        Route::post('/Employee', 'Admin\EmployeeController@store');
+        Route::get('/Employee/{id}', 'Admin\EmployeeController@show');
+        Route::post('/Employee/{id}', 'Admin\EmployeeController@update');
+        Route::post('/Employee/Delete/{id}', 'Admin\EmployeeController@destroy');
+
+      Route::get('/UserDepartment', 'Admin\UserDepartmentController@index');
+        Route::get('/UserDepartment/Lists', 'Admin\UserDepartmentController@Lists');
+        Route::post('/UserDepartment', 'Admin\UserDepartmentController@store');
+        Route::get('/UserDepartment/{id}', 'Admin\UserDepartmentController@show');
+        Route::post('/UserDepartment/{id}', 'Admin\UserDepartmentController@update');
+        Route::post('/UserDepartment/Delete/{id}', 'Admin\UserDepartmentController@destroy');
+
+      Route::get('/Guest', 'Admin\GuestController@index');
+        Route::get('/Guest/Lists', 'Admin\GuestController@Lists');
+        Route::post('/Guest', 'Admin\GuestController@store');
+        Route::get('/Guest/{id}', 'Admin\GuestController@show');
+        Route::post('/Guest/{id}', 'Admin\GuestController@update');
+        Route::post('/Guest/Delete/{id}', 'Admin\GuestController@destroy');
+
       ##ROUTEFORINSTALL##
 
     });
