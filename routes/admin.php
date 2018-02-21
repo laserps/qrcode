@@ -98,6 +98,13 @@
         Route::post('/Reward/{id}', 'Admin\RewardController@update');
         Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
 
+      Route::get('/Question', 'Admin\QuestionController@index');
+        Route::get('/Question/Lists', 'Admin\QuestionController@Lists');
+        Route::post('/Question', 'Admin\QuestionController@store');
+        Route::get('/Question/{id}', 'Admin\QuestionController@show');
+        Route::post('/Question/{id}', 'Admin\QuestionController@update');
+        Route::post('/Question/Delete/{id}', 'Admin\QuestionController@destroy');
+
       ##ROUTEFORINSTALL##
 
     });
@@ -105,4 +112,7 @@
     //OrakUploader
     Route::any('/upload_file', 'OrakController@upload_file');
 
+    //Laravel Filemanager
+    Route::get('admin/laravel-filemanager', '\Unisharp\Laravelfilemanager\controllers\LfmController@show');
+    Route::post('admin/laravel-filemanager/upload', '\Unisharp\Laravelfilemanager\controllers\UploadController@upload');
 ?>
