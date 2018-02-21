@@ -42,15 +42,13 @@
             	
                 <div class="form-group">
                     <!-- <label for="add_text">text</label> -->
-                    <textarea class="form-control add_text" name="text" id="add_text" class="form-control my-editor" required="" placeholder="text"></textarea>
+                    <textarea class="form-control text_question" name="text" required="" placeholder="text"></textarea>
                 </div>
-        
-                <div class="checkbox checkbox-primary">
-                    <input type="checkbox" class="" name="status" id="add_status"  value="T">
-                    <label for="add_status">
-                        status
-                    </label>
-                </div>
+
+                <div class="form-inline">
+                    <label class="checkbox-inline"><input type="radio" name="status" value="T">เปิดใช้งาน</label>
+                    <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label>
+                </div> 
         
             </div>
             <div class="modal-footer">
@@ -74,16 +72,44 @@
             <div class="modal-body">
             	
                 <div class="form-group">
-                    <!-- <label for="edit_text">text</label> -->
-                    <textarea class="form-control add_text" name="text" id="edit_text" required="" placeholder="text"></textarea>
+                    <textarea class="form-control text_question" name="text" id="edit_text" required="" placeholder="text"></textarea>
                 </div>
         
-                <div class="checkbox checkbox-primary">
-                    <input type="checkbox" class="form-control" name="status" id="edit_status"  value="T">
-                    <label for="edit_status" class="form-check-label">
-                        status
-                    </label>
+                <div class="form-inline">
+                    <label class="checkbox-inline"><input type="radio" name="status" value="T">เปิดใช้งาน</label>
+                    <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label>
+                </div> 
+        
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <input type="hidden" name="id" id="edit_user_id">
+            <form id="FormEdit">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
+            </div>
+            <div class="modal-body">
+            	
+                <div class="form-group">
+                    <textarea class="form-control text_question" name="text" id="edit_text" required="" placeholder="text"></textarea>
                 </div>
+        
+                <div class="form-inline">
+                    <label class="checkbox-inline"><input type="radio" name="status" value="T">เปิดใช้งาน</label>
+                    <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label>
+                </div> 
         
             </div>
             <div class="modal-footer">
@@ -128,14 +154,12 @@
             method : "GET",
             url : url_gb+"/admin/Question/"+id,
             dataType : 'json'
-        }).done(function(rec){
-            // $('#edit_text').val(rec.text);
-            // if(rec.status=='T'){
-            //     $('#edit_status').prop('checked','checked');
-            // }else{
-            //     $('#edit_status').removeAttr('checked');
-            // }       
-            $("textarea.add_text").append(rec.text);           
+        }).done(function(rec){  
+            tinyMCE.activeEditor.setContent(rec.text);
+            if(rec.status==null){
+            }else{
+                $("#FormEdit input[value='"+rec.status+"']").prop('checked',true);
+            }
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -300,11 +324,11 @@
 
     
 </script>
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script>
 <script>
     var editor_config = {
         path_absolute : "",
-        selector: "textarea.add_text",
+        selector: "textarea.text_question",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -337,50 +361,7 @@
         init_instance_callback: function (editor) {
             editor.on('NodeChange', function (e){
                 editor.save();
-                $("textarea.add_text").val( $("textarea.add_text").val() );
-            });
-        }
-    };
-    tinymce.init(editor_config);
-</script>
-
-<script>
-    var editor_config = {
-        path_absolute : "",
-        selector: "textarea#edit_text",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-        relative_urls: false,
-        file_browser_callback : function(field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if(type == 'image'){
-                cmsURL = cmsURL + "&type=Images";
-            }else{
-                cmsURL = cmsURL + "&type=Files";
-            }
-
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : 'Filemanager',
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            });
-        },
-        height : 400,
-        init_instance_callback: function (editor) {
-            editor.on('NodeChange', function (e){
-                editor.save();
-                $("textarea#edit_text").val( $("textarea#edit_text").val() );
+                $("textarea.text_question").val( $("textarea.text_question").val() );
             });
         }
     };
