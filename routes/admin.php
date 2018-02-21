@@ -119,4 +119,7 @@
     //OrakUploader
     Route::any('/upload_file', 'OrakController@upload_file');
 
+    //Laravel Filemanager
+    Route::get('admin/laravel-filemanager', '\Unisharp\Laravelfilemanager\controllers\LfmController@show');
+    Route::post('admin/laravel-filemanager/upload', '\Unisharp\Laravelfilemanager\controllers\UploadController@upload');
 ?>
