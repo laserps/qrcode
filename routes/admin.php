@@ -113,6 +113,19 @@
         Route::post('/Guest/Delete/{id}', 'Admin\GuestController@destroy');
 
       ##ROUTEFORINSTALL##
+      Route::get('/Question', 'Admin\QuestionController@index');
+        Route::get('/Question/Lists', 'Admin\QuestionController@Lists');
+        Route::post('/Question', 'Admin\QuestionController@store');
+        Route::get('/Question/{id}', 'Admin\QuestionController@show');
+        Route::post('/Question/{id}', 'Admin\QuestionController@update');
+        Route::post('/Question/Delete/{id}', 'Admin\QuestionController@destroy');
+
+        Route::get('/Reward', 'Admin\RewardController@index');
+        Route::get('/Reward/Lists', 'Admin\RewardController@Lists');
+        Route::post('/Reward', 'Admin\RewardController@store');
+        Route::get('/Reward/{id}', 'Admin\RewardController@show');
+        Route::post('/Reward/{id}', 'Admin\RewardController@update');
+        Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
 
     });
 
