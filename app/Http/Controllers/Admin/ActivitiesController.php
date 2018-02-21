@@ -19,7 +19,7 @@ class ActivitiesController extends Controller
         $data['sub_menu'] = 'Activities';
         $data['title_page'] = 'Activities';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.activities',$data);
     }
 
@@ -42,12 +42,12 @@ class ActivitiesController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -78,7 +78,7 @@ class ActivitiesController extends Controller
     public function show($id)
     {
         $result = \App\Models\Activities::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -103,11 +103,11 @@ class ActivitiesController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -168,7 +168,7 @@ class ActivitiesController extends Controller
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-primary btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการคําถาม">
                     <i class="ace-icon fa fa-key bigger-120"></i>
                 </button>
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรังวัล">
+                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
                     <i class="ace-icon fa fa-key bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
@@ -184,12 +184,21 @@ class ActivitiesController extends Controller
             return $str;
         })->make(true);
     }
-
-    // <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
-    // <i class="ace-icon fa fa-edit bigger-120"></i>
-    // </button>
-    // <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
-    //                 <i class="ace-icon fa fa-trash bigger-120"></i>
-    //             </button>
+    public function RewardLists() {
+        $result = \App\Models\Reward::select();
+        return \Datatables::of($result)
+        ->addColumn('reward',function($rec) {
+            $str = '<input class="checkbox" type="checkbox" name="reward_id[]" value="'.$rec->id.'">';
+            return $str;
+        })
+        ->addColumn('action',function($rec){
+            $str='
+                asd
+            ';
+            return $str;
+        })
+        ->rawColumns(['reward', 'action'])
+        ->make(true);
+    }
 
 }
