@@ -19,7 +19,7 @@ class RewardController extends Controller
         $data['sub_menu'] = 'Reward';
         $data['title_page'] = 'Reward';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.reward',$data);
     }
 
@@ -42,13 +42,13 @@ class RewardController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
         $input_all['created_at'] = date('Y-m-d H:i:s');
         // $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -86,7 +86,7 @@ class RewardController extends Controller
     public function show($id)
     {
         $result = \App\Models\Reward::leftjoin('reward_picture','reward.id','=','reward_picture.reward_id')->find($id);
-        
+
         return json_encode($result);
     }
 
@@ -111,12 +111,12 @@ class RewardController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -174,7 +174,7 @@ class RewardController extends Controller
     public function Lists(){
         $result = \App\Models\Reward::select();
         return \Datatables::of($result)
-        
+
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -194,4 +194,69 @@ class RewardController extends Controller
         })->make(true);
     }
 
+    public function Import(Request $request) {
+        $input_all = $request->all();
+        $input_all['created_at'] = date('Y-m-d H:i:s');
+        // $input_all['updated_at'] = date('Y-m-d H:i:s');
+
+        // $validator = Validator::make($request->all(), [
+        //     'qty' => 'required',
+        // ]);
+        // if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $user = \Auth::guard('admin')->user();
+                $input_all['staff_id'] = $user->id;
+                \App\Models\RewardImport::insert($input_all);
+                $amount = \App\Models\Reward::find($input_all['reward_id']);
+                $balance = ($amount->amount != NULL)?$amount->amount:0;
+                $balance += $input_all['qty'];
+                \App\Models\Reward::where('id',$input_all['reward_id'])->update(['amount'=>$balance,"updated_at"=>date('Y-m-d H:i:s')]);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+            }
+        // }else{
+        //     $return['status'] = 0;
+        // }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+
+    public function Export(Request $request) {
+        $input_all = $request->all();
+        $input_all['created_at'] = date('Y-m-d H:i:s');
+        // $input_all['updated_at'] = date('Y-m-d H:i:s');
+
+        // $validator = Validator::make($request->all(), [
+        //     'qty' => 'required',
+        // ]);
+        // if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $user = \Auth::guard('admin')->user();
+                $input_all['staff_id'] = $user->id;
+                \App\Models\RewardExport::insert($input_all);
+                $amount = \App\Models\Reward::find($input_all['reward_id']);
+                $balance = ($amount->amount != NULL)?$amount->amount:0;
+                $balance -= $input_all['qty'];
+                \App\Models\Reward::where('id',$input_all['reward_id'])->update(['amount'=>$balance,"updated_at"=>date('Y-m-d H:i:s')]);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+            }
+        // }else{
+        //     $return['status'] = 0;
+        // }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
 }

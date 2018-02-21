@@ -46,18 +46,13 @@
                         <label for="add_name">name</label>
                         <input type="text" class="form-control" name="name" id="add_name" required="" placeholder="name">
                     </div>
-
-                    <!-- <div class="form-group">
-                    <label for="add_amount">amount</label>
-                    <input type="text" class="form-control" name="amount" id="add_amount"  placeholder="amount">
-                </div> -->
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
-                <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
-            </div>
-        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <!-- Modal -->
@@ -79,10 +74,6 @@
                             <label for="edit_name">name</label>
                             <input type="text" class="form-control" name="name" id="edit_name" required="" placeholder="name">
                         </div>
-
-                        <!-- <div class="form-group">
-                        <label for="edit_amount">amount</label>
-                        <input type="text" class="form-control" name="amount" id="edit_amount"  placeholder="amount"> -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -97,8 +88,8 @@
 <div class="modal fade" id="ModalImport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <input type="hidden" name="id" id="import_user_id">
             <form id="FormImport">
+                <input type="hidden" name="reward_id" id="import_user_id">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">ขำเข้า {{$title_page or 'ข้อมูลใหม่'}}</h4>
@@ -122,8 +113,8 @@
 <div class="modal fade" id="ModalExport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <input type="hidden" name="id" id="export_user_id">
             <form id="FormExport">
+                <input type="hidden" name="reward_id" id="export_user_id">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">ขำเข้า {{$title_page or 'ข้อมูลใหม่'}}</h4>
@@ -342,6 +333,122 @@ $('#FormEdit').validate({
 
     }
 });
+$('#FormExport').validate({
+    errorElement: 'div',
+    errorClass: 'invalid-feedback',
+    focusInvalid: false,
+    rules: {
+
+        qty: {
+            required: true,
+        },
+    },
+    messages: {
+
+        qty: {
+            required: "กรุณาระบุ",
+        },
+    },
+    highlight: function (e) {
+        validate_highlight(e);
+    },
+    success: function (e) {
+        validate_success(e);
+    },
+
+    errorPlacement: function (error, element) {
+        validate_errorplacement(error, element);
+    },
+    submitHandler: function (form) {
+        if(CKEDITOR!==undefined){
+            for ( instance in CKEDITOR.instances ){
+                CKEDITOR.instances[instance].updateElement();
+            }
+        }
+        var btn = $(form).find('[type="submit"]');
+        btn.button("loading");
+        $.ajax({
+            method : "POST",
+            url : url_gb+"/admin/Reward/Export",
+            dataType : 'json',
+            data : $(form).serialize()
+        }).done(function(rec){
+            btn.button("reset");
+            if(rec.status==1){
+                TableList.api().ajax.reload();
+                resetFormCustom(form);
+                swal(rec.title,rec.content,"success");
+                $('#ModalExport').modal('hide');
+            }else{
+                swal(rec.title,rec.content,"error");
+            }
+        }).error(function(){
+            swal("system.system_alert","system.system_error","error");
+            btn.button("reset");
+        });
+    },
+    invalidHandler: function (form) {
+
+    }
+});
+$('#FormImport').validate({
+    errorElement: 'div',
+    errorClass: 'invalid-feedback',
+    focusInvalid: false,
+    rules: {
+
+        qty: {
+            required: true,
+        },
+    },
+    messages: {
+
+        qty: {
+            required: "กรุณาระบุ",
+        },
+    },
+    highlight: function (e) {
+        validate_highlight(e);
+    },
+    success: function (e) {
+        validate_success(e);
+    },
+
+    errorPlacement: function (error, element) {
+        validate_errorplacement(error, element);
+    },
+    submitHandler: function (form) {
+        if(CKEDITOR!==undefined){
+            for ( instance in CKEDITOR.instances ){
+                CKEDITOR.instances[instance].updateElement();
+            }
+        }
+        var btn = $(form).find('[type="submit"]');
+        btn.button("loading");
+        $.ajax({
+            method : "POST",
+            url : url_gb+"/admin/Reward/Import",
+            dataType : 'json',
+            data : $(form).serialize()
+        }).done(function(rec){
+            btn.button("reset");
+            if(rec.status==1){
+                TableList.api().ajax.reload();
+                resetFormCustom(form);
+                swal(rec.title,rec.content,"success");
+                $('#ModalImport').modal('hide');
+            }else{
+                swal(rec.title,rec.content,"error");
+            }
+        }).error(function(){
+            swal("system.system_alert","system.system_error","error");
+            btn.button("reset");
+        });
+    },
+    invalidHandler: function (form) {
+
+    }
+});
 
 $('body').on('click','.btn-delete',function(e){
     e.preventDefault();
@@ -393,16 +500,18 @@ $('#photo').orakuploader({
     orakuploader_maximum_uploads : 1,
 });
 $('body').on('click','.btn-import',function(e){
-    // e.preventDefault();
-    // var btn = $(this);
-    // var id = btn.data('id');
-    ShowModal('#ModalImport');
+    e.preventDefault();
+    var btn = $(this);
+    var id = btn.data('id');
+    $('#import_user_id').val(id);
+    ShowModal('ModalImport');
 });
 $('body').on('click','.btn-export',function(e){
-    // e.preventDefault();
-    // var btn = $(this);
-    // var id = btn.data('id');
-    ShowModal('#ModalExport');
+    e.preventDefault();
+    var btn = $(this);
+    var id = btn.data('id');
+    $('#export_user_id').val(id);
+    ShowModal('ModalExport');
 });
 </script>
 @endsection
