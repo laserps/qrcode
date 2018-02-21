@@ -114,6 +114,7 @@
 
       Route::get('/Activities', 'Admin\ActivitiesController@index');
         Route::get('/Activities/Lists', 'Admin\ActivitiesController@Lists');
+        Route::get('/Activities/RewardLists', 'Admin\ActivitiesController@RewardLists');
         Route::post('/Activities', 'Admin\ActivitiesController@store');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');

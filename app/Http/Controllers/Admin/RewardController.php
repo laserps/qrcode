@@ -174,7 +174,14 @@ class RewardController extends Controller
     public function Lists(){
         $result = \App\Models\Reward::select();
         return \Datatables::of($result)
-
+        ->addColumn('img', function($rec) {
+            $str = '';
+            $img = \App\Models\RewardPicture::where('reward_id',$rec->id)->first();
+            if($img) {
+                $str = '<img src="'.asset("uploads/temp").'/'.$img->path_picture.'"height="50" width="50">';
+            }
+            return $str;
+        })
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -191,7 +198,9 @@ class RewardController extends Controller
                 </button>
             ';
             return $str;
-        })->make(true);
+        })
+        ->rawColumns(['img', 'action'])
+        ->make(true);
     }
 
     public function Import(Request $request) {
