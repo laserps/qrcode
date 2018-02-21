@@ -44,7 +44,7 @@ class RewardController extends Controller
         $input_all = $request->all();
         
         $input_all['created_at'] = date('Y-m-d H:i:s');
-        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        // $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -53,15 +53,22 @@ class RewardController extends Controller
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
+                $img['path_picture'] = !empty($input_all['photo'][0])?$input_all['photo'][0]:null;
+                unset($input_all['photo']);
                 $data_insert = $input_all;
-                \App\Models\Reward::insert($data_insert);
+                $id = \App\Models\Reward::insertGetId($data_insert);
+                $img['reward_id'] = $id;
+                $img['created_at'] = date('Y-m-d H:i:s');
+                if(!empty($request->photo[0])) {
+                    \App\Models\RewardPicture::insert($img);
+                }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -78,7 +85,7 @@ class RewardController extends Controller
      */
     public function show($id)
     {
-        $result = \App\Models\Reward::find($id);
+        $result = \App\Models\Reward::leftjoin('reward_picture','reward.id','=','reward_picture.reward_id')->find($id);
         
         return json_encode($result);
     }
@@ -114,15 +121,25 @@ class RewardController extends Controller
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
+                $img['path_picture'] = !empty($input_all['photo_edit'][0])?$input_all['photo_edit'][0]:null;
+                unset($input_all['photo_edit']);
                 $data_insert = $input_all;
                 \App\Models\Reward::where('id',$id)->update($data_insert);
+                $img['reward_id'] = $id;
+                $img['updated_at'] = date('Y-m-d H:i:s');
+                if(!empty($request->photo_edit[0])) {
+                    \App\Models\RewardPicture::where('reward_id',$id)->delete();
+                    \App\Models\RewardPicture::insert($img);
+                } else {
+                    \App\Models\RewardPicture::where('reward_id',$id)->delete();
+                }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -165,6 +182,12 @@ class RewardController extends Controller
                 </button>
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
                     <i class="ace-icon fa fa-trash bigger-120"></i>
+                </button>
+                <button  class="btn btn-xs btn-info btn-condensed btn-import btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำเข้า">
+                    <i class="ace-icon fa fa-arrow-down bigger-120"></i>
+                </button>
+                <button  class="btn btn-xs btn-info btn-condensed btn-export btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำออก">
+                    <i class="ace-icon fa fa-arrow-up bigger-120"></i>
                 </button>
             ';
             return $str;
