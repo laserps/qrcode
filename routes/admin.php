@@ -119,6 +119,15 @@
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
 
+      Route::get('/Answer', 'Admin\AnswerController@index');
+        Route::get('/Answer/Lists', 'Admin\AnswerController@Lists');
+        Route::post('/Answer', 'Admin\AnswerController@store');
+        Route::get('/Answer/{id}', 'Admin\AnswerController@show');
+        Route::get('/showAnswerQuestion/{id}', 'Admin\AnswerController@showAnswerQuestion');
+        Route::post('/Answer/{id}', 'Admin\AnswerController@update');
+        Route::post('/Answer/Delete/{id}', 'Admin\AnswerController@destroy');
+        Route::post('/Answer/deleteAnswer/{id}', 'Admin\AnswerController@deleteAnswer');
+
       ##ROUTEFORINSTALL##
       Route::get('/Question', 'Admin\QuestionController@index');
         Route::get('/Question/Lists', 'Admin\QuestionController@Lists');
