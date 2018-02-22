@@ -32,7 +32,6 @@
 					</section>
                 </div>
             </div>
-
 <!-- Modal -->
 <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -99,10 +98,6 @@
                     <label for="add_activity_name">Activity Name</label>
                     <input type="text" class="form-control" name="activity_name" id="edit_activity_name"  placeholder="activity_name">
                 </div>
-                <!-- <div class="form-group">
-                    <label for="add_activity_url">Activity Link</label>
-                    <input type="text" class="form-control" name="activity_url" id="edit_activity_url"  placeholder="activity_url">
-                </div> -->
                 <div class="form-group">
                     <label for="edit_working_time_start">Start Time</label>
                     <input type="text" class="form-control" name="working_time_start" id="edit_working_time_start" placeholder="Start Time">
@@ -111,12 +106,6 @@
                     <label for="edit_working_time_end">End Time</label>
                     <input type="text" class="form-control" name="working_time_end" id="edit_working_time_end" placeholder="End Time">
                 </div>
-                <!-- <div class="checkbox checkbox-primary">
-                    <input type="checkbox" class="" name="status" id="add_status"  value="T">
-                    <label for="add_status">
-                        status
-                    </label>
-                </div> -->
                 <div class="form-group">
                   <label for="status">Status</label>
                     <div class="radio radio-primary">
@@ -125,6 +114,50 @@
                     </div>
                     <div class="radio radio-primary">
                       <input class="radio-danger" type="radio" name="status" id="edit_status" value="F">
+                      <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <input type="hidden" name="id" id="edit_user_id">
+            <form id="FormDetail">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">รายละเอียดข้อมูล {{$title_page}}</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="add_activity_name">Activity Name</label>
+                    <input type="text" class="form-control" name="activity_name" id="detail_activity_name"  placeholder="activity_name" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit_working_time_start">Start Time</label>
+                    <input type="text" class="form-control" name="working_time_start" id="detail_working_time_start" placeholder="Start Time" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit_working_time_end">End Time</label>
+                    <input type="text" class="form-control" name="working_time_end" id="detail_working_time_end" placeholder="End Time" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="status">Status</label>
+                    <div class="radio radio-primary">
+                        <input class="radio-danger" type="radio" name="status" id="detail_status" value="T" readonly>
+                    <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
+                    </div>
+                    <div class="radio radio-primary">
+                      <input class="radio-danger" type="radio" name="status" id="edit_status" value="F" readonly>
                       <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
                     </div>
                 </div>
@@ -391,10 +424,31 @@
             }
         });
     });
-//     $('body').on('click','.btn-qrcode',function() {
-//         // console.log(url_gb);
-//     window.location.href = url_gb+"/admin/Activities/QRCODE";
-// });
+// $('body').on('click','.btn-detail',function(data){
+//         var btn = $(this);
+//         btn.button('loading');
+//         var id = $(this).data('id');
+//         // $('#edit_user_id').val(id);
+//         $.ajax({
+//             method : "GET",
+//             url : url_gb+"/admin/Activities/Detail/"+id,
+//             dataType : 'json'
+//         }).done(function(rec){
+//             // console.log(rec);
+//             $('#detail_activity_name').val(rec.activity_name);
+//             $('#detail_status').val(rec.status);
+//             $('#detail_working_time_start').val(rec.working_time_start);
+//             $('#detail_working_time_end').val(rec.working_time_end);
+//             $('#detail_activity_url').val(rec.activity_url);
+//             $('input[value="'+rec.status+'"]').prop('checked',true);
+
+//             btn.button("reset");
+//             ShowModal('ModalDetail');
+//         }).error(function(){
+//             swal("system.system_alert","system.system_error","error");
+//             btn.button("reset");
+//         });
+//     });
 
 
 </script>
