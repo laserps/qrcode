@@ -202,6 +202,23 @@
             { "data": "action","className":"action text-center" }
         ]
     });
+	var RewardList = $('#RewardList').dataTable({
+	   "ajax": {
+		   "url": url_gb+"/admin/Activities/RewardLists",
+		   "data": function ( d ) {
+			   //d.myKey = "myValue";
+			   // d.custom = $('#myInput').val();
+			   // etc
+		   }
+	   },
+	   "columns": [
+           {"data" : "id"},
+           {"data" : "reward"},
+           {"data" : "name"},
+           {"data" : "amount"},
+           { "data": "action","className":"action text-center" }
+       ]
+   });
     $('body').on('click','.btn-add',function(data){
         ShowModal('ModalAdd');
     });
