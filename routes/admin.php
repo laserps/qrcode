@@ -136,6 +136,7 @@
       Route::get('/Question', 'Admin\QuestionController@index');
         Route::get('/Question/Lists', 'Admin\QuestionController@Lists');
         Route::post('/Question', 'Admin\QuestionController@store');
+        Route::get('/Questionall', 'Admin\QuestionController@addQuestion');
         Route::get('/Question/{id}', 'Admin\QuestionController@show');
         Route::post('/Question/{id}', 'Admin\QuestionController@update');
         Route::post('/Question/Delete/{id}', 'Admin\QuestionController@destroy');

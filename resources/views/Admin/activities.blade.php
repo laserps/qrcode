@@ -94,7 +94,7 @@
             </div>
             <div class="modal-body">
                 <div class="col-md-6">
-                    
+
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered table-hover">
                             <thead>
@@ -108,7 +108,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                 </div>
                 <div class="col-md-6">
 
@@ -260,12 +260,12 @@
        ]
    });
 
-   
+
    $('body').on('click','.btn-add-question',function(data){
        var str = "";
         $.ajax({
             method : "GET",
-            "url": url_gb+"/admin/Question/all",
+            "url": url_gb+"/admin/Questionall",
             dataType : 'json'
         }).done(function(rec){
             var str = '';
