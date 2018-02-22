@@ -193,7 +193,14 @@ class ActivitiesController extends Controller
         })
         ->addColumn('action',function($rec){
             $str='
-                asd
+                <input class="checkbox" type="checkbox" name="status_t[]" value="T">
+                <label for="add_show">
+                    true
+                </label>
+                <input class="checkbox" type="checkbox" name="status_f[]" value="F">
+                <label for="add_show">
+                    false
+                </label>
             ';
             return $str;
         })
