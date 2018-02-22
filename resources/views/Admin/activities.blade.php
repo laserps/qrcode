@@ -49,16 +49,12 @@
                     <input type="text" class="form-control" name="activity_name" id="add_activity_name"  placeholder="activity_name">
                 </div>
                 <div class="form-group">
-                    <label for="add_activity_url">Activity Link</label>
-                    <input type="text" class="form-control" name="activity_url" id="add_activity_url"  placeholder="activity_url">
+                    <label for="add_working_time_start">Start Time</label>
+                    <input type="text" class="form-control" name="working_time_start" id="add_working_time_start" placeholder="Start Time">
                 </div>
                 <div class="form-group">
-                    <label for="add_activity_url">Start Time</label>
-                    <input type="time" class="form-control" name="working_time_start" id="add_working_time_start"  placeholder="Start Time">
-                </div>
-                <div class="form-group">
-                    <label for="add_activity_url">End Time</label>
-                    <input type="time" class="form-control" name="working_time_end" id="add_working_time_end"  placeholder="End Time">
+                    <label for="add_working_time_end">End Time</label>
+                    <input type="text" class="form-control" name="working_time_end" id="add_working_time_end" placeholder="End Time">
                 </div>
                 <!-- <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="" name="status" id="add_status"  value="T">
@@ -66,15 +62,16 @@
                         status
                     </label>
                 </div> -->
+                <!-- <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label> -->
                 <div class="form-group">
                   <label for="status">Status</label>
-                    <div class="radio radio-primary">
-                        <input class="radio-danger" type="radio" name="status" id="add_status" value="T">
-                    <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
+                     <div class="radio radio-primary">
+                        <input type="radio" name="status" id="add_status1" value="T">
+                        <label for="add_status1"> เปิดใช้งาน </label>
                     </div>
                     <div class="radio radio-primary">
-                      <input class="radio-danger" type="radio" name="status" id="add_status" value="F">
-                      <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
+                        <input type="radio" name="status" id="add_status2" value="F">
+                        <label for="add_status2"> ปิดใช้งาน </label>
                     </div>
                 </div>
             </div>
@@ -102,17 +99,17 @@
                     <label for="add_activity_name">Activity Name</label>
                     <input type="text" class="form-control" name="activity_name" id="edit_activity_name"  placeholder="activity_name">
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="add_activity_url">Activity Link</label>
                     <input type="text" class="form-control" name="activity_url" id="edit_activity_url"  placeholder="activity_url">
+                </div> -->
+                <div class="form-group">
+                    <label for="edit_working_time_start">Start Time</label>
+                    <input type="text" class="form-control" name="working_time_start" id="edit_working_time_start" placeholder="Start Time">
                 </div>
                 <div class="form-group">
-                    <label for="add_activity_url">Start Time</label>
-                    <input type="time" class="form-control" name="working_time_start" id="edit_working_time_start"  placeholder="Start Time">
-                </div>
-                <div class="form-group">
-                    <label for="add_activity_url">End Time</label>
-                    <input type="time" class="form-control" name="working_time_end" id="edit_working_time_end"  placeholder="End Time">
+                    <label for="edit_working_time_end">End Time</label>
+                    <input type="text" class="form-control" name="working_time_end" id="edit_working_time_end" placeholder="End Time">
                 </div>
                 <!-- <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="" name="status" id="add_status"  value="T">
@@ -180,43 +177,31 @@
 @section('js_bottom')
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
-	var TableList = $('#TableList').dataTable({
-	   "ajax": {
-		   "url": url_gb+"/admin/Activities/Lists",
-		   "data": function ( d ) {
-			   //d.myKey = "myValue";
-			   // d.custom = $('#myInput').val();
-			   // etc
-		   }
-	   },
-	   "columns": [
-		   {"data" : "activity_name"},
-		   {"data" : "activity_url"},
-		   {"data" : "working_time_start"},
-		   {"data" : "working_time_end"},
-		   {"data" : "qr_code"},
-		   {"data" : "status"},
-		   {"data" : "created_at"},
-		   { "data": "action","className":"action text-center" }
-	   ]
-   });
-   var RewardList = $('#RewardList').dataTable({
-	   "ajax": {
-		   "url": url_gb+"/admin/Activities/RewardLists",
-		   "data": function ( d ) {
-			   //d.myKey = "myValue";
-			   // d.custom = $('#myInput').val();
-			   // etc
-		   }
-	   },
-	   "columns": [
-		   {"data" : "id"},
-		   {"data" : "reward","className":"text-center"},
-		   {"data" : "name"},
-		   {"data" : "amount"},
-		   { "data": "action","className":"action text-center" }
-	   ]
-   });
+    $('#add_working_time_start').timepicker();
+    $('#add_working_time_end').timepicker();
+    $('#edit_working_time_start').timepicker();
+    $('#edit_working_time_end').timepicker();
+
+     var TableList = $('#TableList').dataTable({
+        "ajax": {
+            "url": url_gb+"/admin/Activities/Lists",
+            "data": function ( d ) {
+                //d.myKey = "myValue";
+                // d.custom = $('#myInput').val();
+                // etc
+            }
+        },
+        "columns": [
+            {"data" : "activity_name"},
+            {"data" : "activity_url"},
+            {"data" : "working_time_start"},
+            {"data" : "working_time_end"},
+            {"data" : "qr_code"},
+            {"data" : "status"},
+            {"data" : "created_at"},
+            { "data": "action","className":"action text-center" }
+        ]
+    });
     $('body').on('click','.btn-add',function(data){
         ShowModal('ModalAdd');
     });
@@ -389,6 +374,10 @@
             }
         });
     });
+//     $('body').on('click','.btn-qrcode',function() {
+//         // console.log(url_gb);
+//     window.location.href = url_gb+"/admin/Activities/QRCODE";
+// });
 
 
 </script>

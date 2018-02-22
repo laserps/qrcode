@@ -42,9 +42,11 @@ class ActivitiesController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $qrcode = md5($input_all['activity_name'].date('Y-m-d H:i:s'));
+        $qrcode = url('/admin/Activities/'.$qrcode);
+        $input_all['activity_url'] = $qrcode;
 
         $validator = Validator::make($request->all(), [
 
@@ -105,7 +107,9 @@ class ActivitiesController extends Controller
         $input_all = $request->all();
 
         $input_all['updated_at'] = date('Y-m-d H:i:s');
-
+        $qrcode = md5($input_all['activity_name'].date('Y-m-d H:i:s'));
+        $qrcode = url('/admin/Activities/'.$qrcode);
+        $input_all['activity_url'] = $qrcode;
         $validator = Validator::make($request->all(), [
 
         ]);
