@@ -29,6 +29,7 @@
                                 </thead>
                             </table>
                         </div>
+					</section>
                 </div>
             </div>
 
@@ -42,22 +43,18 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่ม {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <label for="add_activity_name">Activity Name</label>
                     <input type="text" class="form-control" name="activity_name" id="add_activity_name"  placeholder="activity_name">
                 </div>
                 <div class="form-group">
-                    <label for="add_activity_url">Activity Link</label>
-                    <input type="text" class="form-control" name="activity_url" id="add_activity_url"  placeholder="activity_url">
+                    <label for="add_working_time_start">Start Time</label>
+                    <input type="text" class="form-control" name="working_time_start" id="add_working_time_start" placeholder="Start Time">
                 </div>
                 <div class="form-group">
-                    <label for="add_activity_url">Start Time</label>
-                    <input type="time" class="form-control" name="working_time_start" id="add_working_time_start"  placeholder="Start Time">
-                </div>
-                <div class="form-group">
-                    <label for="add_activity_url">End Time</label>
-                    <input type="time" class="form-control" name="working_time_end" id="add_working_time_end"  placeholder="End Time">
+                    <label for="add_working_time_end">End Time</label>
+                    <input type="text" class="form-control" name="working_time_end" id="add_working_time_end" placeholder="End Time">
                 </div>
                 <!-- <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="" name="status" id="add_status"  value="T">
@@ -65,15 +62,16 @@
                         status
                     </label>
                 </div> -->
+                <!-- <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label> -->
                 <div class="form-group">
                   <label for="status">Status</label>
-                    <div class="radio radio-primary">
-                        <input class="radio-danger" type="radio" name="status" id="add_status" value="T">
-                    <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
+                     <div class="radio radio-primary">
+                        <input type="radio" name="status" id="add_status1" value="T">
+                        <label for="add_status1"> เปิดใช้งาน </label>
                     </div>
                     <div class="radio radio-primary">
-                      <input class="radio-danger" type="radio" name="status" id="add_status" value="F">
-                      <label class="form-check-label" for="inlineRadio2">ปิดใช้งาน</label>
+                        <input type="radio" name="status" id="add_status2" value="F">
+                        <label for="add_status2"> ปิดใช้งาน </label>
                     </div>
                 </div>
             </div>
@@ -96,22 +94,22 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-                
+
                 <div class="form-group">
                     <label for="add_activity_name">Activity Name</label>
                     <input type="text" class="form-control" name="activity_name" id="edit_activity_name"  placeholder="activity_name">
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="add_activity_url">Activity Link</label>
                     <input type="text" class="form-control" name="activity_url" id="edit_activity_url"  placeholder="activity_url">
+                </div> -->
+                <div class="form-group">
+                    <label for="edit_working_time_start">Start Time</label>
+                    <input type="text" class="form-control" name="working_time_start" id="edit_working_time_start" placeholder="Start Time">
                 </div>
                 <div class="form-group">
-                    <label for="add_activity_url">Start Time</label>
-                    <input type="time" class="form-control" name="working_time_start" id="edit_working_time_start"  placeholder="Start Time">
-                </div>
-                <div class="form-group">
-                    <label for="add_activity_url">End Time</label>
-                    <input type="time" class="form-control" name="working_time_end" id="edit_working_time_end"  placeholder="End Time">
+                    <label for="edit_working_time_end">End Time</label>
+                    <input type="text" class="form-control" name="working_time_end" id="edit_working_time_end" placeholder="End Time">
                 </div>
                 <!-- <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="" name="status" id="add_status"  value="T">
@@ -139,10 +137,50 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ModalReward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <input type="hidden" name="id" id="edit_user_id">
+            <form id="FormReward">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
+            </div>
+            <div class="modal-body">
+				<div class="row">
+	                <div class="col-lg-12">
+	                        <div class="body no-margin">
+	                            <table class="table table-bordered table-hover" id="RewardList">
+	                                <thead>
+	                                    <tr>
+											<th style="color:#000;">id</th>
+											<th style="color:#000;">select</th>
+					                        <th style="color:#000;">name</th>
+					                        <th style="color:#000;">amount</th>
+					                        <th></th>
+	                                    </tr>
+	                                </thead>
+	                            </table>
+	                        </div>
+	                </div>
+	            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @section('js_bottom')
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
+    $('#add_working_time_start').timepicker();
+    $('#add_working_time_end').timepicker();
+    $('#edit_working_time_start').timepicker();
+    $('#edit_working_time_end').timepicker();
 
      var TableList = $('#TableList').dataTable({
         "ajax": {
@@ -164,8 +202,28 @@
             { "data": "action","className":"action text-center" }
         ]
     });
+	var RewardList = $('#RewardList').dataTable({
+	   "ajax": {
+		   "url": url_gb+"/admin/Activities/RewardLists",
+		   "data": function ( d ) {
+			   //d.myKey = "myValue";
+			   // d.custom = $('#myInput').val();
+			   // etc
+		   }
+	   },
+	   "columns": [
+           {"data" : "id"},
+           {"data" : "reward"},
+           {"data" : "name"},
+           {"data" : "amount"},
+           { "data": "action","className":"action text-center" }
+       ]
+   });
     $('body').on('click','.btn-add',function(data){
         ShowModal('ModalAdd');
+    });
+	$('body').on('click','.btn-reward',function(data){
+        ShowModal('ModalReward');
     });
     $('body').on('click','.btn-edit',function(data){
         var btn = $(this);
@@ -183,7 +241,7 @@
             $('#edit_working_time_end').val(rec.working_time_end);
             $('#edit_activity_url').val(rec.activity_url);
             $('input[value="'+rec.status+'"]').prop('checked',true);
-            
+
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -197,10 +255,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -251,10 +309,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -333,7 +391,11 @@
             }
         });
     });
+//     $('body').on('click','.btn-qrcode',function() {
+//         // console.log(url_gb);
+//     window.location.href = url_gb+"/admin/Activities/QRCODE";
+// });
 
-    
+
 </script>
 @endsection
