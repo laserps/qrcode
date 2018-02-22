@@ -374,6 +374,10 @@
             }
         });
     });
+//     $('body').on('click','.btn-qrcode',function() {
+//         // console.log(url_gb);
+//     window.location.href = url_gb+"/admin/Activities/QRCODE";
+// });
 
 
 </script>
