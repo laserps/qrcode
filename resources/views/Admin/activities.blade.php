@@ -140,8 +140,8 @@
 <div class="modal fade" id="ModalReward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <input type="hidden" name="id" id="edit_user_id">
             <form id="FormReward">
+				<input type="hidden" name="activity_id" id="activity_id">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
@@ -223,7 +223,31 @@
         ShowModal('ModalAdd');
     });
 	$('body').on('click','.btn-reward',function(data){
-        ShowModal('ModalReward');
+		var btn = $(this);
+		btn.button('loading');
+		var id = $(this).data('id');
+		$('#activity_id').val(id);
+		btn.button("reset");
+		RewardList.api().ajax.reload();
+		$.ajax({
+            method : "GET",
+            url : url_gb+"/admin/Activities/getReward/"+id,
+            dataType : 'json'
+        }).done(function(rec){
+			if(rec['F']) {
+				$.each(rec['F'],function(k,v) {
+					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
+					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_f"]').prop('checked',true);
+				});
+			}
+			if(rec['T']) {
+				$.each(rec['T'],function(k,v) {
+					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
+					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
+				});
+			}
+		});
+		ShowModal('ModalReward');
     });
     $('body').on('click','.btn-edit',function(data){
         var btn = $(this);
@@ -345,6 +369,58 @@
                     resetFormCustom(form);
                     swal(rec.title,rec.content,"success");
                     $('#ModalEdit').modal('hide');
+                }else{
+                    swal(rec.title,rec.content,"error");
+                }
+            }).error(function(){
+                swal("system.system_alert","system.system_error","error");
+                btn.button("reset");
+            });
+        },
+        invalidHandler: function (form) {
+
+        }
+    });
+    $('#FormReward').validate({
+        errorElement: 'div',
+        errorClass: 'invalid-feedback',
+        focusInvalid: false,
+        rules: {
+
+        },
+        messages: {
+
+        },
+        highlight: function (e) {
+            validate_highlight(e);
+        },
+        success: function (e) {
+            validate_success(e);
+        },
+
+        errorPlacement: function (error, element) {
+            validate_errorplacement(error, element);
+        },
+        submitHandler: function (form) {
+            if(CKEDITOR!==undefined){
+                for ( instance in CKEDITOR.instances ){
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
+            var btn = $(form).find('[type="submit"]');
+            btn.button("loading");
+            $.ajax({
+                method : "POST",
+                url : url_gb+"/admin/Activities/RewardAccept",
+                dataType : 'json',
+                data : $(form).serialize()
+            }).done(function(rec){
+                btn.button("reset");
+                if(rec.status==1){
+                    TableList.api().ajax.reload();
+                    resetFormCustom(form);
+                    swal(rec.title,rec.content,"success");
+                    $('#ModalReward').modal('hide');
                 }else{
                     swal(rec.title,rec.content,"error");
                 }

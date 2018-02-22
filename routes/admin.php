@@ -117,7 +117,9 @@
         // Route::get('/Activities/QRCODE', 'Admin\ActivitiesController@QRCODE');
         Route::get('/Activities/RewardLists', 'Admin\ActivitiesController@RewardLists');
         Route::post('/Activities', 'Admin\ActivitiesController@store');
+        Route::post('/Activities/RewardAccept', 'Admin\ActivitiesController@RewardAccept');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
+        Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
 
