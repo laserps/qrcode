@@ -175,8 +175,8 @@ class ActivitiesController extends Controller
         })
         ->addColumn('action',function($rec){
             $str='
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-primary btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการคําถาม">
-                    <i class="ace-icon fa fa-key bigger-120"></i>
+                <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบ">
+                    <i class="ace-icon fa fa-plus-square bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
                     <i class="ace-icon fa fa-key bigger-120"></i>
@@ -219,6 +219,9 @@ class ActivitiesController extends Controller
         ->rawColumns(['reward', 'action'])
         ->make(true);
     }
+    public function RewardAccept(Request $request) {
+        $input_all = $request->all();
+        $input_all['created_at'] = date('Y-m-d H:i:s');
 
     public function gen_qr_code(Request $request){
         $url_real = $request->input('url');

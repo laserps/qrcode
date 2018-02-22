@@ -118,17 +118,29 @@
         Route::get('/Activities/RewardLists', 'Admin\ActivitiesController@RewardLists');
         Route::post('/Activities', 'Admin\ActivitiesController@store');
         Route::get('/gen_qr_code', 'Admin\ActivitiesController@gen_qr_code');
+        Route::post('/Activities/RewardAccept', 'Admin\ActivitiesController@RewardAccept');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
         Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
         Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
+        Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
+
+      Route::get('/Answer', 'Admin\AnswerController@index');
+        Route::get('/Answer/Lists', 'Admin\AnswerController@Lists');
+        Route::post('/Answer', 'Admin\AnswerController@store');
+        Route::get('/Answer/{id}', 'Admin\AnswerController@show');
+        Route::get('/showAnswerQuestion/{id}', 'Admin\AnswerController@showAnswerQuestion');
+        Route::post('/Answer/{id}', 'Admin\AnswerController@update');
+        Route::post('/Answer/Delete/{id}', 'Admin\AnswerController@destroy');
+        Route::post('/Answer/deleteAnswer/{id}', 'Admin\AnswerController@deleteAnswer');
 
       ##ROUTEFORINSTALL##
       Route::get('/Question', 'Admin\QuestionController@index');
         Route::get('/Question/Lists', 'Admin\QuestionController@Lists');
         Route::post('/Question', 'Admin\QuestionController@store');
+        Route::get('/Questionall', 'Admin\QuestionController@addQuestion');
         Route::get('/Question/{id}', 'Admin\QuestionController@show');
         Route::post('/Question/{id}', 'Admin\QuestionController@update');
         Route::post('/Question/Delete/{id}', 'Admin\QuestionController@destroy');

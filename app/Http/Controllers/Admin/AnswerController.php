@@ -6,7 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
-class QuestionController extends Controller
+class AnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +15,12 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'คำถาม';
-        $data['sub_menu'] = 'คำถาม';
-        $data['title_page'] = 'คำถาม';
+        $data['main_menu'] = 'Answer';
+        $data['sub_menu'] = 'Answer';
+        $data['title_page'] = 'Answer';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-
-        return view('Admin.question',$data);
+        
+        return view('Admin.answer',$data);
     }
 
     /**
@@ -42,27 +42,26 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        unset($input_all['id']);
-        $input_all['status'] = $request->input('status');
+        $input_all['answer_type_id'] = $request->input('answer_type_id','F');
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $return['question_id'] = $request->input('question_id');
 
         $validator = Validator::make($request->all(), [
-            'text' => 'required',
-
+            
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\Question::insert($data_insert);
+                \App\Models\Answer::insert($data_insert);
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -79,8 +78,15 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $result = \App\Models\Question::find($id);
+        $result = \App\Models\Answer::find($id);
+        
+        return json_encode($result);
+    }
 
+    public function showAnswerQuestion($questionid)
+    {
+        $result = \App\Models\Answer::where('question_id',$questionid)->get();
+        
         return json_encode($result);
     }
 
@@ -105,18 +111,17 @@ class QuestionController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        $input_all['status'] = $request->input('status','T');
+        $input_all['answer_type_id'] = $request->input('answer_type_id','F');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            'text' => 'required',
-
+            
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\Question::where('id',$id)->update($data_insert);
+                \App\Models\Answer::where('id',$id)->update($data_insert);
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
@@ -138,27 +143,26 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         \DB::beginTransaction();
         try {
-            \App\Models\Question::where('id',$id)->delete();
+            \App\Models\Answer::where('answer_id',$id)->delete();
             \DB::commit();
             $return['status'] = 1;
             $return['content'] = 'สำเร็จ';
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
         }
         $return['title'] = 'ลบข้อมูล';
         return $return;
     }
 
     public function Lists(){
-        $result = \App\Models\Question::select();
+        $result = \App\Models\Answer::select();
         return \Datatables::of($result)
-
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -167,34 +171,26 @@ class QuestionController extends Controller
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
                     <i class="ace-icon fa fa-trash bigger-120"></i>
                 </button>
-
-                <button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ">
-                    <i class="ace-icon fa fa-plus-square bigger-120"></i>
-                </button>
             ';
             return $str;
-        })
-        ->rawColumns(['text', 'action'])
-        ->make(true);
+        })->make(true);
     }
-    public function addQuestion() {
-        $result = \App\Models\Question::get();
-        return json_encode($result);
+
+    public function deleteAnswer(Request $request,$id)
+    {
+        \DB::beginTransaction();
+        try {
+            \App\Models\Answer::where('answer_id',$id)->delete();
+            \DB::commit();
+            $return['status'] = 1;
+            $return['content'] = 'สำเร็จ';
+        } catch (Exception $e) {
+            \DB::rollBack();
+            $return['status'] = 0;
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+        }
+        $return['title'] = 'ลบข้อมูล';
+        return $return;
     }
-    // public function QustionAnswer(){
-    //     \DB::beginTransaction();
-    //     try {
-    //         \App\Models\Question::where('id',$id)->delete();
-    //         \DB::commit();
-    //         $return['status'] = 1;
-    //         $return['content'] = 'สำเร็จ';
-    //     } catch (Exception $e) {
-    //         \DB::rollBack();
-    //         $return['status'] = 0;
-    //         $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
-    //     }
-    //     $return['title'] = 'ลบข้อมูล';
-    //     return $return;
-    // }
 
 }
