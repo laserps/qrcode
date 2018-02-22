@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-<!-- Modal -->
+<!-- Modal Add -->
 <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -83,7 +83,47 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
+
+<div class="modal fade" id="ModalAddQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form id="FormAdd">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">จัดการคำถาม</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-6">
+                    
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="color:black;">คำถาม</th>
+                                    <th class="text-center" style="color:black;">เลือก</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allQuestion">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -219,6 +259,28 @@
            { "data": "action","className":"action text-center" }
        ]
    });
+
+   
+   $('body').on('click','.btn-add-question',function(data){
+       var str = "";
+        $.ajax({
+            method : "GET",
+            "url": url_gb+"/admin/Question/all",
+            dataType : 'json'
+        }).done(function(rec){
+            var str = '';
+            $.each(rec, function(i,val){
+                str +=
+                `<tr>
+                    <td>`+val.id+`</td>
+                    <td><center><button class="btn btn-sm btn-primary">เลือก</button></center></td>
+                </tr>`;
+            });
+            $('#allQuestion').html(str);
+            ShowModal('ModalAddQuestion');
+        });
+    });
+
     $('body').on('click','.btn-add',function(data){
         ShowModal('ModalAdd');
     });
