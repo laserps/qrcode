@@ -19,7 +19,7 @@ class QuestionController extends Controller
         $data['sub_menu'] = 'คำถาม';
         $data['title_page'] = 'คำถาม';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.question',$data);
     }
 
@@ -49,7 +49,7 @@ class QuestionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'text' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -80,7 +80,7 @@ class QuestionController extends Controller
     public function show($id)
     {
         $result = \App\Models\Question::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -110,7 +110,7 @@ class QuestionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'text' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -158,7 +158,7 @@ class QuestionController extends Controller
     public function Lists(){
         $result = \App\Models\Question::select();
         return \Datatables::of($result)
-        
+
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -177,7 +177,10 @@ class QuestionController extends Controller
         ->rawColumns(['text', 'action'])
         ->make(true);
     }
-
+    public function addQuestion() {
+        $result = \App\Models\Question::get();
+        return json_encode($result);
+    }
     // public function QustionAnswer(){
     //     \DB::beginTransaction();
     //     try {
