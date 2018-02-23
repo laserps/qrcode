@@ -19,7 +19,7 @@ class AnswerController extends Controller
         $data['sub_menu'] = 'Answer';
         $data['title_page'] = 'Answer';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.answer',$data);
     }
 
@@ -48,7 +48,7 @@ class AnswerController extends Controller
         $return['question_id'] = $request->input('question_id');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -79,14 +79,14 @@ class AnswerController extends Controller
     public function show($id)
     {
         $result = \App\Models\Answer::find($id);
-        
+
         return json_encode($result);
     }
 
     public function showAnswerQuestion($questionid)
     {
-        $result = \App\Models\Answer::where('question_id',$questionid)->get();
-        
+        $result = \App\Models\Answer::leftjoin('answer_right','answer.answer_id','=','answer_right.answer_id')->where('answer.question_id',$questionid)->select('answer.*', 'answer_right.answer_id as ansID')->get();
+
         return json_encode($result);
     }
 
@@ -115,7 +115,7 @@ class AnswerController extends Controller
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();

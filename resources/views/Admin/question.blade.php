@@ -39,7 +39,7 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่ม {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <!-- <label for="add_text">text</label> -->
                     <textarea class="form-control text_question" name="text" required="" placeholder="text"></textarea>
@@ -48,8 +48,8 @@
                 <div class="form-inline">
                     <label class="checkbox-inline"><input type="radio" name="status" value="T">เปิดใช้งาน</label>
                     <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label>
-                </div> 
-        
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -70,16 +70,16 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <textarea class="form-control text_question" name="text" id="edit_text" required="" placeholder="text"></textarea>
                 </div>
-        
+
                 <div class="form-inline">
                     <label class="checkbox-inline"><input type="radio" name="status" value="T">เปิดใช้งาน</label>
                     <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label>
-                </div> 
-        
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -93,8 +93,7 @@
 <div class="modal fade" id="ModalAnswer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <input type="hidden" name="id" id="edit_user_id">
-            
+            <input type="hidden" name="question_id" id="question_id">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
@@ -114,7 +113,7 @@
                         </div>
                     </form>
                 </div>
-                <form id="FormSaveAnswer"> 
+                <form id="FormSaveAnswer">
                 <div class="answerContainer">
                     <h4>รายการแสดงคำตอบทั้งหมด</h4>
                     <table class="table table-bordered table-hover">
@@ -207,11 +206,15 @@
             dataType : 'json',
         }).done(function(rec){
             var str = '';
+			var check = '';
             $.each(rec, function(i,val){
+				if(val.ansID!=null) {
+					check = val.ansID;
+				}
                 str +=
                 `<tr>
                     <td>
-                        <label class="checkbox-inline"><input type="radio" name="status" value="`+val.answer_id+`">
+                        <label class="checkbox-inline"><input type="radio" name="status" value="`+val.answer_id+`" `+check+`>
                         </label>
                     </td>
                     <td>`+val.text+`</td>
@@ -219,6 +222,11 @@
                 </tr>`;
             });
             $('#listAnswer').html(str);
+			console.log(check);
+			if(check != '') {
+				$('#ModalAnswer').find('input:radio[value="'+check+'"]').prop('checked',true);
+			}
+			$('#question_id').val(id);
             ShowModal('ModalAnswer');
         });
     }
@@ -228,10 +236,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -277,19 +285,19 @@
 
         }
     });
-    
+
     $('#FormAdd').validate({
         errorElement: 'div',
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
             text: {
                 required: true,
             },
         },
         messages: {
-        	
+
             text: {
                 required: "กรุณาระบุ",
             },
@@ -343,13 +351,13 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
             text: {
                 required: true,
             },
         },
         messages: {
-        	
+
             text: {
                 required: "กรุณาระบุ",
             },
@@ -397,7 +405,66 @@
 
         }
     });
-    
+	$('#FormSaveAnswer').validate({
+        errorElement: 'div',
+        errorClass: 'invalid-feedback',
+        focusInvalid: false,
+        rules: {
+
+            text: {
+                required: true,
+            },
+        },
+        messages: {
+
+            text: {
+                required: "กรุณาระบุ",
+            },
+        },
+        highlight: function (e) {
+            validate_highlight(e);
+        },
+        success: function (e) {
+            validate_success(e);
+        },
+
+        errorPlacement: function (error, element) {
+            validate_errorplacement(error, element);
+        },
+        submitHandler: function (form) {
+            if(CKEDITOR!==undefined){
+                for ( instance in CKEDITOR.instances ){
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
+            var btn = $(form).find('[type="submit"]');
+            var id = $('#question_id').val();
+            btn.button("loading");
+            $.ajax({
+                method : "POST",
+                url : url_gb+"/admin/Question/AnswerRight/"+id,
+                dataType : 'json',
+                data : $(form).serialize()
+            }).done(function(rec){
+                btn.button("reset");
+                if(rec.status==1){
+                    TableList.api().ajax.reload();
+                    resetFormCustom(form);
+                    swal(rec.title,rec.content,"success");
+                    $('#ModalAnswer').modal('hide');
+                }else{
+                    swal(rec.title,rec.content,"error");
+                }
+            }).error(function(){
+                swal("system.system_alert","system.system_error","error");
+                btn.button("reset");
+            });
+        },
+        invalidHandler: function (form) {
+
+        }
+    });
+
     $('body').on('click','.btn-delete-answer',function(e){
         e.preventDefault();
         var btn = $(this);
@@ -468,7 +535,7 @@
         });
     });
 
-    
+
 </script>
 <script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script>
 <script>
@@ -510,7 +577,7 @@
                 $("textarea.text_question").val( $("textarea.text_question").val() );
             });
         },
-        
+
     };
     tinymce.init(editor_config);
 </script>

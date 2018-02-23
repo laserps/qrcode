@@ -224,12 +224,11 @@ class ActivitiesController extends Controller
     public function RewardAccept(Request $request) {
         $input_all = $request->all();
         $input_all['created_at'] = date('Y-m-d H:i:s');
-    }
 
-        $validator = Validator::make($request->all(), [
-
-        ]);
-        if (!$validator->fails()) {
+        // $validator = Validator::make($request->all(), [
+        //
+        // ]);
+        // if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
                 $reward_t = array();
@@ -269,9 +268,9 @@ class ActivitiesController extends Controller
                 $return['status'] = 0;
                 $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
             }
-        }else{
-            $return['status'] = 0;
-        }
+        // }else{
+        //     $return['status'] = 0;
+        // }
         $return['title'] = 'เพิ่มข้อมูล';
         return json_encode($return);
     }
@@ -328,4 +327,45 @@ class ActivitiesController extends Controller
         return View::make('admin.randomQuestion',$return);
     }
 
+    public function AddQuestion(Request $request, $id) {
+        $question = $request->question_group_id;
+        $question_group_id = array();
+        foreach ($question as $k => $v) {
+            $question_group_id[$k] = $v;
+        }
+        $input_all['question_group_id'] = json_encode($question_group_id);
+        $input_all['created_at']   = date('Y-m-d H:i:s');
+        $input_all['status']   = 'T';
+        $input_all['activity_id']   = $id;
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\ActivityQuestion::where('activity_id',$id)->delete();
+                \App\Models\ActivityQuestion::insert($data_insert);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+
+    public function getActivityQuestion($id) {
+        $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
+        foreach ($all as $key => $value) {
+            $result[$key] = json_decode($value->question_group_id);
+        }
+        return json_encode($result);
+    }
 }
