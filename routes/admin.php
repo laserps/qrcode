@@ -25,8 +25,6 @@
 
         Route::post('/upload_file', 'Admin\UploadFileController@index');
 
-
-
         //User
         Route::get('/change_password', 'Admin\UserController@change_password');
         Route::get('/profile', 'Admin\UserController@profile');
@@ -120,6 +118,7 @@
         Route::get('/gen_qr_code', 'Admin\ActivitiesController@gen_qr_code');
         Route::post('/Activities/RewardAccept', 'Admin\ActivitiesController@RewardAccept');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
+        Route::get('/Activities/{code}/getQuestion', 'Admin\ActivitiesController@getQuestion');
         Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
         Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
