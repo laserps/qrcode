@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +8,7 @@
 	<link rel="stylesheet" href="">
 </head>
 <body>
+	<!-- {{$activity}} -->
 	<form id="FormAdd">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<div class="modal-body">
@@ -38,10 +38,12 @@
                 data :$(this).serialize()
             }).done(function(rec){
                 if (rec.status == 1) {
-                	alert ('Success');
-                }else {
-                	alert('Error');
-                }
+					@php $url = '/admin/Activities/'.$activity->code.'/getQuestion'; @endphp
+                	window.location = "{{url($url)}}";
+				}
+                // }else{
+                // 	alert('Error');
+                // }
             }).error(function(){
                 
             });

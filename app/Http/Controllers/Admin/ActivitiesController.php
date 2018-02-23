@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Storage;
 use QRCode;
 use QR_Code\Types\QR_Url;
+use View;
+
 class ActivitiesController extends Controller
 {
     /**
@@ -222,6 +224,7 @@ class ActivitiesController extends Controller
     public function RewardAccept(Request $request) {
         $input_all = $request->all();
         $input_all['created_at'] = date('Y-m-d H:i:s');
+    }
 
     public function gen_qr_code(Request $request){
         $url_real = $request->input('url');
@@ -230,7 +233,8 @@ class ActivitiesController extends Controller
     }
     public function QRCODE($code)
     {
-        return view('Admin.qr_code');
+        $return['activity'] = \App\Models\Activities::where('code',$code)->first();
+        return View::make('Admin.qr_code',$return);
     }
     public function StoreQRCODE(Request $request)
     {
@@ -259,6 +263,12 @@ class ActivitiesController extends Controller
         }
         $return['title'] = 'เพิ่มข้อมูล';
         return json_encode($return);
+    }
+    public function getQuestion($code){
+        $return['code'] = $code;
+        $return['question'] = \App\Models\Question::with('Answer')->get();
+        //return $return['question'];
+        return View::make('admin.randomQuestion',$return);
     }
 
 }
