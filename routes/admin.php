@@ -128,6 +128,7 @@
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
         Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
+        
 
       Route::get('/Answer', 'Admin\AnswerController@index');
         Route::get('/Answer/Lists', 'Admin\AnswerController@Lists');
@@ -159,6 +160,9 @@
         Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
 
     });
+
+    //Route::get('/Activities/randomReward/{aid}/{uid}/{result}', 'Admin\ActivitiesController@randomReward');
+    Route::get('/Activities/randomReward/{code}', 'Admin\ActivitiesController@randomReward');
 
     //OrakUploader
     Route::any('/upload_file', 'OrakController@upload_file');

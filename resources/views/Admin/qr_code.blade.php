@@ -10,7 +10,6 @@
 <body>
 	<!-- {{$activity}} -->
 	<form id="FormAdd">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<div class="modal-body">
 	    <div class="form-group">
 	        <label for="add_phone">Phone</label>
