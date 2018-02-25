@@ -249,7 +249,7 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\Guest::insert($data_insert);
+                $return['user_id'] = \App\Models\Guest::insertGetId($data_insert);
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
@@ -264,10 +264,21 @@ class ActivitiesController extends Controller
         $return['title'] = 'เพิ่มข้อมูล';
         return json_encode($return);
     }
-    public function getQuestion($code){
+    public function getQuestion($code,$userid){
+        $return['userid'] = $userid;
         $return['code'] = $code;
+        $return['activity'] = \App\Models\Activities::where('code',$code)->first();
         $return['question'] = \App\Models\Question::with('Answer')->get();
         //return $return['question'];
+        return View::make('admin.randomQuestion',$return);
+    }
+
+    public function storeHistory(Request $request){
+        $request->all();
+        return $request->all();
+
+        $return['activity'] = \App\Models\Activities::where('code',$code)->first();
+        $return['question'] = \App\Models\Question::with('Answer')->get();
         return View::make('admin.randomQuestion',$return);
     }
 

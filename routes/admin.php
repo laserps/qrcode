@@ -118,13 +118,14 @@
         Route::get('/gen_qr_code', 'Admin\ActivitiesController@gen_qr_code');
         Route::post('/Activities/RewardAccept', 'Admin\ActivitiesController@RewardAccept');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
-        Route::get('/Activities/{code}/getQuestion', 'Admin\ActivitiesController@getQuestion');
+        Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
         Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
         Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
+        Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
 
       Route::get('/Answer', 'Admin\AnswerController@index');
         Route::get('/Answer/Lists', 'Admin\AnswerController@Lists');
@@ -134,6 +135,7 @@
         Route::post('/Answer/{id}', 'Admin\AnswerController@update');
         Route::post('/Answer/Delete/{id}', 'Admin\AnswerController@destroy');
         Route::post('/Answer/deleteAnswer/{id}', 'Admin\AnswerController@deleteAnswer');
+
 
       ##ROUTEFORINSTALL##
       Route::get('/Question', 'Admin\QuestionController@index');

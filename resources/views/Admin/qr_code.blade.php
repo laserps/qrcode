@@ -37,13 +37,11 @@
                 dataType : 'json',
                 data :$(this).serialize()
             }).done(function(rec){
+				//console.log(rec);
                 if (rec.status == 1) {
-					@php $url = '/admin/Activities/'.$activity->code.'/getQuestion'; @endphp
-                	window.location = "{{url($url)}}";
+					var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
+                	window.location = getUrl;
 				}
-                // }else{
-                // 	alert('Error');
-                // }
             }).error(function(){
                 
             });

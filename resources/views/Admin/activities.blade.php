@@ -293,7 +293,6 @@
        ]
    });
 
-
    $('body').on('click','.btn-add-question',function(data){
        var str = "";
         $.ajax({
