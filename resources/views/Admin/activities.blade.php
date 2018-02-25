@@ -86,18 +86,24 @@
 <div class="modal fade" id="ModalAddQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form id="FormAdd">
+			<input type="hidden" name="activity_id" id="activity_id">
+            <form id="FormAddQuestion">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">จัดการคำถาม</h4>
             </div>
             <div class="modal-body">
                 <div class="col-md-6">
-
+					<div class="row">
+						<div class="text-center">
+							<h3>คำถาม</h3>
+						</div>
+					</div>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered table-hover">
                             <thead>
                                 <tr>
+									<th class="text-center" style="color:black;">ลำดับ</th>
                                     <th class="text-center" style="color:black;">คำถาม</th>
                                     <th class="text-center" style="color:black;">เลือก</th>
                                 </tr>
@@ -107,10 +113,27 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
                 <div class="col-md-6">
+					<div class="row">
+						<div class="text-center">
+							<h3>เลือก</h3>
+						</div>
+					</div>
+					<div class="table-responsive">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                                <tr>
+									<th class="text-center" style="color:black;">ลำดับ</th>
+                                    <th class="text-center" style="color:black;">คำถาม</th>
+                                    <th class="text-center" style="color:black;">ลบ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allSelect">
 
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -295,6 +318,8 @@
 
    $('body').on('click','.btn-add-question',function(data){
        var str = "";
+	   add_index = 0;
+	   var id = $(this).data('id');
         $.ajax({
             method : "GET",
             "url": url_gb+"/admin/Questionall",
@@ -304,11 +329,36 @@
             $.each(rec, function(i,val){
                 str +=
                 `<tr>
-                    <td>`+val.id+`</td>
-                    <td><center><button class="btn btn-sm btn-primary">เลือก</button></center></td>
+					<td>`+(i+1)+`</td>
+                    <td>(`+val.id+`) `+val.text+`</td>
+                    <td style="vertical-align:middle;text-align:center;"><button value="`+val.id+`" class="btn btn-sm btn-primary addQue">เลือก</button></td>
                 </tr>`;
             });
             $('#allQuestion').html(str);
+			$('#allSelect').html('');
+			$('#activity_id').val(id);
+			$('#allQuestion').find('img').remove();
+			$.ajax({
+	            method : "GET",
+	            "url": url_gb+"/admin/Activities/getActivityQuestion/"+id,
+	            dataType : 'json'
+	        }).done(function(result){
+				var str = '';
+				$.each(result[0],function(k,v) {
+					add_index = k+1;
+					add_check[k] = v;
+					str +=
+					`<tr>
+						<td></td>
+						<td>`+$('#allQuestion').find('button[value="'+v+'"]').closest('td').prev().text()+`</td>
+						<td style="vertical-align:middle;text-align:center;"><button value="`+v+`" class="btn btn-sm btn-danger removeQue">ลบ</button></td>
+					</tr>`;
+				});
+				$('#allSelect').append(str);
+				$.each($('#allSelect').find('tr'),function(k,v){
+					$(v).find('td:first').text((k+1));
+				});
+			});
             ShowModal('ModalAddQuestion');
         });
     });
@@ -343,6 +393,35 @@
 		});
 		ShowModal('ModalReward');
     });
+	var add_index = 0;
+	var add_check = [];
+	$('body').on('click','.addQue',function(e){
+		e.preventDefault();
+		add_check[add_index] = $(this).val();
+		add_index++;
+		var i = 1;
+		var str =
+		`<tr>
+			<td></td>
+			<td>`+$(this).closest('td').prev().text()+`</td>
+			<td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-danger removeQue">ลบ</button></td>
+		</tr>`;
+		$('#allSelect').append(str);
+		$.each($('#allSelect').find('tr'),function(k,v){
+			$(v).find('td:first').text((k+1));
+		});
+	});
+	$('body').on('click','.removeQue',function(e){
+		e.preventDefault();
+		$(this).closest('tr').remove();
+		add_check.splice(parseInt($(this).closest('tr').find('td:first').text())-1,1);
+		console.log(add_check);
+		$.each($('#allSelect').find('tr'),function(k,v){
+			$(v).find('td:first').text((k+1));
+		});
+		add_index--;
+	});
+
     $('body').on('click','.btn-edit',function(data){
         var btn = $(this);
         btn.button('loading');
@@ -463,6 +542,61 @@
                     resetFormCustom(form);
                     swal(rec.title,rec.content,"success");
                     $('#ModalEdit').modal('hide');
+                }else{
+                    swal(rec.title,rec.content,"error");
+                }
+            }).error(function(){
+                swal("system.system_alert","system.system_error","error");
+                btn.button("reset");
+            });
+        },
+        invalidHandler: function (form) {
+
+        }
+    });
+	$('#FormAddQuestion').validate({
+        errorElement: 'div',
+        errorClass: 'invalid-feedback',
+        focusInvalid: false,
+        rules: {
+
+        },
+        messages: {
+
+        },
+        highlight: function (e) {
+            validate_highlight(e);
+        },
+        success: function (e) {
+            validate_success(e);
+        },
+
+        errorPlacement: function (error, element) {
+            validate_errorplacement(error, element);
+        },
+        submitHandler: function (form) {
+            if(CKEDITOR!==undefined){
+                for ( instance in CKEDITOR.instances ){
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
+            var btn = $(form).find('[type="submit"]');
+            var data_ar = removePriceFormat(form,$(form).serializeArray());
+            btn.button("loading");
+            $.ajax({
+                method : "POST",
+                url : url_gb+"/admin/Activities/AddQuestion/"+$('#activity_id').val(),
+                dataType : 'json',
+                data : {
+					question_group_id : add_check,
+				},
+            }).done(function(rec){
+                btn.button("reset");
+                if(rec.status==1){
+                    TableList.api().ajax.reload();
+                    resetFormCustom(form);
+                    swal(rec.title,rec.content,"success");
+                    $('#ModalAddQuestion').modal('hide');
                 }else{
                     swal(rec.title,rec.content,"error");
                 }

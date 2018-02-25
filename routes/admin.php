@@ -123,6 +123,8 @@
         Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
+        Route::get('/Activities/getActivityQuestion/{id}', 'Admin\ActivitiesController@getActivityQuestion');
+        Route::post('/Activities/AddQuestion/{id}', 'Admin\ActivitiesController@AddQuestion');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
         Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
@@ -144,6 +146,7 @@
         Route::get('/Questionall', 'Admin\QuestionController@addQuestion');
         Route::get('/Question/{id}', 'Admin\QuestionController@show');
         Route::post('/Question/{id}', 'Admin\QuestionController@update');
+        Route::post('/Question/AnswerRight/{id}', 'Admin\QuestionController@AnswerRight');
         Route::post('/Question/Delete/{id}', 'Admin\QuestionController@destroy');
 
         Route::get('/Reward', 'Admin\RewardController@index');
