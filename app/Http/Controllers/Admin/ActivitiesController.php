@@ -173,7 +173,8 @@ class ActivitiesController extends Controller
         })
         ->addColumn('qr_code', function($rec){
             // $urlgen = str_replace("http://","",$rec->activity_url);
-            return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
+            //return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
+            return \QrCode::generate($rec->code);
         })
         ->addColumn('action',function($rec){
             $str='
