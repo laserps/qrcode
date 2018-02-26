@@ -327,7 +327,7 @@ class ActivitiesController extends Controller
         $return['activity'] = \App\Models\Activities::where('code',$code)->first();
         $return['question'] = \App\Models\Question::with('Answer')->get();
         //return $return['question'];
-        return View::make('admin.randomQuestion',$return);
+        return View::make('Admin.randomQuestion',$return);
     }
 
     public static function checkResult($question_id,$answer_id){
@@ -409,7 +409,7 @@ class ActivitiesController extends Controller
             'created_at'=>date('Y-m-d H:i:s')
         ]);
 
-        return View::make('admin.randomReward',$return);
+        return View::make('Admin.randomReward',$return);
     }
 
     public function AddQuestion(Request $request, $id) {
