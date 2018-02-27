@@ -381,6 +381,7 @@
     $('body').on('click','.btn-add-init-question', function(data){
         var str = "";
        add_index = 0;
+       add_check.length = 0;
        var id = $(this).data('id');
         $.ajax({
             method : "GET",

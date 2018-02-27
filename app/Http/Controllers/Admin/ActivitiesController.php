@@ -510,7 +510,7 @@ class ActivitiesController extends Controller
         return json_encode($result);
     }
     public function getSpecialQuestion($id) {
-        $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
+        $all = \App\Models\ActivityQuestionInit::where('activity_id',$id)->get();
         foreach ($all as $key => $value) {
             $result[$key] = json_decode($value->question_group_id);
         }
