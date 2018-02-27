@@ -17,9 +17,9 @@
                 <thead>
                     <tr>
                         <th>id</th>
+                        <th>image</th>
                         <th>name</th>
                         <th>amount</th>
-                        <th>image</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -150,9 +150,9 @@ var TableList = $('#TableList').dataTable({
     },
     "columns": [
         {"data" : "id"},
+        {"data" : "img"},
         {"data" : "name"},
         {"data" : "amount"},
-        {"data" : "img"},
         { "data": "action","className":"action text-center" }
     ]
 });
