@@ -24,7 +24,6 @@
             {!! csrf_field() !!}
             <input type="hidden" name="activity_id" value="{{$activity->activity_id}}">
             <input type="hidden" name="user_id" value="{{$userid}}">
-
             @foreach($question as $qt)
             <div class="offset-md-1 col-md-10">
                 <div class="card border-dark mb-3">
@@ -34,9 +33,8 @@
                     <p class="card-text">
                         {!!$qt->text!!}
                     </p>
-                    
-                    @if($qt->answer) <hr> @endif
-                    
+                    @if($qt->answer) <hr> 
+                    @endif
                     @php $j=1; @endphp
                     @foreach($qt->answer as $ans)
                         <div class="col-md-6">
@@ -44,7 +42,6 @@
                         </div>
                         @php $j++; @endphp
                     @endforeach
-
                     </div>
                 </div>
             </div>

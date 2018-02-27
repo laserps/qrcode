@@ -147,6 +147,13 @@
         Route::post('/ActivityRewardUser/{id}', 'Admin\ActivityRewardUserController@update');
         Route::post('/ActivityRewardUser/Delete/{id}', 'Admin\ActivityRewardUserController@destroy');
 
+      Route::get('/QuestionInit', 'Admin\QuestionInitController@index');
+        Route::get('/QuestionInit/Lists', 'Admin\QuestionInitController@Lists');
+        Route::post('/QuestionInit', 'Admin\QuestionInitController@store');
+        Route::get('/QuestionInit/{id}', 'Admin\QuestionInitController@show');
+        Route::post('/QuestionInit/{id}', 'Admin\QuestionInitController@update');
+        Route::post('/QuestionInit/Delete/{id}', 'Admin\QuestionInitController@destroy');
+
       ##ROUTEFORINSTALL##
       Route::get('/Question', 'Admin\QuestionController@index');
         Route::get('/Question/Lists', 'Admin\QuestionController@Lists');
