@@ -175,5 +175,23 @@ class QuestionInitController extends Controller
             return $str;
         })->make(true);
     }
+    public function GetSpecialQuestion() {
+        $all = \App\Models\QuestionInit::get();
+        foreach ($all as $k => $v) {
+            $result[$k]['id'] = $v->id;
+            $result[$k]['text'] = $this->getString($v->text,50);
+        }
+        return json_encode($result);
+    }
+    public static function getString($string,$length){
+        $value = strip_tags($string);
+        /*ลบช่องว่าง และสไตล์ต่างๆ*/
+        $search = array('&quot;',' ','&nbsp;');
+        $replace = array('','','');
+        $subject = $value;
+        $value = str_replace($search, $replace, $subject);
+        if($length > mb_strlen($value)){$dot='';}else{$dot='...';}
+        return mb_substr($value,0,$length).$dot; /* UTF8_SUBSTR */
+    }
 
 }

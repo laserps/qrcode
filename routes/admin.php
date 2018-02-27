@@ -124,7 +124,9 @@
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::get('/Activities/getActivityQuestion/{id}', 'Admin\ActivitiesController@getActivityQuestion');
+        Route::get('/Activities/getSpecialQuestion/{id}', 'Admin\ActivitiesController@getSpecialQuestion');
         Route::post('/Activities/AddQuestion/{id}', 'Admin\ActivitiesController@AddQuestion');
+        Route::post('/Activities/AddSpecialQuestion/{id}', 'Admin\ActivitiesController@AddSpecialQuestion');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
         Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
@@ -143,6 +145,7 @@
       Route::get('/QuestionInit', 'Admin\QuestionInitController@index');
         Route::get('/QuestionInit/Lists', 'Admin\QuestionInitController@Lists');
         Route::post('/QuestionInit', 'Admin\QuestionInitController@store');
+        Route::get('/SpecialQuestion', 'Admin\QuestionInitController@GetSpecialQuestion');
         Route::get('/QuestionInit/{id}', 'Admin\QuestionInitController@show');
         Route::post('/QuestionInit/{id}', 'Admin\QuestionInitController@update');
         Route::post('/QuestionInit/Delete/{id}', 'Admin\QuestionInitController@destroy');
