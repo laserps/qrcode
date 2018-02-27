@@ -9,4 +9,7 @@ class Reward extends Model
     protected $table = 'reward';
     //protected $primaryKey = '';
     //protected $timestamps = true;
+    public function getRewardPicture(){
+        return $this->hasOne('\App\Models\RewardPicture','reward_id','id');
+    }
 }

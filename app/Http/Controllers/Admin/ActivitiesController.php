@@ -66,7 +66,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -128,7 +128,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -154,7 +154,7 @@ class ActivitiesController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
         }
         $return['title'] = 'ลบข่อมูล';
         return $return;
@@ -173,7 +173,8 @@ class ActivitiesController extends Controller
         })
         ->addColumn('qr_code', function($rec){
             // $urlgen = str_replace("http://","",$rec->activity_url);
-            return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
+            //return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
+            return \QrCode::generate($rec->code);
         })
         ->addColumn('action',function($rec){
             $str='
@@ -266,7 +267,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         // }else{
         //     $return['status'] = 0;
@@ -305,14 +306,14 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\Guest::insert($data_insert);
+                $return['user_id'] = \App\Models\Guest::insertGetId($data_insert);
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -320,11 +321,95 @@ class ActivitiesController extends Controller
         $return['title'] = 'เพิ่มข้อมูล';
         return json_encode($return);
     }
-    public function getQuestion($code){
+    public function getQuestion($code,$userid){
+        $return['userid'] = $userid;
         $return['code'] = $code;
+        $return['activity'] = \App\Models\Activities::where('code',$code)->first();
         $return['question'] = \App\Models\Question::with('Answer')->get();
         //return $return['question'];
-        return View::make('admin.randomQuestion',$return);
+        return View::make('Admin.randomQuestion',$return);
+    }
+
+    public static function checkResult($question_id,$answer_id){
+        return \App\Models\AnswerRight::where([
+            'question_id' => $question_id,
+            'answer_id' => $answer_id,
+        ])->count();
+    }
+    public function storeHistory(Request $request){
+        $input_all = $request->all();
+        unset($input_all['_token']);
+        unset($input_all['activity_id']);
+        unset($input_all['user_id']);
+
+        $result = 0; $qtyQustion = 0;
+        foreach($input_all as $ia){
+            $str = explode('|',$ia);
+            $data_insert[] = array(
+                'activity_id' => $request->activity_id,
+                'user_id' => $request->user_id,
+                'question_id' => $str[0],
+                'answer_id' => $str[1],
+                'result' => $this->checkResult($str[0],$str[1]),
+                'created_at' => date('Y-m-d H:i:s')
+            );
+            $qtyQustion++;
+            $result += $this->checkResult($str[0],$str[1]);
+        }
+        $validator = Validator::make($request->all(), []);
+
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                if(\App\Models\AnswerHistory::insert($data_insert)){
+                    \DB::commit();
+                    $return['status'] = 1;
+                    $return['content'] = 'สำเร็จ';
+                }else{
+                    throw new $e;
+                }
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        
+        $return['title'] = 'เพิ่มข้อมูล';
+
+        $returns['activity_id'] = $request->activity_id;
+        $returns['user_id'] = $request->user_id;
+        $returns['result'] = $result/$qtyQustion;
+        $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'];
+
+        $return['code'] = base64_encode($string);
+
+        return json_encode($return);
+    }
+
+    public function randomReward($code){
+        $str = base64_decode($code);
+        $str = explode('/',$str);
+        $activity_id=$str[0];$user_id=$str[1];$result=$str[2];
+
+        $listReward = \App\Models\ActivityReward::where([
+            'activity_id' => $activity_id,
+            'status' => $result>0?'T':'F'
+        ])->first()->reward_id;
+        $listReward = json_decode($listReward);
+        $randomReward = \App\Models\Reward::where('amount','<>',0)->whereIn('id',$listReward)->with('getRewardPicture')->orderBy(\DB::raw('rand()'))->limit(1)->get()->first();
+        $return['reward'] = $randomReward;
+
+        \App\Models\ActivityRewardUser::insert([
+            'activity_id'=>$activity_id,
+            'reward_id'=>$user_id,
+            'user_id'=>$randomReward->id,
+            'created_at'=>date('Y-m-d H:i:s')
+        ]);
+
+        return View::make('Admin.randomReward',$return);
     }
 
     public function AddQuestion(Request $request, $id) {
@@ -352,7 +437,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;

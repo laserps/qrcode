@@ -316,7 +316,6 @@
        ]
    });
 
-
    $('body').on('click','.btn-add-question',function(data){
        var str = "";
 	   add_index = 0;
