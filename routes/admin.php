@@ -128,7 +128,7 @@
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
         Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
-        
+
 
       Route::get('/Answer', 'Admin\AnswerController@index');
         Route::get('/Answer/Lists', 'Admin\AnswerController@Lists');
@@ -139,6 +139,13 @@
         Route::post('/Answer/Delete/{id}', 'Admin\AnswerController@destroy');
         Route::post('/Answer/deleteAnswer/{id}', 'Admin\AnswerController@deleteAnswer');
 
+
+      Route::get('/ActivityRewardUser', 'Admin\ActivityRewardUserController@index');
+        Route::get('/ActivityRewardUser/Lists', 'Admin\ActivityRewardUserController@Lists');
+        Route::post('/ActivityRewardUser', 'Admin\ActivityRewardUserController@store');
+        Route::get('/ActivityRewardUser/{id}', 'Admin\ActivityRewardUserController@show');
+        Route::post('/ActivityRewardUser/{id}', 'Admin\ActivityRewardUserController@update');
+        Route::post('/ActivityRewardUser/Delete/{id}', 'Admin\ActivityRewardUserController@destroy');
 
       ##ROUTEFORINSTALL##
       Route::get('/Question', 'Admin\QuestionController@index');
@@ -163,6 +170,7 @@
 
     //Route::get('/Activities/randomReward/{aid}/{uid}/{result}', 'Admin\ActivitiesController@randomReward');
     Route::get('/Activities/randomReward/{code}', 'Admin\ActivitiesController@randomReward');
+    Route::get('/ActivityRewardUser/accept/{id}', 'Admin\ActivityRewardUserController@acceptRewardUser');
 
     //OrakUploader
     Route::any('/upload_file', 'OrakController@upload_file');

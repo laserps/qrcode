@@ -18,10 +18,10 @@
                                 <thead>
                                     <tr>
                                         <th>Activity Name</th>
+										<th>QR Code</th>
                                         <th>Activity Links</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
-                                        <th>QR Code</th>
                                         <th>Status</th>
                                         <th>Create Date</th>
                                         <th></th>
@@ -289,10 +289,10 @@
         },
         "columns": [
             {"data" : "activity_name"},
+			{"data" : "qr_code"},
             {"data" : "activity_url"},
             {"data" : "working_time_start"},
             {"data" : "working_time_end"},
-            {"data" : "qr_code"},
             {"data" : "status"},
             {"data" : "created_at"},
             { "data": "action","className":"action text-center" }
