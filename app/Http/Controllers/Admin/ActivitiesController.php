@@ -174,7 +174,7 @@ class ActivitiesController extends Controller
         ->addColumn('qr_code', function($rec){
             // $urlgen = str_replace("http://","",$rec->activity_url);
             //return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
-            return \QrCode::generate($rec->code);
+            return \QrCode::size(100)->generate(url("admin/QRCODE/".$rec->code));
         })
         ->addColumn('action',function($rec){
             $str='
@@ -324,9 +324,11 @@ class ActivitiesController extends Controller
     public function getQuestion($code,$userid){
         $return['userid'] = $userid;
         $return['code'] = $code;
-        $return['activity'] = \App\Models\Activities::where('code',$code)->first();
-        $return['question'] = \App\Models\Question::with('Answer')->get();
-        //return $return['question'];
+        $activity = \App\Models\Activities::where('code',$code)->first();
+        $question_group_id = json_decode(\App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first()->question_group_id);
+        $return['activity'] = $activity;
+        $return['question'] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->orderBy(\DB::raw('rand()'))->limit(3)->get();
+        // return $return['question'];
         return View::make('Admin.randomQuestion',$return);
     }
 
@@ -376,7 +378,7 @@ class ActivitiesController extends Controller
         }else{
             $return['status'] = 0;
         }
-        
+
         $return['title'] = 'เพิ่มข้อมูล';
 
         $returns['activity_id'] = $request->activity_id;

@@ -178,7 +178,7 @@ class RewardController extends Controller
             $str = '';
             $img = \App\Models\RewardPicture::where('reward_id',$rec->id)->first();
             if($img) {
-                $str = '<img src="'.asset("uploads/temp").'/'.$img->path_picture.'"height="50" width="50">';
+                $str = '<img src="'.asset("uploads/temp").'/'.$img->path_picture.'"height="50" width="auto">';
             }
             return $str;
         })
