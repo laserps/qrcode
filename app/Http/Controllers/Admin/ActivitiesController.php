@@ -296,24 +296,31 @@ class ActivitiesController extends Controller
     public function StoreQRCODE(Request $request)
     {
         // $input_all                 = $request->all();
-        $input_all['phone']   = $request->phone;
-        $input_all['created_at']   = date('Y-m-d H:i:s');
-        $input_all['updated_at']   = date('Y-m-d H:i:s');
-        $validator = Validator::make($request->all(), [
+        $input_all['phone']      = $request->phone;
+        $phone                   = $input_all['phone'];
+        $input_all['created_at'] = date('Y-m-d H:i:s');
+        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $validator               = Validator::make($request->all(), [
 
         ]);
         if (!$validator->fails()) {
-            \DB::beginTransaction();
-            try {
-                $data_insert = $input_all;
-                $return['user_id'] = \App\Models\Guest::insertGetId($data_insert);
-                \DB::commit();
-                $return['status'] = 1;
-                $return['content'] = 'สำเร็จ';
-            } catch (Exception $e) {
-                \DB::rollBack();
+            $check_phone_dup = \App\Models\Guest::where('phone',$phone)->first();
+            if (!$check_phone_dup) {
+                \DB::beginTransaction();
+                try {
+                    $data_insert = $input_all;
+                    $return['user_id'] = \App\Models\Guest::insertGetId($data_insert);
+                    \DB::commit();
+                    $return['status'] = 1;
+                    $return['content'] = 'สำเร็จ';
+                } catch (Exception $e) {
+                    \DB::rollBack();
+                    $return['status'] = 0;
+                    $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+                }
+            }else{
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'มีเบอร์โทรนี้แล้ว ไม่สามารถดําเนินการได้';
             }
         }else{
             $return['status'] = 0;
