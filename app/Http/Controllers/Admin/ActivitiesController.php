@@ -329,16 +329,15 @@ class ActivitiesController extends Controller
         return json_encode($return);
     }
     public function getQuestion($code,$userid){
-        $return['userid'] = $userid;
-        $return['code'] = $code;
-        $activity = \App\Models\Activities::where('code',$code)->first();
-        $question_group_id = json_decode(\App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first()->question_group_id);
+        $return['userid']   = $userid;
+        $return['code']     = $code;
+        $activity           = \App\Models\Activities::where('code',$code)->first();
+        $question_group_id  = json_decode(\App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first()->question_group_id);
         $return['activity'] = $activity;
         $return['question'] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->orderBy(\DB::raw('rand()'))->limit(3)->get();
         // return $return['question'];
         return View::make('Admin.randomQuestion',$return);
     }
-
     public static function checkResult($question_id,$answer_id){
         return \App\Models\AnswerRight::where([
             'question_id' => $question_id,
