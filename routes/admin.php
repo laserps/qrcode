@@ -116,8 +116,10 @@
         Route::get('/Activities/RewardLists', 'Admin\ActivitiesController@RewardLists');
         Route::post('/Activities', 'Admin\ActivitiesController@store');
         Route::get('/gen_qr_code', 'Admin\ActivitiesController@gen_qr_code');
+        Route::get('/Activities/staff/{id}', 'Admin\ActivitiesController@staff');
         Route::post('/Activities/RewardAccept', 'Admin\ActivitiesController@RewardAccept');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
+        Route::get('/Activities/getStaff/{id}', 'Admin\ActivitiesController@getStaff');
         Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
         Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
         Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
@@ -125,7 +127,9 @@
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::get('/Activities/getActivityQuestion/{id}', 'Admin\ActivitiesController@getActivityQuestion');
         Route::get('/Activities/getSpecialQuestion/{id}', 'Admin\ActivitiesController@getSpecialQuestion');
+        Route::post('/Activities/updateStatus/{id}', 'Admin\ActivitiesController@updateStatus');
         Route::post('/Activities/AddQuestion/{id}', 'Admin\ActivitiesController@AddQuestion');
+        Route::post('/Activities/AddStaff/{id}', 'Admin\ActivitiesController@AddStaff');
         Route::post('/Activities/AddSpecialQuestion/{id}', 'Admin\ActivitiesController@AddSpecialQuestion');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');

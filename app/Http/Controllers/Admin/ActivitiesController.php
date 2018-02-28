@@ -164,7 +164,12 @@ class ActivitiesController extends Controller
         $result = \App\Models\Activities::select();
         return \Datatables::of($result)
         ->editColumn('status', function($rec){
-            $str =($rec->status == 'T')? 'เปิดใช้งาน':'ปิดการใช้งาน';
+            $str = '<select class="form-control status" name="status" data-id="'.$rec->activity_id.'">';
+            if($rec->status == 'T')
+                $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
+            else
+                $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
+            $str .= '</select>';
             return $str;
         })
         ->editColumn('activity_url', function($rec){
@@ -187,8 +192,8 @@ class ActivitiesController extends Controller
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
                     <i class="ace-icon fa fa-key bigger-120"></i>
                 </button>
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
-                    <i class="ace-icon fa fa-key bigger-120"></i>
+                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-staff btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
+                    <i class="ace-icon fa fa-user bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="แก้ไข">
                     <i class="ace-icon fa fa-edit bigger-120"></i>
@@ -199,7 +204,7 @@ class ActivitiesController extends Controller
             ';
             return $str;
         })
-        ->rawColumns(['activity_url','qr_code', 'action'])
+        ->rawColumns(['status','activity_url','qr_code', 'action'])
         ->make(true);
     }
     public function RewardLists() {
@@ -438,8 +443,10 @@ class ActivitiesController extends Controller
     public function AddQuestion(Request $request, $id) {
         $question = $request->question_group_id;
         $question_group_id = array();
-        foreach ($question as $k => $v) {
-            $question_group_id[$k] = $v;
+        if(sizeof($request->question_group_id)!=0) {
+            foreach ($question as $k => $v) {
+                $question_group_id[$k] = $v;
+            }
         }
         $input_all['question_group_id'] = json_encode($question_group_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
@@ -453,7 +460,45 @@ class ActivitiesController extends Controller
             try {
                 $data_insert = $input_all;
                 \App\Models\ActivityQuestion::where('activity_id',$id)->delete();
-                \App\Models\ActivityQuestion::insert($data_insert);
+                if(sizeof($request->question_group_id)!=0) {
+                    \App\Models\ActivityQuestion::insert($data_insert);
+                }
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+    public function AddStaff(Request $request, $id) {
+        $staff = $request->staff_id;
+        $staff_id = array();
+        if(sizeof($request->staff_id)!=0) {
+            foreach ($staff as $k => $v) {
+                $staff_id[$k] = $v;
+            }
+        }
+        $input_all['staff_id'] = json_encode($staff_id);
+        $input_all['created_at']   = date('Y-m-d H:i:s');
+        $input_all['activity_id']   = $id;
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\ActivityStaff::where('activity_id',$id)->delete();
+                if(sizeof($request->staff_id)!=0) {
+                    \App\Models\ActivityStaff::insert($data_insert);
+                }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
@@ -471,8 +516,10 @@ class ActivitiesController extends Controller
     public function AddSpecialQuestion(Request $request, $id) {
         $question = $request->question_group_id;
         $question_group_id = array();
-        foreach ($question as $k => $v) {
-            $question_group_id[$k] = $v;
+        if(sizeof($request->question_group_id)!=0) {
+            foreach ($question as $k => $v) {
+                $question_group_id[$k] = $v;
+            }
         }
         $input_all['question_group_id'] = json_encode($question_group_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
@@ -486,7 +533,9 @@ class ActivitiesController extends Controller
             try {
                 $data_insert = $input_all;
                 \App\Models\ActivityQuestionInit::where('activity_id',$id)->delete();
-                \App\Models\ActivityQuestionInit::insert($data_insert);
+                if(sizeof($request->question_group_id)!=0) {
+                    \App\Models\ActivityQuestionInit::insert($data_insert);
+                }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
@@ -516,5 +565,47 @@ class ActivitiesController extends Controller
         }
         return json_encode($result);
     }
+    public function updateStatus(Request $request,$id) {
+        $status = $request->status;
 
+        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $input_all['status'] = $status;
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\Activities::where('activity_id',$id)->update($data_insert);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+    public function staff($id) {
+        $staff = \App\Models\ActivityStaff::where('activity_id',$id)->first();
+        // if($staff)
+        //     $result = \App\Models\AdminUser::whereNotIn('id',json_decode($staff->staff_id))->get();
+        // else
+            $result = \App\Models\AdminUser::get();
+
+        return json_encode($result);
+    }
+    public function getStaff($id) {
+        $all = \App\Models\ActivityStaff::where('activity_id',$id)->get();
+        foreach ($all as $key => $value) {
+            $result[$key] = json_decode($value->staff_id);
+        }
+        return json_encode($result);
+    }
 }

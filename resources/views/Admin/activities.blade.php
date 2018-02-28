@@ -206,6 +206,67 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ModalStaff" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <input type="hidden" name="activity_id" id="activity_id">
+            <form id="FormStaff">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">จัดการผู้ใช้งาน</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="text-center">
+                            <h3>ผู้ใช้งาน</h3>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="color:black;">ลำดับ</th>
+                                    <th class="text-center" style="color:black;">ผู้ใช้งาน</th>
+                                    <th class="text-center" style="color:black;">เลือก</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staff">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="text-center">
+                            <h3>เลือก</h3>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="color:black;">ลำดับ</th>
+                                    <th class="text-center" style="color:black;">ผู้ใช้งาน</th>
+                                    <th class="text-center" style="color:black;">ลบ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="addStaff">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal Edit -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -335,6 +396,10 @@
 @section('js_bottom')
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
+	var add_index = 0;
+	var add_check = [];
+	var staff_index = 0;
+	var staff_check = [];
     $('#add_working_time_start').timepicker();
     $('#add_working_time_end').timepicker();
     $('#edit_working_time_start').timepicker();
@@ -425,6 +490,56 @@
             ShowModal('ModalAddInitQuestion');
         });
     });
+	$('body').on('click','.btn-staff', function(data){
+        var str = "";
+       staff_index = 0;
+       staff_check.length = 0;
+       var id = $(this).data('id');
+        $.ajax({
+            method : "GET",
+            "url": url_gb+"/admin/Activities/staff/"+id,
+            dataType : 'json'
+        }).done(function(rec){
+			var str = '';
+            $.each(rec, function(i,val){
+                str +=
+                `<tr>
+                    <td>`+(i+1)+`</td>
+                    <td>(`+val.id+`) `+val.firstname+` `+val.lastname+`</td>
+                    <td style="vertical-align:middle;text-align:center;"><button value="`+val.id+`" class="btn btn-sm btn-primary addStaff">เลือก</button></td>
+                </tr>`;
+            });
+            $('#staff').html(str);
+            $('#addStaff').html('');
+            $('#activity_id').val(id);
+            $.ajax({
+                method : "GET",
+                "url": url_gb+"/admin/Activities/getStaff/"+id,
+                dataType : 'json'
+            }).done(function(result){
+                var str = '';
+                $.each(result[0],function(k,v) {
+                    staff_index = k+1;
+                    staff_check[k] = v;
+                    str +=
+                    `<tr>
+                        <td></td>
+                        <td>`+$('#staff').find('button[value="'+v+'"]').closest('td').prev().text()+`</td>
+                        <td style="vertical-align:middle;text-align:center;"><button value="`+v+`" class="btn btn-sm btn-danger removeStaff">ลบ</button></td>
+                    </tr>`;
+					$('#staff').find('button[value="'+v+'"]').closest('tr').remove();
+                });
+                $('#addStaff').append(str);
+				$.each($('#staff').find('tr'),function(k,v){
+					$(v).find('td:first').text((k+1));
+				});
+				$.each($('#addStaff').find('tr'),function(k,v){
+					$(v).find('td:first').text((k+1));
+				});
+            });
+        });
+		ShowModal('ModalStaff');
+    });
 
    $('body').on('click','.btn-add-question',function(data){
        var str = "";
@@ -504,8 +619,7 @@
 		});
 		ShowModal('ModalReward');
     });
-	var add_index = 0;
-	var add_check = [];
+
 	$('body').on('click','.addQue',function(e){
 		e.preventDefault();
 		add_check[add_index] = $(this).val();
@@ -526,6 +640,26 @@
             $(v).find('td:first').text((k+1));
         });
 	});
+	$('body').on('click','.addStaff',function(e){
+		e.preventDefault();
+		staff_check[staff_index] = $(this).val();
+		staff_index++;
+		var i = 1;
+		var str =
+		`<tr>
+			<td></td>
+			<td>`+$(this).closest('td').prev().text()+`</td>
+			<td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-danger removeStaff">ลบ</button></td>
+		</tr>`;
+		$('#addStaff').append(str);
+		$('#staff').find('button[value="'+$(this).val()+'"]').closest('tr').remove();
+		$.each($('#staff').find('tr'),function(k,v){
+			$(v).find('td:first').text((k+1));
+		});
+		$.each($('#addStaff').find('tr'),function(k,v){
+			$(v).find('td:first').text((k+1));
+		});
+	});
 
 	$('body').on('click','.removeQue',function(e){
 		e.preventDefault();
@@ -538,6 +672,25 @@
             $(v).find('td:first').text((k+1));
         });
 		add_index--;
+	});
+	$('body').on('click','.removeStaff',function(e){
+		e.preventDefault();
+		$(this).closest('tr').remove();
+		staff_check.splice(parseInt($(this).closest('tr').find('td:first').text())-1,1);
+		var str =
+		`<tr>
+			<td></td>
+			<td>`+$(this).closest('td').prev().text()+`</td>
+			<td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-primary addStaff">เลือก</button></td>
+		</tr>`;
+		$('#staff').append(str);
+		$.each($('#staff').find('tr'),function(k,v){
+			$(v).find('td:first').text((k+1));
+		});
+		$.each($('#addStaff').find('tr'),function(k,v){
+			$(v).find('td:first').text((k+1));
+		});
+		staff_index--;
 	});
 
     $('body').on('click','.btn-edit',function(data){
@@ -727,6 +880,61 @@
 
         }
     });
+	$('#FormStaff').validate({
+        errorElement: 'div',
+        errorClass: 'invalid-feedback',
+        focusInvalid: false,
+        rules: {
+
+        },
+        messages: {
+
+        },
+        highlight: function (e) {
+            validate_highlight(e);
+        },
+        success: function (e) {
+            validate_success(e);
+        },
+
+        errorPlacement: function (error, element) {
+            validate_errorplacement(error, element);
+        },
+        submitHandler: function (form) {
+            if(CKEDITOR!==undefined){
+                for ( instance in CKEDITOR.instances ){
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
+            var btn = $(form).find('[type="submit"]');
+            var data_ar = removePriceFormat(form,$(form).serializeArray());
+            btn.button("loading");
+            $.ajax({
+                method : "POST",
+                url : url_gb+"/admin/Activities/AddStaff/"+$('#activity_id').val(),
+                dataType : 'json',
+                data : {
+					staff_id : staff_check,
+				},
+            }).done(function(rec){
+                btn.button("reset");
+                if(rec.status==1){
+                    TableList.api().ajax.reload();
+                    resetFormCustom(form);
+                    swal(rec.title,rec.content,"success");
+                    $('#ModalStaff').modal('hide');
+                }else{
+                    swal(rec.title,rec.content,"error");
+                }
+            }).error(function(){
+                swal("system.system_alert","system.system_error","error");
+                btn.button("reset");
+            });
+        },
+        invalidHandler: function (form) {
+
+        }
+    });
     $('#FormAddSpecialQuestion').validate({
         errorElement: 'div',
         errorClass: 'invalid-feedback',
@@ -868,6 +1076,24 @@
             }
         });
     });
+	$('body').on('change','.status',function() {
+		var id = $(this).data('id');
+		$.ajax({
+			method : "POST",
+			url : url_gb+"/admin/Activities/updateStatus/"+id,
+			data : {status : $(this).val()},
+			dataType: 'json',
+		}).done(function(rec){
+			if(rec.status==1){
+				swal(rec.title,rec.content,"success");
+				TableList.api().ajax.reload();
+			}else{
+				swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+			}
+		}).error(function(data){
+			swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+		});
+	});
 // $('body').on('click','.btn-detail',function(data){
 //         var btn = $(this);
 //         btn.button('loading');
@@ -878,7 +1104,6 @@
 //             url : url_gb+"/admin/Activities/Detail/"+id,
 //             dataType : 'json'
 //         }).done(function(rec){
-//             // console.log(rec);
 //             $('#detail_activity_name').val(rec.activity_name);
 //             $('#detail_status').val(rec.status);
 //             $('#detail_working_time_start').val(rec.working_time_start);
