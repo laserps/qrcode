@@ -365,7 +365,7 @@ class ActivitiesController extends Controller
         $activity           = \App\Models\Activities::where('code',$code)->first();
         $question_group_id  = json_decode(\App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first()->question_group_id);
         $return['activity'] = $activity;
-        $return['SpecialQuestion'] = \App\Models\QuestionInit::get();
+        $return['SpecialQuestion'] = \App\Models\QuestionInit::whereIn('id',$question_group_id)->where('status','T')->get();
         return View::make('Admin.randomSpecialQuestion',$return);
     }
     public static function checkResult($question_id,$answer_id){
@@ -670,13 +670,8 @@ class ActivitiesController extends Controller
         return json_encode($result);
     }
     public function AllSpeQues($id) {
-        $SpecialQuestion = \App\Models\ActivityQuestionInit::where('activity_id',$id)->first();
-        $result = '';
-        if ($SpecialQuestion) {
-            $result = \App\Models\QuestionInit::whereIn('id',json_decode($SpecialQuestion->question_group_id))->get();
-        }else {
-            $result = \App\Models\QuestionInit::where('status', 'T')->get();
-        }
+
+        $result = \App\Models\QuestionInit::where('status', 'T')->get();
         return json_encode($result);
     }
     public function GetSpecQuestion($id){
