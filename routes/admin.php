@@ -121,12 +121,13 @@
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getStaff/{id}', 'Admin\ActivitiesController@getStaff');
         Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
+        Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
         Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
         Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::get('/Activities/getActivityQuestion/{id}', 'Admin\ActivitiesController@getActivityQuestion');
-        Route::get('/Activities/getSpecialQuestion/{id}', 'Admin\ActivitiesController@getSpecialQuestion');
+        // Route::get('/Activities/getSpecialQuestion/{id}', 'Admin\ActivitiesController@getAllSpecialQuestion');
         Route::post('/Activities/updateStatus/{id}', 'Admin\ActivitiesController@updateStatus');
         Route::post('/Activities/AddQuestion/{id}', 'Admin\ActivitiesController@AddQuestion');
         Route::post('/Activities/AddStaff/{id}', 'Admin\ActivitiesController@AddStaff');
@@ -134,6 +135,7 @@
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
         Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
+        Route::post('/AnswerHistoryInit', 'Admin\ActivitiesController@storeHistoryInit');
 
 
       Route::get('/Answer', 'Admin\AnswerController@index');

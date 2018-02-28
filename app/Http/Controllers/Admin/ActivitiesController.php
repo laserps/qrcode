@@ -358,6 +358,16 @@ class ActivitiesController extends Controller
         // return $return['question'];
         return View::make('Admin.randomQuestion',$return);
     }
+    public function getAllSpecialQuestion($code,$userid){
+        $return['userid']   = $userid;
+        $return['code']     = $code;
+        $return['id']       = 1;
+        $activity           = \App\Models\Activities::where('code',$code)->first();
+        $question_group_id  = json_decode(\App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first()->question_group_id);
+        $return['activity'] = $activity;
+        $return['SpecialQuestion'] = \App\Models\QuestionInit::get();
+        return View::make('Admin.randomSpecialQuestion',$return);
+    }
     public static function checkResult($question_id,$answer_id){
         return \App\Models\AnswerRight::where([
             'question_id' => $question_id,
@@ -413,6 +423,57 @@ class ActivitiesController extends Controller
         $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'];
 
         $return['code'] = base64_encode($string);
+
+        return json_encode($return);
+    }
+    public function storeHistoryInit(Request $request){
+        $user_id       = $request->input('user_id');
+        $activity_id   = $request->input('activity_id');
+        $question_id   = $request->input('question_id');
+        $answer_status = $request->input('answer_status');
+        $input_all     = $request->all();
+        $validator = Validator::make($request->all(), []);
+            
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                foreach ($answer_status as $key => $value) {
+                    $data_insert[] = [
+                    'activity_id'   => $request->activity_id,
+                    'user_id'       => $request->user_id,
+                    'question_id'   => $key,
+                    'answer_status' => $value,
+                    'created_at'    => date('Y-m-d H:i:s')
+                    ];
+                }
+                // return $data_insert;
+                $result = \App\Models\AnswerHistoryInit::insert($data_insert);
+                if($result){
+                    \DB::commit();
+                    $return['status'] = 1;
+                    $return['content'] = 'สำเร็จ';
+                }else{
+                    throw new $e;
+                }
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            }
+        }else{
+            $return['status'] = 0;
+        }
+
+        $return['title'] = 'เพิ่มข้อมูล';
+
+        // $returns['activity_id']   = $request->activity_id;
+        // $returns['user_id']       = $request->user_id;
+        // $returns['question_id']   = $request->user_id;
+        // $returns['answer_status'] = $request->user_id;
+        // $returns['result'] = $result/$qtyQustion;
+        // $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'];
+
+        //$return['code'] = base64_encode($string);
 
         return json_encode($return);
     }
