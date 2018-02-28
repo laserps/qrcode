@@ -52,7 +52,7 @@
 			data :$(this).serialize()
 		}).done(function(rec){
 			if(rec.status==1){
-	              	var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
+	              	var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getSpecialQuestion';
 	                window.location = getUrl;
                 }else{
                 	swal({
