@@ -23,9 +23,9 @@
                                         <th>url</th>
                                         <th>reward_id</th>
                                         <th>user_id</th>
+										<th>staff_id</th>
                                         <th>date_answer</th>
                                         <th>date_approve</th>
-                                        <th>staff_id</th>
                                         <th></th>
                                     </tr>
                                 </thead>
