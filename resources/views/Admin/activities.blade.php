@@ -526,7 +526,7 @@
             $(v).find('td:first').text((k+1));
         });
 	});
-    
+
 	$('body').on('click','.removeQue',function(e){
 		e.preventDefault();
 		$(this).closest('tr').remove();
