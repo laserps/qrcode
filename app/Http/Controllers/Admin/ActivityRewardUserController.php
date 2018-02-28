@@ -201,15 +201,18 @@ class ActivityRewardUserController extends Controller
         $val = explode('/',$encode);
         $check = \App\Models\ActivityRewardUser::where('id',$val[0])->where('staff_id',NULL)->first();
         if($check) {
-            \App\Models\ActivityRewardUser::where('id',$val[0])->update([
-                'updated_at' => date('Y-m-d H:i:s'),
-                'staff_id' =>\Auth::guard('admin')->user()->id,
-            ]);
-            $get_reward_balance = \App\Models\Reward::find($val[1])->amount;
-            \App\Models\Reward::where('id',$val[1])->update([
-                'updated_at' => date('Y-m-d H:i:s'),
-                'amount' => --$get_reward_balance,
-            ]);
+            $staff = \App\Models\ActivityStaff::where('activity_id',$check->activity_id)->first();
+            if (in_array(\Auth::guard('admin')->user()->id, json_decode($staff->staff_id))) {
+                \App\Models\ActivityRewardUser::where('id',$val[0])->update([
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'staff_id' =>\Auth::guard('admin')->user()->id,
+                ]);
+                $get_reward_balance = \App\Models\Reward::find($val[1])->amount;
+                \App\Models\Reward::where('id',$val[1])->update([
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'amount' => --$get_reward_balance,
+                ]);
+            }
         }
         return redirect('admin/ActivityRewardUser');
     }
