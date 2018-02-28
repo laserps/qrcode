@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
 </head>
 <body>
+@if($activity->status=="T")
 	<!-- {{$activity}} -->
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -32,12 +33,27 @@
 	</div>
   </div>
 </div>
+@endif
 </body>
 </html>
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js')}}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.js')}}"></script>
+<script type="text/javascript">
+@if($activity->status=='F')
+swal({
+	position: 'center',
+	type: 'error',
+	title: 'หมดเวลากิจกรรม',
+	text:  'error',
+	showConfirmButton: true
+},function(){
+	var getUrl = '{{url("")}}/admin/Activities';
+	window.location = getUrl;
+});
+@endif
+</script>
 <script>
 	$('body').on('submit','#FormAdd',function(e){
 		e.preventDefault();
