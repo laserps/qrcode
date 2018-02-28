@@ -176,7 +176,7 @@ class QuestionInitController extends Controller
         })->make(true);
     }
     public function GetSpecialQuestion() {
-        $all = \App\Models\QuestionInit::get();
+        $all = \App\Models\QuestionInit::where('status', 'T')->get();
         foreach ($all as $k => $v) {
             $result[$k]['id'] = $v->id;
             $result[$k]['text'] = $this->getString($v->text,50);

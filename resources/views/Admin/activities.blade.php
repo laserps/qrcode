@@ -444,13 +444,14 @@
    });
 
     $('body').on('click','.btn-add-init-question', function(data){
+        console.log($(this).data('id'));
         var str = "";
        add_index = 0;
        add_check.length = 0;
        var id = $(this).data('id');
         $.ajax({
             method : "GET",
-            "url": url_gb+"/admin/SpecialQuestion",
+            "url": url_gb+"/admin/Activities/AllSpeQues/"+id,
             dataType : 'json'
         }).done(function(rec){
             var str = '';
@@ -459,16 +460,15 @@
                 `<tr>
                     <td>`+(i+1)+`</td>
                     <td>(`+val.id+`) `+val.text+`</td>
-                    <td style="vertical-align:middle;text-align:center;"><button value="`+val.id+`" class="btn btn-sm btn-primary addQue">เลือก</button></td>
+                    <td style="vertical-align:middle;text-align:center;"><button value="`+val.id+`" class="btn btn-sm btn-primary addSpeQue">เลือก</button></td>
                 </tr>`;
             });
             $('#SpecialQuestion').html(str);
             $('#SpecialSelect').html('');
             $('#activity_id').val(id);
-            $('#SpecialQuestion').find('img').remove();
             $.ajax({
                 method : "GET",
-                "url": url_gb+"/admin/Activities/getSpecialQuestion/"+id,
+                "url": url_gb+"/admin/Activities/GetSpecQuestion/"+id,
                 dataType : 'json'
             }).done(function(result){
                 var str = '';
@@ -479,10 +479,14 @@
                     `<tr>
                         <td></td>
                         <td>`+$('#SpecialQuestion').find('button[value="'+v+'"]').closest('td').prev().text()+`</td>
-                        <td style="vertical-align:middle;text-align:center;"><button value="`+v+`" class="btn btn-sm btn-danger removeQue">ลบ</button></td>
+                        <td style="vertical-align:middle;text-align:center;"><button value="`+v+`" class="btn btn-sm btn-danger removeSpeQue">ลบ</button></td>
                     </tr>`;
+                    $('#SpecialQuestion').find('button[value="'+v+'"]').closest('tr').remove();
                 });
                 $('#SpecialSelect').append(str);
+                $.each($('#SpecialQuestion').find('tr'),function(k,v){
+                    $(v).find('td:first').text((k+1));
+                });
                 $.each($('#SpecialSelect').find('tr'),function(k,v){
                     $(v).find('td:first').text((k+1));
                 });
@@ -491,7 +495,7 @@
         });
     });
 	$('body').on('click','.btn-staff', function(data){
-        var str = "";
+       var str = "";
        staff_index = 0;
        staff_check.length = 0;
        var id = $(this).data('id');
@@ -635,44 +639,78 @@
 		$.each($('#allSelect').find('tr'),function(k,v){
 			$(v).find('td:first').text((k+1));
 		});
-        $('#SpecialSelect').append(str);
-        $.each($('#SpecialSelect').find('tr'),function(k,v){
+	});
+
+    $('body').on('click','.removeQue',function(e){
+        e.preventDefault();
+        $(this).closest('tr').remove();
+        add_check.splice(parseInt($(this).closest('tr').find('td:first').text())-1,1);
+        $.each($('#allSelect').find('tr'),function(k,v){
             $(v).find('td:first').text((k+1));
         });
-	});
-	$('body').on('click','.addStaff',function(e){
+        add_index--;
+    });
+
+    $('body').on('click','.addStaff',function(e){
+        e.preventDefault();
+        staff_check[staff_index] = $(this).val();
+        staff_index++;
+        var i = 1;
+        var str =
+        `<tr>
+            <td></td>
+            <td>`+$(this).closest('td').prev().text()+`</td>
+            <td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-danger removeStaff">ลบ</button></td>
+        </tr>`;
+        $('#addStaff').append(str);
+        $('#staff').find('button[value="'+$(this).val()+'"]').closest('tr').remove();
+        $.each($('#staff').find('tr'),function(k,v){
+            $(v).find('td:first').text((k+1));
+        });
+        $.each($('#addStaff').find('tr'),function(k,v){
+            $(v).find('td:first').text((k+1));
+        });
+    });
+	$('body').on('click','.addSpeQue',function(e){
 		e.preventDefault();
-		staff_check[staff_index] = $(this).val();
-		staff_index++;
+		add_check[add_index] = $(this).val();
+		add_index++;
 		var i = 1;
 		var str =
 		`<tr>
 			<td></td>
 			<td>`+$(this).closest('td').prev().text()+`</td>
-			<td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-danger removeStaff">ลบ</button></td>
+			<td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-danger removeSpeQue">ลบ</button></td>
 		</tr>`;
-		$('#addStaff').append(str);
-		$('#staff').find('button[value="'+$(this).val()+'"]').closest('tr').remove();
-		$.each($('#staff').find('tr'),function(k,v){
+		$('#SpecialSelect').append(str);
+		$('#SpecialQuestion').find('button[value="'+$(this).val()+'"]').closest('tr').remove();
+		$.each($('#SpecialQuestion').find('tr'),function(k,v){
 			$(v).find('td:first').text((k+1));
 		});
-		$.each($('#addStaff').find('tr'),function(k,v){
+		$.each($('#SpecialSelect').find('tr'),function(k,v){
 			$(v).find('td:first').text((k+1));
 		});
 	});
-
-	$('body').on('click','.removeQue',function(e){
-		e.preventDefault();
-		$(this).closest('tr').remove();
-		add_check.splice(parseInt($(this).closest('tr').find('td:first').text())-1,1);
-		$.each($('#allSelect').find('tr'),function(k,v){
-			$(v).find('td:first').text((k+1));
-		});
+    $('body').on('click','.removeSpeQue',function(e){
+        e.preventDefault();
+        $(this).closest('tr').remove();
+        add_check.splice(parseInt($(this).closest('tr').find('td:first').text())-1,1);
+        var str =
+        `<tr>
+            <td></td>
+            <td>`+$(this).closest('td').prev().text()+`</td>
+            <td style="vertical-align:middle;text-align:center;"><button value="`+$(this).val()+`" class="btn btn-sm btn-primary addSpeQue">เลือก</button></td>
+        </tr>`;
+        $('#SpecialQuestion').append(str);
+        $.each($('#SpecialQuestion').find('tr'),function(k,v){
+            $(v).find('td:first').text((k+1));
+        });
         $.each($('#SpecialSelect').find('tr'),function(k,v){
             $(v).find('td:first').text((k+1));
         });
-		add_index--;
-	});
+        add_index--;
+    });
+
 	$('body').on('click','.removeStaff',function(e){
 		e.preventDefault();
 		$(this).closest('tr').remove();

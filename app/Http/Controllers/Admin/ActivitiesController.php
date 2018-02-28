@@ -669,4 +669,21 @@ class ActivitiesController extends Controller
         }
         return json_encode($result);
     }
+    public function AllSpeQues($id) {
+        $SpecialQuestion = \App\Models\ActivityQuestionInit::where('activity_id',$id)->first();
+        $result = '';
+        if ($SpecialQuestion) {
+            $result = \App\Models\QuestionInit::whereIn('id',json_decode($SpecialQuestion->question_group_id))->get();
+        }else {
+            $result = \App\Models\QuestionInit::where('status', 'T')->get();
+        }
+        return json_encode($result);
+    }
+    public function GetSpecQuestion($id){
+        $all = \App\Models\ActivityQuestionInit::where('activity_id',$id)->get();
+        foreach ($all as $key => $value) {
+            $result[$key] = json_decode($value->question_group_id);
+        }
+        return json_encode($result);
+    }
 }
