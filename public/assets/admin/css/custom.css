@@ -1,3 +1,8 @@
+body{
+	font-family: 'Kanit', sans-serif;
+}
+
+
 .modal > .modal-dialog > .modal-content > form > .modal-body > .table > thead > tr > th {
 	color : #555;
 	vertical-align: middle;
@@ -130,8 +135,222 @@
   color:#000;
 }
 
-@media (min-width: 768px) {
-  .sidebar{
-    width : 200px;
-  }
+
+/*#################  PHONE PAGE ###################*/
+
+	.panel-success>.panel-heading {
+	    background-image: -webkit-linear-gradient(top,#000000 0,#4a3c3c 100%);
+	    background-image: -o-linear-gradient(top,#000000 0,#4a3c3c 100%);
+	    background-image: -webkit-gradient(linear,left top,left bottom,from(#000000),to(#4a3c3c));
+	    background-image: linear-gradient(to bottom,#000000 0,#4a3c3c 100%);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#4a3c3c', GradientType=0);
+	    background-repeat: repeat-x;
+	}
+
+	.panel-success>.panel-heading {
+	    color: #ffffff;
+	    background-color: #777777;
+	    border-color: #ff0000;
+	}
+
+	.form-control:focus{
+		border-color:red;
+		transition: all 0.5s;
+	}
+
+
+	.btn-custom {
+			font-size: 18px;
+			color: white;
+			background-color: red;
+	    border-color:orange;
+			transition: all 0.5s;
+	}
+
+	.btn-custom:focus, .btn-custom:hover {
+    background-color: white;
+    background-position: 0 -15px;
+	}
+
+	.btn-custom:hover {
+    color: red;
+    background-color: white;
+    border-color: orange;
+	}
+
+	.custom-panel-title{
+		font-size: 20px;
+	}
+
+	.custom-add-phone{
+		font-size: 18px;
+	}
+
+	.logo-margin{
+		margin-top: 3%;
+	}
+
+
+
+/*#################  ENDPHONE PAGE ###################*/
+
+
+
+/*#################  Random question PAGE ###################*/
+
+	.question-title{
+		background-color: #333030;
+		color: white;
+		border-bottom: 25px solid red;
+		padding: 1px 0px 5px 10px;
+	}
+
+	.question-form{
+		background-color: white;
+		box-shadow: 5px 6px 20px 0px lightslategrey;
+	}
+
+	.submit-margin{
+		margin-top: 1%;
+		margin-bottom: 1%;
+	}
+
+	.question{
+		margin-top: 3%;
+		margin-left: 3%;
+		font-size: 18px;
+	}
+
+	.question-top{
+		font-weight: 700;
+	}
+
+/*#################   END Random question PAGE ###################*/
+
+
+/*#################  Random question pharse 2 PAGE ###################*/
+
+.question-title-2 {
+	background-color: #333030;
+	color: white;
+	border-bottom: 25px solid red;
+	padding: 15px 0px 10px 15px;
+}
+
+.card-title-font{
+	font-weight: 600;
+}
+
+/*#################   END Random question pharse 2 PAGE ###################*/
+
+
+.padding-zero{
+	padding:0;
+}
+
+
+.container{
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	max-width: 100%;
+}
+
+.padding-0{
+	padding:0;
+}
+
+
+
+@media (max-width: 1366px) {
+
+}
+
+@media (max-width: 1024px) {
+
+	/*#################  PHONE PAGE ###################*/
+
+			.phone-form{
+				margin-right: 30%;
+		    /* margin-left: 15%; */
+		    margin-top: 41px;
+		    width: 100%;
+			}
+
+ /*################# END  PHONE PAGE ###################*/
+
+
+	.override{
+    width: 121%;
+    margin-left: -104px;
+		max-width: 121%;
+	}
+
+
+}
+
+
+@media (max-width: 768px) {
+
+	.override{
+		width: 100%;;
+		margin-left: 0;
+		max-width: 100%;
+	}
+
+	.container{
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+
+	.sidebar{
+		width : 200px;
+	}
+
+	/*#################  PHONE PAGE ###################*/
+		.respon{
+			max-width: 50%;
+		}
+		.phone-form{
+			margin-right: 15%;
+	    margin-left: 15%;
+	    margin-top: 41px;
+	    max-width: 70%;
+		}
+
+	/*################# END  PHONE PAGE ###################*/
+
+
+}
+
+@media (max-width: 414px) {
+
+	/*#################  PHONE PAGE ###################*/
+
+	.custom-add-phone{
+		margin-bottom: 10px;
+	}
+
+	/*################# END  PHONE PAGE ###################*/
+
+
+
+}
+
+@media (max-width: 375px) {
+
+
+}
+
+@media (max-width: 320px) {
+
+	/*#################  PHONE PAGE ###################*/
+
+		.custom-panel-title{
+			font-size: 18px;
+		}
+
+	/*################# END  PHONE PAGE ###################*/
+
+
 }

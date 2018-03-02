@@ -1,38 +1,67 @@
 <!DOCTYPE html>
+<style>
+	.container{
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	  max-width: 100%;
+	}
+
+	.padding-0{
+		padding:0;
+	}
+</style>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<title></title>
-	<link rel="stylesheet" href="">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 	<link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
+	<link rel="stylesheet" href="{{asset('assets/admin/css/custom.css')}}" />
+	<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+
 </head>
 <body>
 @if($activity->status=="T")
 	<!-- {{$activity}} -->
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-  	<div class="panel panel-success" style="margin-top: 41px;">
-		<div class="panel-heading">
-			<h3 class="panel-title">กรอกข้อมูลเบอร์โทรศัพท์</h3>
-		</div>
-		<div class="panel-body">
-			<form class="form-inline" id="FormAdd">
-			  <div class="form-group">
-			    <div class="form-group">
-				    <label for="add_phone">เบอร์โทรศัพท์ : </label>
-				    <input type="text" class="form-control" name="phone" id="add_phone" placeholder="กรอกข้อมูลเบอร์โทรศัพท์">
-				</div>
-			  <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
-			</form>
+
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4 logo-margin">
+
+			<img src="/qrcode/public/uploads/logo original.JPG" class="img-responsive center-block respon" alt="Yout Logo Here">
+
 		</div>
 	</div>
-  </div>
-</div>
+
+
+	<div class="row">
+	  <div class="col-md-6 col-md-offset-3">
+		  	<div class="panel panel-success phone-form" style="margin-top: 41px;">
+				<div class="panel-heading">
+					<h3 class="panel-title custom-panel-title">กรอกข้อมูลเบอร์โทรศัพท์</h3>
+				</div>
+				<div class="panel-body">
+					<form class="form-inline" id="FormAdd">
+					  <div class="form-group">
+					    <div class="form-group">
+						    <label for="add_phone" class="custom-add-phone">เบอร์โทรศัพท์ : </label>
+						    <input type="text" class="form-control" name="phone" id="add_phone" placeholder="กรอกข้อมูลเบอร์โทรศัพท์">
+						</div>
+					  <button type="submit" class="btn btn-custom">บันทึกข้อมูล</button>
+					</form>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
 @endif
 </body>
 </html>
@@ -40,6 +69,7 @@
 <script src="{{asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js')}}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.js')}}"></script>
+
 <script type="text/javascript">
 @if($activity->status=='F')
 swal({
