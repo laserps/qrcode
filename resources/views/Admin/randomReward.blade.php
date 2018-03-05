@@ -358,7 +358,7 @@
 
     <div id="gradient"></div>
     <div id="card" style="text-align:center;">
-    	<img src="/qrcode/public/uploads/logo original.JPG" class="img-responsive class-logo" alt="Yout Logo Here">
+    	<img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive class-logo" alt="Yout Logo Here">
       <h2>ยินดีด้วยคุณได้รับของรางวัล</h2>
       <p style="font-size:20px;font-weight:700;">{{$reward->name}}</p>
       <div class="row">

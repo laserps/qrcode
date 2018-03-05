@@ -27,7 +27,7 @@
                     @endif
                 @endforeach
             </ul>
-
+{{--  
             <h5 class="sidebar-nav-title">Labels <a class="action-link" href="#"><i class="glyphicon glyphicon-plus"></i></a></h5>
             <!-- some styled links in sidebar. ready to use as links to email folders, projects, groups, etc -->
             <ul class="sidebar-labels">
@@ -71,5 +71,5 @@
                     </div>
                     <small>Provide required notes</small>
                 </div>
-            </div>
+            </div>  --}}
         </nav>
