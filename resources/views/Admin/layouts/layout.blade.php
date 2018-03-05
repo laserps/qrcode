@@ -30,7 +30,7 @@
     </div>
         @include('Admin.layouts.sidebar')
     <div class="wrap">
-        <header class="page-header">
+        {{--  <header class="page-header">
             <div class="navbar">
                 <ul class="nav navbar-nav navbar-right pull-right">
                     <li class="visible-phone-landscape">
@@ -213,7 +213,7 @@
                     </div>
                 </div>
             </div>
-        </header>
+        </header>  --}}
         <div class="content container">
             @yield('body')
             <footer class="content-footer">
