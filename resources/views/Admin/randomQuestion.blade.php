@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<style>
-  .container{
-  	padding-left: 0 !important;
-  	padding-right: 0 !important;
-    max-width: 100%;
-  }
-
-  .padding-0{
-  	padding:0;
-  }
-</style>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

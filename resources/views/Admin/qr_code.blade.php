@@ -33,9 +33,7 @@
 
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 logo-margin">
-
 			<img src="/qrcode/public/uploads/logo original.JPG" class="img-responsive center-block respon" alt="Yout Logo Here">
-
 		</div>
 	</div>
 

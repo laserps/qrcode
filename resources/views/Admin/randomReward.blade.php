@@ -1,9 +1,15 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+</head>
+
 <style>
     body {
       margin: 0 auto;
       padding: 0;
-      background: #222 !important;
+      background: #fff !important;
+      font-family: 'Kanit', sans-serif;
     }
 
     .left {
@@ -24,57 +30,54 @@
     }
 
     #gradient {
-      background: #999955;
-      background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.2, #DAB046), color-stop(0.2, #D73B25), color-stop(0.4, #D73B25), color-stop(0.4, #C71B25), color-stop(0.6, #C71B25), color-stop(0.6, #961A39), color-stop(0.8, #961A39), color-stop(0.8, #601035));
-      background-image: -webkit-linear-gradient(#CCC 20%, #CCC 20%, #CCC 40%, #CCC 40%, #CCC 60%, #961A39 60%, #CCC 80%, #CCC 80%);
-      background-image: -moz-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-      background-image: -o-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-      background-image: linear-gradient(#CCC 20%, #333 20%, #333 40%, #CCC 40%, #CCC 60%, #333 60%, #333 80%, #CCC 80%);
+      background: #ef3e34;
       margin: 0 auto;
       margin-top: 100px;
       width: 100%;
-      height: 150px;
+      height: 195px;
     }
 
     #gradient:after {
+      border-style: groove;
+      border-width: 1px;
+      border-color: #c3c3c3;
       content: "";
       position: absolute;
-      background: #E9E2D0;
+      background: #ffffff;
       left: 50%;
       margin-top: -67.5px;
       margin-left: -270px;
       padding-left: 20px;
       border-radius: 5px;
       width: 520px;
-      height: 275px;
+      height: 420px;
       z-index: -1;
     }
 
     #card {
       position: absolute;
       width: 450px;
-      height: 225px;
+      height: 355px;
       padding: 25px;
       padding-top: 0;
       padding-bottom: 0;
       left: 50%;
       top: 67.5px;
       margin-left: -250px;
-      background: #E9E2D0;
+      background: #ffffff;
       box-shadow: 0 0 5px black;
       box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
       z-index: 5;
     }
 
     #card img {
+      margin-bottom: 4%;
       width:125px;
       height:125px;
-      /* border-radius: 0px; */
-      border:solid 2px #ccc;
     }
 
     #card h2 {
-      font-family: courier;
+      font-family: 'Kanit', sans-serif;
       color: #333;
       margin: 0 auto;
       padding: 0;
@@ -82,13 +85,13 @@
     }
 
     #card p {
-      font-family: courier;
+      font-family: 'Kanit', sans-serif;
       color: #555;
       font-size: 12px;
     }
 
     #card span {
-      font-family: courier;
+      font-family: 'Kanit', sans-serif;
     }
 
 
@@ -100,13 +103,6 @@
     @media (max-width:1024px){
 
       #gradient {
-          background: #999955;
-          background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.2, #DAB046), color-stop(0.2, #D73B25), color-stop(0.4, #D73B25), color-stop(0.4, #C71B25), color-stop(0.6, #C71B25), color-stop(0.6, #961A39), color-stop(0.8, #961A39), color-stop(0.8, #601035));
-          background-image: -webkit-linear-gradient(#CCC 20%, #CCC 20%, #CCC 40%, #CCC 40%, #CCC 60%, #961A39 60%, #CCC 80%, #CCC 80%);
-          background-image: -moz-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-          background-image: -o-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-          background-image: linear-gradient(#CCC 20%, #333 20%, #333 40%, #CCC 40%, #CCC 60%, #333 60%, #333 80%, #CCC 80%);
-          margin: 0 auto;
           margin-top: 100px;
           width: 100%;
           height: 282px;
@@ -115,7 +111,6 @@
       #gradient:after{
           content: "";
           position: absolute;
-          background: #E9E2D0;
           left: 50%;
           margin-top: -67.5px;
           margin-left: -270px;
@@ -136,7 +131,6 @@
           left: 50%;
           top: 67.5px;
           margin-left: -250px;
-          background: #E9E2D0;
           box-shadow: 0 0 5px black;
           box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
           z-index: 5;
@@ -148,16 +142,11 @@
       }
 
 
+    }
 
     @media (max-width:768px){
 
       #gradient {
-          background: #999955;
-          background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.2, #DAB046), color-stop(0.2, #D73B25), color-stop(0.4, #D73B25), color-stop(0.4, #C71B25), color-stop(0.6, #C71B25), color-stop(0.6, #961A39), color-stop(0.8, #961A39), color-stop(0.8, #601035));
-          background-image: -webkit-linear-gradient(#CCC 20%, #CCC 20%, #CCC 40%, #CCC 40%, #CCC 60%, #961A39 60%, #CCC 80%, #CCC 80%);
-          background-image: -moz-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-          background-image: -o-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-          background-image: linear-gradient(#CCC 20%, #333 20%, #333 40%, #CCC 40%, #CCC 60%, #333 60%, #333 80%, #CCC 80%);
           margin: 0 auto;
           margin-top: 100px;
           width: 100%;
@@ -167,7 +156,6 @@
       #gradient:after{
           content: "";
           position: absolute;
-          background: #E9E2D0;
           left: 50%;
           margin-top: -67.5px;
           margin-left: -270px;
@@ -188,7 +176,6 @@
           left: 50%;
           top: 67.5px;
           margin-left: -250px;
-          background: #E9E2D0;
           box-shadow: 0 0 5px black;
           box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
           z-index: 5;
@@ -201,13 +188,6 @@
       @media (max-width:375px){
 
         #gradient {
-            background: #999955;
-            background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.2, #DAB046), color-stop(0.2, #D73B25), color-stop(0.4, #D73B25), color-stop(0.4, #C71B25), color-stop(0.6, #C71B25), color-stop(0.6, #961A39), color-stop(0.8, #961A39), color-stop(0.8, #601035));
-            background-image: -webkit-linear-gradient(#CCC 20%, #CCC 20%, #CCC 40%, #CCC 40%, #CCC 60%, #961A39 60%, #CCC 80%, #CCC 80%);
-            background-image: -moz-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-            background-image: -o-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-            background-image: linear-gradient(#CCC 20%, #333 20%, #333 40%, #CCC 40%, #CCC 60%, #333 60%, #333 80%, #CCC 80%);
-            margin: 0 auto;
             margin-top: 100px;
             width: 100%;
             height: 282px;
@@ -216,7 +196,6 @@
         #gradient:after{
             content: "";
             position: absolute;
-            background: #E9E2D0;
             left: 50%;
             margin-top: -67.5px;
             margin-left: -270px;
@@ -237,7 +216,6 @@
             left: 50%;
             top: 67.5px;
             margin-left: -250px;
-            background: #E9E2D0;
             box-shadow: 0 0 5px black;
             box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
             z-index: 5;
@@ -254,13 +232,7 @@
       @media (max-width:320px){
 
         #gradient {
-            background: #999955;
-            background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.2, #DAB046), color-stop(0.2, #D73B25), color-stop(0.4, #D73B25), color-stop(0.4, #C71B25), color-stop(0.6, #C71B25), color-stop(0.6, #961A39), color-stop(0.8, #961A39), color-stop(0.8, #601035));
-            background-image: -webkit-linear-gradient(#CCC 20%, #CCC 20%, #CCC 40%, #CCC 40%, #CCC 60%, #961A39 60%, #CCC 80%, #CCC 80%);
-            background-image: -moz-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-            background-image: -o-linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
-            background-image: linear-gradient(#CCC 20%, #333 20%, #333 40%, #CCC 40%, #CCC 60%, #333 60%, #333 80%, #CCC 80%);
-            margin: 0 auto;
+
             margin-top: 100px;
             width: 100%;
             height: 282px;
@@ -269,7 +241,6 @@
         #gradient:after{
             content: "";
             position: absolute;
-            background: #E9E2D0;
             left: 50%;
             margin-top: -67.5px;
             margin-left: -270px;
@@ -290,7 +261,6 @@
             left: 50%;
             top: 67.5px;
             margin-left: -250px;
-            background: #E9E2D0;
             box-shadow: 0 0 5px black;
             box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
             z-index: 5;
@@ -304,7 +274,10 @@
 
     }
 }
+
 </style>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
