@@ -105,7 +105,7 @@
                             <input type="hidden" id="idQuestion" name="question_id">
                             <label for="inputPassword" class="col-sm-2 col-form-label"><h4>คำตอบ</h4></label>
                             <div class="col-sm-8">
-                                <input type="text" name="text" class="form-control" id="inputPassword" placeholder="Password">
+                                <input type="text" name="text" class="form-control" id="inputPassword" placeholder="answer">
                             </div>
                             <div class="col-sm-2">
                                 <button type="submit" class="btn btn-primary">เพิ่ม</button>
