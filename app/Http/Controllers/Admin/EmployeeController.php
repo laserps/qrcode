@@ -15,7 +15,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'พนักงาน';
+        $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'พนักงาน';
         $data['title_page'] = 'พนักงาน';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();

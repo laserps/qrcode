@@ -15,7 +15,7 @@ class UserDepartmentController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'จักการแผนก';
+        $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'จักการแผนก';
         $data['title_page'] = 'จักการแผนก';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
