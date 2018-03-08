@@ -15,11 +15,11 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'Guest';
-        $data['sub_menu'] = 'Guest';
-        $data['title_page'] = 'Guest';
+        $data['main_menu'] = 'ผู้เข้าร่วม';
+        $data['sub_menu'] = 'ผู้เข้าร่วม';
+        $data['title_page'] = 'ผู้เข้าร่วม';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.guest',$data);
     }
 
@@ -42,7 +42,7 @@ class GuestController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
@@ -53,7 +53,7 @@ class GuestController extends Controller
              'email'         => 'required',
              'company'       => 'required',
              'guest_type_id' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -84,7 +84,7 @@ class GuestController extends Controller
     public function show($id)
     {
         $result = \App\Models\Guest::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -109,7 +109,7 @@ class GuestController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
@@ -119,7 +119,7 @@ class GuestController extends Controller
              'email'         => 'required',
              'company'       => 'required',
              'guest_type_id' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();

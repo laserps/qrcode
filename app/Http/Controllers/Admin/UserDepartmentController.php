@@ -15,11 +15,11 @@ class UserDepartmentController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'UserDepartment';
-        $data['sub_menu'] = 'UserDepartment';
-        $data['title_page'] = 'UserDepartment';
+        $data['main_menu'] = 'จักการแผนก';
+        $data['sub_menu'] = 'จักการแผนก';
+        $data['title_page'] = 'จักการแผนก';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.user_department',$data);
     }
 
@@ -42,13 +42,13 @@ class UserDepartmentController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'department_name' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -79,7 +79,7 @@ class UserDepartmentController extends Controller
     public function show($id)
     {
         $result = \App\Models\UserDepartment::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -104,12 +104,12 @@ class UserDepartmentController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'department_name' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -157,7 +157,7 @@ class UserDepartmentController extends Controller
     public function Lists(){
         $result = \App\Models\UserDepartment::select();
         return \Datatables::of($result)
-        
+
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->department_id.'" title="แก้ไข">

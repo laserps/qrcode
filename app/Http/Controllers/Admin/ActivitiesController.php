@@ -20,9 +20,9 @@ class ActivitiesController extends Controller
     public function index()
     {
 
-        $data['main_menu'] = 'Activities';
-        $data['sub_menu'] = 'Activities';
-        $data['title_page'] = 'Activities';
+        $data['main_menu'] = 'กิจกรรม';
+        $data['sub_menu'] = 'กิจกรรม';
+        $data['title_page'] = 'กิจกรรม';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
         return view('Admin.activities',$data);
     }

@@ -17,10 +17,10 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>answer_id</th>
-                                        <th>question_id</th>
-                                        <th>text</th>
-                                        <th>answer_type_id</th>
+                                        <th>รหัส</th>
+                                        <th>รหัสคำถาม</th>
+                                        <th>คำตอบ</th>
+                                        <th>ประเภทคำตอบ</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -39,19 +39,19 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่ม {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
-                    <label for="add_text">text</label>
+                    <label for="add_text">คำตอบ</label>
                     <input type="text" class="form-control" name="text" id="add_text"  placeholder="text">
                 </div>
-        
+
                 <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="" name="answer_type_id" id="add_answer_type_id"  value="T">
                     <label for="add_answer_type_id">
-                        answer_type_id
+                        ประเภทคำตอบ
                     </label>
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -72,19 +72,19 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
-                    <label for="edit_text">text</label>
+                    <label for="edit_text">คำตอบ</label>
                     <input type="text" class="form-control" name="text" id="edit_text"  placeholder="text">
                 </div>
-        
+
                 <div class="checkbox checkbox-primary">
                     <input type="checkbox" class="form-control" name="answer_type_id" id="edit_answer_type_id"  value="T">
                     <label for="edit_answer_type_id" class="form-check-label">
-                        answer_type_id
+                        ประเภทคำตอบ
                     </label>
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -135,7 +135,7 @@
             }else{
                 $('#edit_answer_type_id').removeAttr('checked');
             }
-                                        
+
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -149,10 +149,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -203,10 +203,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -286,6 +286,6 @@
         });
     });
 
-    
+
 </script>
 @endsection

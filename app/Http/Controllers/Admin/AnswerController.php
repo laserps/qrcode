@@ -15,9 +15,9 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'Answer';
-        $data['sub_menu'] = 'Answer';
-        $data['title_page'] = 'Answer';
+        $data['main_menu'] = 'จัดการคำตอบ';
+        $data['sub_menu'] = 'จัดการคำตอบ';
+        $data['title_page'] = 'จัดการคำตอบ';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
 
         return view('Admin.answer',$data);

@@ -16,10 +16,10 @@
             <table class="table table-bordered table-hover" id="TableList">
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>image</th>
-                        <th>name</th>
-                        <th>amount</th>
+                        <th>รหัส</th>
+                        <th>ภาพ</th>
+                        <th>ชื่อของรางวัล</th>
+                        <th>คงเหลือ</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="add_name">name</label>
+                        <label for="add_name">ชื่อของรางวัล</label>
                         <input type="text" class="form-control" name="name" id="add_name" required="" placeholder="name">
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                             <div id="photo_edit" orakuploader="on"></div>
                         </div>
                         <div class="form-group">
-                            <label for="edit_name">name</label>
+                            <label for="edit_name">ชื่อของรางวัล</label>
                             <input type="text" class="form-control" name="name" id="edit_name" required="" placeholder="name">
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="import_name">Quatity</label>
+                        <label for="import_name">จำนวนนำเข้า</label>
                         <input type="text" class="form-control" name="qty" id="import_qty" required="" placeholder="qty">
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="export_name">Quatity</label>
+                        <label for="export_name">จำนวนนำออก</label>
                         <input type="text" class="form-control" name="qty" id="export_qty" required="" placeholder="qty">
                     </div>
                 </div>

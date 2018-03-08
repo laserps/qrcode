@@ -16,9 +16,9 @@ class ActivityRewardUserController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'ActivityRewardUser';
-        $data['sub_menu'] = 'ActivityRewardUser';
-        $data['title_page'] = 'ActivityRewardUser';
+        $data['main_menu'] = 'รายการแจกของรางวัล';
+        $data['sub_menu'] = 'รายการแจกของรางวัล';
+        $data['title_page'] = 'รายการแจกของรางวัล';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
 
         return view('Admin.activity_reward_user',$data);

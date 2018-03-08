@@ -20,7 +20,7 @@
                                         <th>id</th>
                                         <th>คำถาม</th>
                                         <th>สถานะ</th>
-                                        <th>created_at</th>
+                                        <th>วันที่สร้าง</th>
                                         <th></th>
                                     </tr>
                                 </thead>

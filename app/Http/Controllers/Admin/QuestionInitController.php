@@ -15,11 +15,11 @@ class QuestionInitController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'QuestionInit';
-        $data['sub_menu'] = 'QuestionInit';
-        $data['title_page'] = 'QuestionInit';
+        $data['main_menu'] = 'คำถามพิเศษ';
+        $data['sub_menu'] = 'คำถามพิเศษ';
+        $data['title_page'] = 'คำถามพิเศษ';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.question_init',$data);
     }
 
@@ -42,14 +42,14 @@ class QuestionInitController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'text' => 'required',
              'status' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -80,7 +80,7 @@ class QuestionInitController extends Controller
     public function show($id)
     {
         $result = \App\Models\QuestionInit::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -105,13 +105,13 @@ class QuestionInitController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             'text' => 'required',
              'status' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();

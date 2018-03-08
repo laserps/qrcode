@@ -17,12 +17,12 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>Phone</th>
-                                        <th>First name</th>
-                                        <th>Last name</th>
-                                        <th>Email</th>
-                                        <th>Company</th>
-                                        <th>Guest type</th>
+                                        <th>โทรศัพท์</th>
+                                        <th>ชื่อ</th>
+                                        <th>นามสกุล</th>
+                                        <th>อีเมล</th>
+                                        <th>บริษัท</th>
+                                        <th>ประเภทผู้เข้าร่วม</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -41,34 +41,34 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่ม {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
-                    <label for="add_phone">Phone</label>
+                    <label for="add_phone">โทรศัพท์</label>
                     <input type="text" class="form-control" name="phone" id="add_phone" required="" placeholder="phone">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_firstname">First name</label>
+                    <label for="add_firstname">ชื่อ</label>
                     <input type="text" class="form-control" name="firstname" id="add_firstname" required="" placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_lastname">Last name</label>
+                    <label for="add_lastname">นามสกุล</label>
                     <input type="text" class="form-control" name="lastname" id="add_lastname" required="" placeholder="lastname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_email">Email</label>
+                    <label for="add_email">อีเมล</label>
                     <input type="text" class="form-control" name="email" id="add_email" required="" placeholder="email">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_company">Company</label>
+                    <label for="add_company">บริษัท</label>
                     <input type="text" class="form-control" name="company" id="add_company" required="" placeholder="company">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_guest_type_id">Guest Type</label>
+                    <label for="add_guest_type_id">ประเภทผู้เข้าร่วม</label>
                     <div class="form-check form-check-inline">
                     <input class="checkbox-circle" type="radio" name="guest_type_id" id="add_guest_type_id" value="T">
                     <label class="form-check-label" for="inlineRadio1">เภสัชกร</label>
@@ -98,34 +98,34 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
-                    <label for="edit_phone">Phone</label>
+                    <label for="edit_phone">โทรศัพท์</label>
                     <input type="text" class="form-control" name="phone" id="edit_phone" required="" placeholder="phone">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_firstname">First name</label>
+                    <label for="edit_firstname">ชื่อ</label>
                     <input type="text" class="form-control" name="firstname" id="edit_firstname" required="" placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_lastname">Last name</label>
+                    <label for="edit_lastname">นามสกุล</label>
                     <input type="text" class="form-control" name="lastname" id="edit_lastname" required="" placeholder="lastname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_email">Email</label>
+                    <label for="edit_email">อีเมล</label>
                     <input type="text" class="form-control" name="email" id="edit_email" required="" placeholder="email">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_company">Company</label>
+                    <label for="edit_company">บริษัท</label>
                     <input type="text" class="form-control" name="company" id="edit_company" required="" placeholder="company">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_guest_type_id">Guest Type</label>
+                    <label for="add_guest_type_id">ประเภทผู้เข้าร่วม</label>
                         <div class="form-check form-check-inline">
                             <input class="checkbox-circle" type="radio" name="guest_type_id" id="edit_guest_type_id" value="T">
                             <label class="form-check-label" for="inlineRadio1">เภสัชกร</label>
@@ -135,7 +135,7 @@
                           <label class="form-check-label" for="inlineRadio2">บุคคลทัวไป</label>
                         </div>
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -201,7 +201,7 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
             phone: {
                 required: true,
             },
@@ -222,7 +222,7 @@
             },
         },
         messages: {
-        	
+
             phone: {
                 required: "กรุณาระบุ",
             },
@@ -291,7 +291,7 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
             phone: {
                 required: true,
             },
@@ -312,7 +312,7 @@
             },
         },
         messages: {
-        	
+
             phone: {
                 required: "กรุณาระบุ",
             },
@@ -410,6 +410,6 @@
         });
     });
 
-    
+
 </script>
 @endsection

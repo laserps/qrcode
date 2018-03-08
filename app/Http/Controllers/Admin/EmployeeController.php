@@ -15,11 +15,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'Employee';
-        $data['sub_menu'] = 'Employee';
-        $data['title_page'] = 'Employee';
+        $data['main_menu'] = 'พนักงาน';
+        $data['sub_menu'] = 'พนักงาน';
+        $data['title_page'] = 'พนักงาน';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.employee',$data);
     }
 
@@ -42,7 +42,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
             if(isset($input_all['mobile'])){
                 $input_all['mobile'] = str_replace(',', '', $input_all['mobile']);
             }
@@ -58,7 +58,7 @@ class EmployeeController extends Controller
              'address'   => 'required',
              'email'     => 'required',
              'password'  => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -89,7 +89,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $result = \App\Models\Employee::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -114,11 +114,11 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
             if(isset($input_all['mobile'])){
                 $input_all['mobile'] = str_replace(',', '', $input_all['mobile']);
             }
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
@@ -128,7 +128,7 @@ class EmployeeController extends Controller
              'mobile' => 'required',
              'address' => 'required',
              'email' => 'required',
-             
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -176,7 +176,7 @@ class EmployeeController extends Controller
     public function Lists(){
         $result = \App\Models\Employee::select();
         return \Datatables::of($result)
-        
+
         ->addColumn('mobile',function($rec){
             if(is_numeric($rec->mobile)){
                 return number_format($rec->mobile);
@@ -184,7 +184,7 @@ class EmployeeController extends Controller
                 return $rec->mobile;
             }
         })
-        
+
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">

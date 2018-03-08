@@ -17,13 +17,13 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>Activity Name</th>
+                                        <th>ชื่อกิจกรรม</th>
 										<th>QR Code</th>
-                                        <th>Activity Links</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Status</th>
-                                        <th>Create Date</th>
+                                        <th>ลิงก์</th>
+                                        <th>เวลาเริ่มกิจกรรม</th>
+                                        <th>เวลาสิ้นสุดกิจกรรม</th>
+                                        <th>สถานะ</th>
+                                        <th>วันที่สร้าง</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -44,15 +44,15 @@
             <div class="modal-body">
 
                 <div class="form-group">
-                    <label for="add_activity_name">Activity Name</label>
+                    <label for="add_activity_name">ชื่อกิจกรรม</label>
                     <input type="text" class="form-control" name="activity_name" id="add_activity_name"  placeholder="activity_name">
                 </div>
                 <div class="form-group">
-                    <label for="add_working_time_start">Start Time</label>
+                    <label for="add_working_time_start">เวลาเริ่ม</label>
                     <input type="text" class="form-control" name="working_time_start" id="add_working_time_start" placeholder="Start Time">
                 </div>
                 <div class="form-group">
-                    <label for="add_working_time_end">End Time</label>
+                    <label for="add_working_time_end">เวลาสิ้นสุด</label>
                     <input type="text" class="form-control" name="working_time_end" id="add_working_time_end" placeholder="End Time">
                 </div>
                 <!-- <div class="checkbox checkbox-primary">
@@ -63,7 +63,7 @@
                 </div> -->
                 <!-- <label class="checkbox-inline"><input type="radio" name="status" value="F">ไม่เปิดใช้งาน</label> -->
                 <div class="form-group">
-                  <label for="status">Status</label>
+                  <label for="status">สถานะ</label>
                      <div class="radio radio-primary">
                         <input type="radio" name="status" id="add_status1" value="T">
                         <label for="add_status1"> เปิดใช้งาน </label>
@@ -281,19 +281,19 @@
             <div class="modal-body">
 
                 <div class="form-group">
-                    <label for="add_activity_name">Activity Name</label>
+                    <label for="add_activity_name">ชื่อกิจกรรม</label>
                     <input type="text" class="form-control" name="activity_name" id="edit_activity_name"  placeholder="activity_name">
                 </div>
                 <div class="form-group">
-                    <label for="edit_working_time_start">Start Time</label>
+                    <label for="edit_working_time_start">เวลาเริ่ม</label>
                     <input type="text" class="form-control" name="working_time_start" id="edit_working_time_start" placeholder="Start Time">
                 </div>
                 <div class="form-group">
-                    <label for="edit_working_time_end">End Time</label>
+                    <label for="edit_working_time_end">เวลาสิ้นสุด</label>
                     <input type="text" class="form-control" name="working_time_end" id="edit_working_time_end" placeholder="End Time">
                 </div>
                 <div class="form-group">
-                  <label for="status">Status</label>
+                  <label for="status">สถานะ</label>
                     <div class="radio radio-primary">
                         <input class="radio-danger" type="radio" name="status" id="edit_status" value="T">
                     <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
@@ -325,19 +325,19 @@
             <div class="modal-body">
 
                 <div class="form-group">
-                    <label for="add_activity_name">Activity Name</label>
+                    <label for="add_activity_name">ชื่อกิจกรรม</label>
                     <input type="text" class="form-control" name="activity_name" id="detail_activity_name"  placeholder="activity_name" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="edit_working_time_start">Start Time</label>
+                    <label for="edit_working_time_start">เวลาเริ่ม</label>
                     <input type="text" class="form-control" name="working_time_start" id="detail_working_time_start" placeholder="Start Time" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="edit_working_time_end">End Time</label>
+                    <label for="edit_working_time_end">เวลาสิ้นสุด</label>
                     <input type="text" class="form-control" name="working_time_end" id="detail_working_time_end" placeholder="End Time" readonly>
                 </div>
                 <div class="form-group">
-                  <label for="status">Status</label>
+                  <label for="status">สถานะ</label>
                     <div class="radio radio-primary">
                         <input class="radio-danger" type="radio" name="status" id="detail_status" value="T" readonly>
                     <label class="form-check-label" for="inlineRadio1">เปิดใช้งาน</label>
@@ -372,10 +372,10 @@
 	                            <table class="table table-bordered table-hover" id="RewardList">
 	                                <thead>
 	                                    <tr>
-											<th style="color:#000;">id</th>
-											<th style="color:#000;">select</th>
-					                        <th style="color:#000;">name</th>
-					                        <th style="color:#000;">amount</th>
+											<th style="color:#000;">รหัส</th>
+											<th style="color:#000;">เลือก</th>
+					                        <th style="color:#000;">ชื่อของรางวัล</th>
+					                        <th style="color:#000;">คงเหลือ</th>
 					                        <th></th>
 	                                    </tr>
 	                                </thead>

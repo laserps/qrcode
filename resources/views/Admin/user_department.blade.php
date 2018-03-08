@@ -17,8 +17,8 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>department_name</th>
-                                        <th>created_at</th>
+                                        <th>ชื่อแผนก</th>
+                                        <th>วันที่สร้าง</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -37,12 +37,12 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่ม {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
-                    <label for="add_department_name">department_name</label>
+                    <label for="add_department_name">ชื่อแผนก</label>
                     <input type="text" class="form-control" name="department_name" id="add_department_name" required="" placeholder="department_name">
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -63,12 +63,12 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
-                    <label for="edit_department_name">department_name</label>
+                    <label for="edit_department_name">ชื่อแผนก</label>
                     <input type="text" class="form-control" name="department_name" id="edit_department_name" required="" placeholder="department_name">
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -112,7 +112,7 @@
             dataType : 'json'
         }).done(function(rec){
             $('#edit_department_name').val(rec.department_name);
-            
+
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -126,13 +126,13 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
             department_name: {
                 required: true,
             },
         },
         messages: {
-        	
+
             department_name: {
                 required: "กรุณาระบุ",
             },
@@ -186,13 +186,13 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
             department_name: {
                 required: true,
             },
         },
         messages: {
-        	
+
             department_name: {
                 required: "กรุณาระบุ",
             },
@@ -275,6 +275,6 @@
         });
     });
 
-    
+
 </script>
 @endsection

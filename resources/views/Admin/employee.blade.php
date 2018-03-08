@@ -17,12 +17,12 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>firstname</th>
-                                        <th>lastname</th>
-                                        <th>nickname</th>
-                                        <th>mobile</th>
-                                        <th>address</th>
-                                        <th>email</th>
+                                        <th>ชื่อ</th>
+                                        <th>นามสกุล</th>
+                                        <th>ชื่อเล่น</th>
+                                        <th>มือถือ</th>
+                                        <th>ที่อยู่</th>
+                                        <th>อีเมล</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -42,40 +42,40 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="add_firstname">firstname</label>
+                    <label for="add_firstname">ชื่อ</label>
                     <input type="text" class="form-control" name="firstname" id="add_firstname" required="" placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_lastname">lastname</label>
+                    <label for="add_lastname">นามสกุล</label>
                     <input type="text" class="form-control" name="lastname" id="add_lastname" required="" placeholder="lastname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_nickname">nickname</label>
+                    <label for="add_nickname">ชื่อจริง</label>
                     <input type="text" class="form-control" name="nickname" id="add_nickname" required="" placeholder="nickname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_mobile">mobile</label>
+                    <label for="add_mobile">มือถือ</label>
                     <input type="text" class="form-control number-only" name="mobile" id="add_mobile" required="" placeholder="mobile">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_address">address</label>
+                    <label for="add_address">ที่อยู่</label>
                     <input type="text" class="form-control" name="address" id="add_address" required="" placeholder="address">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_email">email</label>
+                    <label for="add_email">อีเมล</label>
                     <input type="text" class="form-control" name="email" id="add_email" required="" placeholder="email">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="add_password">password</label>
+                    <label for="add_password">รหัสผ่าน</label>
                     <input type="password" class="form-control" name="password" id="add_password" required="" placeholder="password">
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -96,37 +96,37 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-        
+
                 <div class="form-group">
-                    <label for="edit_firstname">firstname</label>
+                    <label for="edit_firstname">ชื่อ</label>
                     <input type="text" class="form-control" name="firstname" id="edit_firstname" required="" placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_lastname">lastname</label>
+                    <label for="edit_lastname">นามสกุล</label>
                     <input type="text" class="form-control" name="lastname" id="edit_lastname" required="" placeholder="lastname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_nickname">nickname</label>
+                    <label for="edit_nickname">ชื่อเล่น</label>
                     <input type="text" class="form-control" name="nickname" id="edit_nickname" required="" placeholder="nickname">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_mobile">mobile</label>
+                    <label for="edit_mobile">มือถือ</label>
                     <input type="text" class="form-control number-only" name="mobile" id="edit_mobile" required="" placeholder="mobile">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_address">address</label>
+                    <label for="edit_address">ที่อยู่</label>
                     <input type="text" class="form-control" name="address" id="edit_address" required="" placeholder="address">
                 </div>
-        
+
                 <div class="form-group">
-                    <label for="edit_email">email</label>
+                    <label for="edit_email">อีเมล</label>
                     <input type="text" class="form-control" name="email" id="edit_email" required="" placeholder="email">
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -179,7 +179,7 @@
             $('#edit_mobile').val(rec.mobile);
             $('#edit_address').val(rec.address);
             $('#edit_email').val(rec.email);
-            
+
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -216,7 +216,7 @@
             },
         },
         messages: {
-    
+
             firstname: {
                 required: "กรุณาระบุ",
             },
@@ -411,6 +411,6 @@
         });
     });
 
-    
+
 </script>
 @endsection

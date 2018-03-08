@@ -17,15 +17,15 @@
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
-                                        <th>id</th>
+                                        <th>รหัส</th>
 										<th>qrcode</th>
-                                        <th>activity_id</th>
-                                        <th>url</th>
-                                        <th>reward_id</th>
-                                        <th>user_id</th>
-										<th>staff_id</th>
-                                        <th>date_answer</th>
-                                        <th>date_approve</th>
+                                        <th>รหัสกิจกรรม</th>
+                                        <th>ลิงก์</th>
+                                        <th>รหัสของรางวัล</th>
+                                        <th>รหัสผู้ใช้งาน</th>
+										<th>รหัสผู้ดูแลกิจกรรม</th>
+                                        <th>วันที่ตอบคำถาม</th>
+                                        <th>วันที่ยืนยัน</th>
                                         <th></th>
                                     </tr>
                                 </thead>
