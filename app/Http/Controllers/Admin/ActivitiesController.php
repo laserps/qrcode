@@ -216,11 +216,11 @@ class ActivitiesController extends Controller
         })
         ->addColumn('action',function($rec){
             $str='
-                <input class="checkbox" type="checkbox" name="status_t[]" value="T">
+                <input class="checkbox" type="checkbox" name="status_t['.$rec->id.']" value="T">
                 <label for="add_show">
                     true
                 </label>
-                <input class="checkbox" type="checkbox" name="status_f[]" value="F">
+                <input class="checkbox" type="checkbox" name="status_f['.$rec->id.']" value="F">
                 <label for="add_show">
                     false
                 </label>
@@ -243,14 +243,13 @@ class ActivitiesController extends Controller
                 $reward_t = array();
                 $reward_f = array();
                 foreach ($request->reward_id as $key => $value) {
-                    if(!empty($request->status_t[$key])) {
+                    if(!empty($request->status_t[$value])) {
                         $reward_t[] = $value;
                     }
-                    if(!empty($request->status_f[$key])) {
+                    if(!empty($request->status_f[$value])) {
                         $reward_f[] = $value;
                     }
                 }
-                // return $reward_t;
                 unset($input_all['status_f']);
                 unset($input_all['status_t']);
                 unset($input_all['RewardList_length']);
@@ -433,7 +432,7 @@ class ActivitiesController extends Controller
         $answer_status = $request->input('answer_status');
         $input_all     = $request->all();
         $validator = Validator::make($request->all(), []);
-            
+
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {

@@ -396,6 +396,8 @@
 @section('js_bottom')
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
+	var arr_reward_t = [];
+	var arr_reward_f = [];
 	var add_index = 0;
 	var add_check = [];
 	var staff_index = 0;
@@ -409,7 +411,7 @@
         "ajax": {
             "url": url_gb+"/admin/Activities/Lists",
             "data": function ( d ) {
-                //d.myKey = "myValue";
+                // d.myKey = "myValue";
                 // d.custom = $('#myInput').val();
                 // etc
             }
@@ -429,7 +431,7 @@
 	   "ajax": {
 		   "url": url_gb+"/admin/Activities/RewardLists",
 		   "data": function ( d ) {
-			   //d.myKey = "myValue";
+			   // d.myKey = "myValue";
 			   // d.custom = $('#myInput').val();
 			   // etc
 		   }
@@ -440,7 +442,16 @@
            {"data" : "name"},
            {"data" : "amount"},
            { "data": "action","className":"action text-center" }
-       ]
+       ],
+	   responsive: true,
+	   "drawCallback": function (settings) {
+		   putvalue();
+		   info = RewardList.api().page.info();
+	   },
+	   initComplete: function () {
+		   //alert('a');
+		   putvalue();
+	   }
    });
 
     $('body').on('click','.btn-add-init-question', function(data){
@@ -596,11 +607,23 @@
     $('body').on('click','.btn-add',function(data){
         ShowModal('ModalAdd');
     });
+	function putvalue() {
+		for (i = 0; i < arr_reward_f.length; i++) {
+			$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_f[i]+'"]').prop('checked',true);
+			$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_f[i]+'"]').closest('tr').find('input:checkbox[name*="status_f"]').prop('checked',true);
+		}
+		for (i = 0; i < arr_reward_t.length; i++) {
+			$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_t[i]+'"]').prop('checked',true);
+			$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_t[i]+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
+		}
+	}
 	$('body').on('click','.btn-reward',function(data){
 		var btn = $(this);
 		btn.button('loading');
 		var id = $(this).data('id');
-		$('#activity_id').val(id);
+		arr_reward_f.length = 0;
+		arr_reward_t.length = 0;
+		$('#ModalReward').find('#activity_id').val(id);
 		btn.button("reset");
 		RewardList.api().ajax.reload();
 		$.ajax({
@@ -610,14 +633,18 @@
         }).done(function(rec){
 			if(rec['F']) {
 				$.each(rec['F'],function(k,v) {
-					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
-					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_f"]').prop('checked',true);
+					arr_reward_f[k] = v;
+					// arr_reward_f.push(v);
+					// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
+					// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_f"]').prop('checked',true);
 				});
 			}
 			if(rec['T']) {
 				$.each(rec['T'],function(k,v) {
-					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
-					$('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
+					arr_reward_t[k] = v;
+					// arr_reward_t.push(v);
+					// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
+					// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
 				});
 			}
 		});
