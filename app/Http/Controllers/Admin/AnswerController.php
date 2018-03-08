@@ -163,6 +163,12 @@ class AnswerController extends Controller
     public function Lists(){
         $result = \App\Models\Answer::select();
         return \Datatables::of($result)
+        ->editColumn('answer_type_id',function($rec){
+            if($rec->answer_type_id=='T')
+                return 'ถูก';
+            else
+                return 'ผิด';
+        })
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->answer_id.'" title="แก้ไข">
