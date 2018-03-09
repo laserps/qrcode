@@ -180,7 +180,7 @@
             btn.button("reset");
 
             tinyMCE.activeEditor.setContent(rec.text);
-            //$("textarea.text_question").val( rec.text );
+            $("textarea.text_question").val( rec.text );
             if(rec.status==null){
             }else{
                 $("#FormEdit input[value='"+rec.status+"']").prop('checked',true);

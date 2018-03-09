@@ -113,7 +113,7 @@ class QuestionController extends Controller
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
-            try {
+            try{
                 $data_insert = $input_all;
                 \App\Models\Question::where('id',$id)->update($data_insert);
                 \DB::commit();
