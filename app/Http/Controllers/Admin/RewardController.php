@@ -15,7 +15,7 @@ class RewardController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'ของรางวัล';
+        $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'ของรางวัล';
         $data['title_page'] = 'ของรางวัล';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();

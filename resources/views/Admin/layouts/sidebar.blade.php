@@ -20,14 +20,14 @@
                     @else
                         <li class="{{ (isset($main_menu)&&$menu->link==$main_menu)? 'active':'' }}">
                             <a href="{{url('admin/'.$menu->link)}}">
-                                <i class="{{$menu->icon or 'fa fa-home'}}"></i> 
+                                <i class="{{$menu->icon or 'fa fa-home'}}"></i>
                                 <span class="name">{{$menu->name}}</span>
                             </a>
                         </li>
                     @endif
                 @endforeach
             </ul>
-{{--  
+{{--
             <h5 class="sidebar-nav-title">Labels <a class="action-link" href="#"><i class="glyphicon glyphicon-plus"></i></a></h5>
             <!-- some styled links in sidebar. ready to use as links to email folders, projects, groups, etc -->
             <ul class="sidebar-labels">

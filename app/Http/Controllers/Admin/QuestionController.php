@@ -15,7 +15,7 @@ class QuestionController extends Controller
     */
     public function index()
     {
-        $data['main_menu'] = 'คำถาม';
+        $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'คำถาม';
         $data['title_page'] = 'คำถาม';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
