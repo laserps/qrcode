@@ -134,7 +134,7 @@
                     </table>
 					<div class="form-group">
 	                    <!-- <label for="add_text">text</label> -->
-	                    <textarea class="form-control text_question" id="remark" name="remark" required="" placeholder="text"></textarea>
+	                    <textarea class="form-control" id="description" name="remark" required="" placeholder="text"></textarea>
 	                </div>
                 </div>
             </div>
@@ -172,6 +172,7 @@
     });
 
     $('body').on('click','.btn-edit',function(data){
+        //tinymce.init(edit_config);
         var btn = $(this);
         btn.button('loading');
         var id = $(this).data('id');
@@ -182,9 +183,15 @@
             dataType : 'json'
         }).done(function(rec){
             btn.button("reset");
-            tinymce.init(editor_config);
             //$("#edit_text").val( rec.text );
-            tinyMCE.activeEditor.setContent(rec.text);
+           
+            if(rec.text){
+                //tinyMCE.activeEditor.setContent(rec.remark);
+                tinyMCE.activeEditor.setContent(rec.text);
+            }else{
+                tinyMCE.activeEditor.setContent("<p></p>");
+                //tinyMCE.activeEditor.setContent(rec.text);
+            }
 
             if(rec.status==null){
             }else{
@@ -212,13 +219,18 @@
         }).done(function(rec){
             var str = '';
 			var check = '';
-            $.each(rec, function(i,val){
+            //console.log(rec.remark);
+            if(rec.remark){
+                tinyMCE.activeEditor.setContent(rec.remark);
+            }else{
+                tinyMCE.activeEditor.setContent("<p></p>");
+            }
+            $.each(rec.listAnswer, function(i,val){
 				if(val.ansID!=null) {
 					check = val.ansID;
-					console.log(rec.remark);
-					tinymce.init(right_config);
+					//tinymce.init(right_config);
 		            //$("#edit_text").val( rec.text );
-		            tinyMCE.activeEditor.setContent(rec.remark);
+		            //tinyMCE.activeEditor.setContent(rec.remark);
 				}
                 str +=
                 `<tr>
@@ -231,7 +243,7 @@
                 </tr>`;
             });
             $('#listAnswer').html(str);
-			console.log(check);
+			//console.log(check);
 			if(check != '') {
 				$('#ModalAnswer').find('input:radio[value="'+check+'"]').prop('checked',true);
 			}
@@ -606,7 +618,7 @@
             var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
             var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+            var cmsURL = edit_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
             if(type == 'image'){
                 cmsURL = cmsURL + "&type=Images";
             }else{
@@ -636,7 +648,7 @@
 
 	var right_config = {
         path_absolute : "",
-        selector: "textarea.text_question",
+        selector: "textarea#description",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -649,7 +661,7 @@
             var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
             var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+            var cmsURL = right_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
             if(type == 'image'){
                 cmsURL = cmsURL + "&type=Images";
             }else{
@@ -675,6 +687,6 @@
         },
 
     };
-    tinymce.init(editor_config);
+    tinymce.init(right_config);
 </script>
 @endsection
