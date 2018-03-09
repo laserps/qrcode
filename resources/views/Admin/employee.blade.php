@@ -43,37 +43,37 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="add_firstname">ชื่อ</label>
-                    <input type="text" class="form-control" name="firstname" id="add_firstname" required="" placeholder="firstname">
+                    <input type="text" class="form-control" name="firstname" id="add_firstname"  placeholder="firstname">
                 </div>
 
                 <div class="form-group">
                     <label for="add_lastname">นามสกุล</label>
-                    <input type="text" class="form-control" name="lastname" id="add_lastname" required="" placeholder="lastname">
+                    <input type="text" class="form-control" name="lastname" id="add_lastname"  placeholder="lastname">
                 </div>
 
                 <div class="form-group">
-                    <label for="add_nickname">ชื่อจริง</label>
-                    <input type="text" class="form-control" name="nickname" id="add_nickname" required="" placeholder="nickname">
+                    <label for="add_nickname">ชื่อเล่น</label>
+                    <input type="text" class="form-control" name="nickname" id="add_nickname"  placeholder="nickname">
                 </div>
 
                 <div class="form-group">
                     <label for="add_mobile">มือถือ</label>
-                    <input type="text" class="form-control number-only" name="mobile" id="add_mobile" required="" placeholder="mobile">
+                    <input type="text" class="form-control number-only" name="mobile" id="add_mobile"  placeholder="mobile">
                 </div>
 
                 <div class="form-group">
                     <label for="add_address">ที่อยู่</label>
-                    <input type="text" class="form-control" name="address" id="add_address" required="" placeholder="address">
+                    <input type="text" class="form-control" name="address" id="add_address"  placeholder="address">
                 </div>
 
                 <div class="form-group">
                     <label for="add_email">อีเมล</label>
-                    <input type="text" class="form-control" name="email" id="add_email" required="" placeholder="email">
+                    <input type="text" class="form-control" name="email" id="add_email"  placeholder="email">
                 </div>
 
                 <div class="form-group">
                     <label for="add_password">รหัสผ่าน</label>
-                    <input type="password" class="form-control" name="password" id="add_password" required="" placeholder="password">
+                    <input type="password" class="form-control" name="password" id="add_password"  placeholder="password">
                 </div>
 
             </div>
@@ -99,32 +99,32 @@
 
                 <div class="form-group">
                     <label for="edit_firstname">ชื่อ</label>
-                    <input type="text" class="form-control" name="firstname" id="edit_firstname" required="" placeholder="firstname">
+                    <input type="text" class="form-control" name="firstname" id="edit_firstname"  placeholder="firstname">
                 </div>
 
                 <div class="form-group">
                     <label for="edit_lastname">นามสกุล</label>
-                    <input type="text" class="form-control" name="lastname" id="edit_lastname" required="" placeholder="lastname">
+                    <input type="text" class="form-control" name="lastname" id="edit_lastname"  placeholder="lastname">
                 </div>
 
                 <div class="form-group">
                     <label for="edit_nickname">ชื่อเล่น</label>
-                    <input type="text" class="form-control" name="nickname" id="edit_nickname" required="" placeholder="nickname">
+                    <input type="text" class="form-control" name="nickname" id="edit_nickname"  placeholder="nickname">
                 </div>
 
                 <div class="form-group">
                     <label for="edit_mobile">มือถือ</label>
-                    <input type="text" class="form-control number-only" name="mobile" id="edit_mobile" required="" placeholder="mobile">
+                    <input type="text" class="form-control number-only" name="mobile" id="edit_mobile"  placeholder="mobile">
                 </div>
 
                 <div class="form-group">
                     <label for="edit_address">ที่อยู่</label>
-                    <input type="text" class="form-control" name="address" id="edit_address" required="" placeholder="address">
+                    <input type="text" class="form-control" name="address" id="edit_address"  placeholder="address">
                 </div>
 
                 <div class="form-group">
                     <label for="edit_email">อีเมล</label>
-                    <input type="text" class="form-control" name="email" id="edit_email" required="" placeholder="email">
+                    <input type="text" class="form-control" name="email" id="edit_email"  placeholder="email">
                 </div>
 
             </div>
@@ -196,18 +196,18 @@
             firstname: {
                 required: true,
             },
-            lastname: {
-                required: true,
-            },
-            nickname: {
-                required: true,
-            },
-            mobile: {
-                required: true,
-            },
-            address: {
-                required: true,
-            },
+            // lastname: {
+            //     required: true,
+            // },
+            // nickname: {
+            //     required: true,
+            // },
+            // mobile: {
+            //     required: true,
+            // },
+            // address: {
+            //     required: true,
+            // },
             email: {
                 required: true,
             },
@@ -220,18 +220,18 @@
             firstname: {
                 required: "กรุณาระบุ",
             },
-            lastname: {
-                required: "กรุณาระบุ",
-            },
-            nickname: {
-                required: "กรุณาระบุ",
-            },
-            mobile: {
-                required: "กรุณาระบุ",
-            },
-            address: {
-                required: "กรุณาระบุ",
-            },
+            // lastname: {
+            //     required: "กรุณาระบุ",
+            // },
+            // nickname: {
+            //     required: "กรุณาระบุ",
+            // },
+            // mobile: {
+            //     required: "กรุณาระบุ",
+            // },
+            // address: {
+            //     required: "กรุณาระบุ",
+            // },
             email: {
                 required: "กรุณาระบุ",
             },
@@ -291,18 +291,18 @@
             firstname: {
                 required: true,
             },
-            lastname: {
-                required: true,
-            },
-            nickname: {
-                required: true,
-            },
-            mobile: {
-                required: true,
-            },
-            address: {
-                required: true,
-            },
+            // lastname: {
+            //     required: true,
+            // },
+            // nickname: {
+            //     required: true,
+            // },
+            // mobile: {
+            //     required: true,
+            // },
+            // address: {
+            //     required: true,
+            // },
             email: {
                 required: true,
             },
@@ -314,18 +314,18 @@
             firstname: {
                 required: "กรุณาระบุ",
             },
-            lastname: {
-                required: "กรุณาระบุ",
-            },
-            nickname: {
-                required: "กรุณาระบุ",
-            },
-            mobile: {
-                required: "กรุณาระบุ",
-            },
-            address: {
-                required: "กรุณาระบุ",
-            },
+            // lastname: {
+            //     required: "กรุณาระบุ",
+            // },
+            // nickname: {
+            //     required: "กรุณาระบุ",
+            // },
+            // mobile: {
+            //     required: "กรุณาระบุ",
+            // },
+            // address: {
+            //     required: "กรุณาระบุ",
+            // },
             email: {
                 required: "กรุณาระบุ",
             },

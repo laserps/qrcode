@@ -52,10 +52,10 @@ class EmployeeController extends Controller
 
         $validator = Validator::make($request->all(), [
              'firstname' => 'required',
-             'lastname'  => 'required',
-             'nickname'  => 'required',
-             'mobile'    => 'required',
-             'address'   => 'required',
+            //  'lastname'  => 'required',
+            //  'nickname'  => 'required',
+            //  'mobile'    => 'required',
+            //  'address'   => 'required',
              'email'     => 'required',
              'password'  => 'required',
 
@@ -114,25 +114,22 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-
-            if(isset($input_all['mobile'])){
-                $input_all['mobile'] = str_replace(',', '', $input_all['mobile']);
-            }
-
+        if(isset($input_all['mobile'])){
+            $input_all['mobile'] = str_replace(',', '', $input_all['mobile']);
+        }
         $input_all['updated_at'] = date('Y-m-d H:i:s');
-
-        $validator = Validator::make($request->all(), [
-             'firstname' => 'required',
-             'lastname' => 'required',
-             'nickname' => 'required',
-             'mobile' => 'required',
-             'address' => 'required',
-             'email' => 'required',
-
+        $validator = Validator::make($request->all(),[
+            'firstname' => 'required',
+            //  'lastname' => 'required',
+            //  'nickname' => 'required',
+            //  'mobile' => 'required',
+            //  'address' => 'required',
+            'email' => 'required',
+            //'password' => 'required',
         ]);
-        if (!$validator->fails()) {
+        if (!$validator->fails()){
             \DB::beginTransaction();
-            try {
+            try{
                 $data_insert = $input_all;
                 \App\Models\Employee::where('id',$id)->update($data_insert);
                 \DB::commit();
