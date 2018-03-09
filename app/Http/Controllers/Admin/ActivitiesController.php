@@ -342,7 +342,7 @@ class ActivitiesController extends Controller
         $question_group_id  = json_decode(\App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first()->question_group_id);
         $return['activity'] = $activity;
         $test =[];
-        $limit_question = 3;
+        $limit_question = 1;
         for($i=0;$i<$limit_question;$i++) {
             if(sizeof($question_group_id)!=0) {
                 $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
@@ -489,14 +489,15 @@ class ActivitiesController extends Controller
         $listReward = json_decode($listReward);
         $randomReward = \App\Models\Reward::where('amount','<>',0)->whereIn('id',$listReward)->with('getRewardPicture')->orderBy(\DB::raw('rand()'))->limit(1)->get()->first();
         $return['reward'] = $randomReward;
-
-        \App\Models\ActivityRewardUser::insert([
-            'activity_id'=>$activity_id,
-            'reward_id'=>$user_id,
-            'user_id'=>$randomReward->id,
-            'created_at'=>date('Y-m-d H:i:s')
-        ]);
-
+        $check = \App\Models\ActivityRewardUser::where('activity_id',$activity_id)->where('user_id',$user_id)->get();
+        if(sizeof($check)==0) {
+            \App\Models\ActivityRewardUser::insert([
+                'activity_id'=>$activity_id,
+                'user_id'=>$user_id,
+                'reward_id'=>$randomReward->id,
+                'created_at'=>date('Y-m-d H:i:s')
+            ]);
+        }
         return View::make('Admin.randomReward',$return);
     }
 

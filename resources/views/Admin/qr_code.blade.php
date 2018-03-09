@@ -84,7 +84,7 @@ swal({
 <script>
 	$('body').on('submit','#FormAdd',function(e){
 		e.preventDefault();
-		if ($('#add_phone').val()!= ' ') {
+		if ($.isNumeric($('#add_phone').val()) && $('#add_phone').val().length == 10) {
 			$.ajax({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -95,7 +95,8 @@ swal({
 			data :$(this).serialize()
 		}).done(function(rec){
 			if(rec.status==1){
-	              	var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getSpecialQuestion';
+	              	// var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getSpecialQuestion';
+					var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
 	                window.location = getUrl;
                 }else{
                 	swal({
@@ -112,13 +113,23 @@ swal({
 
 			});
 		}else{
+			if(!$.isNumeric($('#add_phone').val())) {
 			swal({
                 position: 'center',
                 type: 'error',
-                title: 'ไม่มีข้อมูล',
-                text:  'กรุณากรอกเบอร์โทรก่อนบันทึก',
+                title: 'ผิดพลาด',
+                text:  'ตัวเลขเท่านั้น',
                 showConfirmButton: true
               });
+		  } else {
+			  swal({
+                  position: 'center',
+                  type: 'error',
+                  title: 'ผิดพลาด',
+                  text:  '10 ตัวอักษรเท่านั้น',
+                  showConfirmButton: true
+                });
+		  }
 		}
 		});
 	</script>
