@@ -164,10 +164,13 @@
         ]
     });
     $('body').on('click','.btn-add',function(data){
+        //tinyMCE.init(editor_config);
+        //tinymce.activeEditor.setContent('<p></p>');
         ShowModal('ModalAdd');
     });
 
     $('body').on('click','.btn-edit',function(data){
+        tinyMCE.init(edit_config);
         var btn = $(this);
         btn.button('loading');
         var id = $(this).data('id');
@@ -178,10 +181,9 @@
             dataType : 'json'
         }).done(function(rec){
             btn.button("reset");
-            tinymce.init(editor_config);
-            //$("#edit_text").val( rec.text );
+            //tinyMCE.init(edit_config);
+            $("#edit_text").val(rec.text)
             tinyMCE.activeEditor.setContent(rec.text);
-            
             if(rec.status==null){
             }else{
                 $("#FormEdit input[value='"+rec.status+"']").prop('checked',true);
@@ -576,7 +578,7 @@
             editor.on('NodeChange', function (e){
                 editor.save();
                 $("textarea.text_question").val( $("textarea.text_question").val() );
-                console.log($("textarea.text_question").val());
+                //console.log($("textarea.text_question").val());
             });
         },
 
@@ -622,8 +624,7 @@
                 console.log($("textarea#edit_text").val());
             });
         },
-
     };
-    tinymce.init(edit_config);    
+    //tinyMCE.init(edit_config);
 </script>
 @endsection
