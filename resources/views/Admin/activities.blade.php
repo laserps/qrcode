@@ -402,10 +402,10 @@
 	var add_check = [];
 	var staff_index = 0;
 	var staff_check = [];
-    $('#add_working_time_start').timepicker();
-    $('#add_working_time_end').timepicker();
-    $('#edit_working_time_start').timepicker();
-    $('#edit_working_time_end').timepicker();
+    $('#add_working_time_start').timepicker({ 'timeFormat': 'H:i:s' });
+    $('#add_working_time_end').timepicker({ 'timeFormat': 'H:i:s' });
+    $('#edit_working_time_start').timepicker({ 'timeFormat': 'H:i:s' });
+    $('#edit_working_time_end').timepicker({ 'timeFormat': 'H:i:s' });
 
      var TableList = $('#TableList').dataTable({
         "ajax": {
