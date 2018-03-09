@@ -17,12 +17,89 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('css_bottom')
-    <script>
-        /* yeah we need this empty stylesheet here. It's cool chrome & chromium fix
-           chrome fix https://code.google.com/p/chromium/issues/detail?id=167083
-                      https://code.google.com/p/chromium/issues/detail?id=332189
-        */
-    </script>
+    <style>
+            body {
+                font-weight: 400;
+                padding-bottom: 100px;
+                background-color: #2b6e80 20%;
+                background-image: radial-gradient(farthest-side ellipse at 10% 0, #2b6e80 20%, #0c3252);
+                background-image: -webkit-radial-gradient(10% 0, farthest-side ellipse, #2b6e80 20%, #0c3252);
+                background-image: -moz-radial-gradient(10% 0, farthest-side ellipse, #2b6e80 20%, #0c3252);
+                background-attachment: fixed, fixed;
+            }
+            body {
+                font-family: 'Kanit', sans-serif;
+                font-size: 14px;
+                line-height: 1.428571429;
+                color: #f8f8f8;
+                background-color: #fff;
+            }    
+            .widget {
+                border-radius: 3px;
+                -webkit-box-sizing: content-box;
+                -moz-box-sizing: content-box;
+                box-sizing: content-box;
+                padding: 12px 17px;
+                color: #606060;
+                background: #ffffff;
+                margin-bottom: 30px;
+                position: relative;
+            }
+            .widget .table th {
+                color: #606060;
+            }
+            .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+                color: #020202;
+                background-color: transparent;
+                border-color: transparent;
+                cursor: not-allowed;
+            }
+            .checkbox label::after {
+                color: #100f0f;
+            }
+            .page-header .nav > li > a {
+                color: rgba(255, 255, 255, 0.8);
+                width: 40px;
+                padding: 0;
+                font-size: 19.5px;
+                outline: 0;
+                background: none;
+                text-align: center;
+                vertical-align: middle;
+                line-height: 36px;
+                text-shadow: none;
+            }
+            .sweet-alert {
+                color: black;
+            }
+            .text-muted {
+                color: #ff0000;
+            }
+            .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
+                z-index: 2;
+                color: #f8f8f8;
+                background-color: #2b6e80;
+                border-color: #2b6e80;
+                cursor: default;
+            }
+            .pagination > li > a, .pagination > li > span {
+                position: relative;
+                float: left;
+                padding: 5px 12px;
+                line-height: 1.42857;
+                text-decoration: none;
+                color: #0a0a0a;
+                background-color: transparent;
+                border: 1px solid transparent;
+                margin-left: -1px;
+            }
+            .pie-chart-footer .control {
+                color: black;
+            }
+            .pie-chart .visits {
+                color: black;
+            }
+        </style>
 </head>
 <body>
     <div class="logo">
