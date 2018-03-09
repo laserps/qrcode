@@ -49,7 +49,6 @@ class QuestionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'text' => 'required',
-
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
