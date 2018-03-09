@@ -132,6 +132,10 @@
                         </tbody>
 
                     </table>
+					<div class="form-group">
+	                    <!-- <label for="add_text">text</label> -->
+	                    <textarea class="form-control text_question" name="remark" required="" placeholder="text"></textarea>
+	                </div>
                 </div>
             </div>
             <div class="modal-footer">
