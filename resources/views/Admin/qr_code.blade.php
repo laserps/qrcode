@@ -28,9 +28,6 @@
 </head>
 <body>
 @if($activity->status=="T")
-	<!-- {{$activity}} -->
-
-
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 logo-margin">
 			<img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive center-block respon" alt="Yout Logo Here">
@@ -90,13 +87,13 @@ swal({
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
 			method : "POST",
-			url : "{{url('/admin/QRCODE')}}",
+			url : "{{url('/QRCODE')}}",
 			dataType : 'json',
 			data :$(this).serialize()
 		}).done(function(rec){
 			if(rec.status==1){
 	              	// var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getSpecialQuestion';
-					var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
+					var getUrl = '{{url("")}}/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
 	                window.location = getUrl;
                 }else{
                 	swal({

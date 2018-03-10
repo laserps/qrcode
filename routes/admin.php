@@ -22,7 +22,6 @@
         Route::get('/', 'Admin\HomeController@index');
         Route::get('/logout', 'Admin\AuthController@logout');
         Route::get('/dashboard', 'Admin\HomeController@index');
-
         Route::post('/upload_file', 'Admin\UploadFileController@index');
 
         //User
@@ -121,10 +120,10 @@
         Route::post('/Activities/RewardAccept', 'Admin\ActivitiesController@RewardAccept');
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getStaff/{id}', 'Admin\ActivitiesController@getStaff');
-        Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
+
         Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
-        Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
-        Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
+        
+        
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::get('/Activities/getActivityQuestion/{id}', 'Admin\ActivitiesController@getActivityQuestion');
@@ -135,7 +134,6 @@
         Route::post('/Activities/AddSpecialQuestion/{id}', 'Admin\ActivitiesController@AddSpecialQuestion');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
-        Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
         Route::post('/AnswerHistoryInit', 'Admin\ActivitiesController@storeHistoryInit');
         Route::get('/Activities/GetSpecQuestion/{id}', 'Admin\ActivitiesController@GetSpecQuestion');
 
@@ -183,7 +181,6 @@
         Route::get('/Reward/{id}', 'Admin\RewardController@show');
         Route::post('/Reward/{id}', 'Admin\RewardController@update');
         Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
-
     });
 
     //Route::get('/Activities/randomReward/{aid}/{uid}/{result}', 'Admin\ActivitiesController@randomReward');
@@ -196,4 +193,10 @@
     //Laravel Filemanager
     Route::get('admin/laravel-filemanager', '\Unisharp\Laravelfilemanager\controllers\LfmController@show');
     Route::post('admin/laravel-filemanager/upload', '\Unisharp\Laravelfilemanager\controllers\UploadController@upload');
+
+    //Main Procress
+    Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
+    Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
+    Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
+    Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
 ?>
