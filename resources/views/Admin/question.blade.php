@@ -168,11 +168,53 @@
         ]
     });
     $('body').on('click','.btn-add',function(data){
+        tinymce.EditorManager.execCommand('mceRemoveEditor',true, "textarea.text_question");
+        var editor_config = {
+            path_absolute : "",
+            selector: "textarea.text_question",
+            plugins: [
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons template paste textcolor colorpicker textpattern"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+            relative_urls: false,
+            file_browser_callback : function(field_name, url, type, win) {
+                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+                var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+                if(type == 'image'){
+                    cmsURL = cmsURL + "&type=Images";
+                }else{
+                    cmsURL = cmsURL + "&type=Files";
+                }
+
+                tinyMCE.activeEditor.windowManager.open({
+                    file : cmsURL,
+                    title : 'Filemanager',
+                    width : x * 0.8,
+                    height : y * 0.8,
+                    resizable : "yes",
+                    close_previous : "no"
+                });
+            },
+            height : 400,
+            init_instance_callback: function(editor){
+                editor.on('NodeChange', function (e){
+                    editor.save();
+                    $("textarea.text_question").val( $("textarea.text_question").val() );
+                    console.log($("textarea.text_question").val());
+                });
+            },
+        };
+        tinymce.init(editor_config);
         ShowModal('ModalAdd');
     });
 
     $('body').on('click','.btn-edit',function(data){
-        //tinymce.init(edit_config);
+        tinymce.EditorManager.execCommand('mceRemoveEditor',true, "#ModalEdit #edit_text");
         var btn = $(this);
         btn.button('loading');
         var id = $(this).data('id');
@@ -183,17 +225,63 @@
             dataType : 'json'
         }).done(function(rec){
             btn.button("reset");
-            //$("#edit_text").val( rec.text );
-           
-            if(rec.text){
-                //tinyMCE.activeEditor.setContent(rec.remark);
-                tinyMCE.activeEditor.setContent(rec.text);
+            // console.log(rec.text);
+            //tinyMCE.remove()
+            var edit_config = {
+                path_absolute : "",
+                selector: "#ModalEdit #edit_text",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+                relative_urls: false,
+                file_browser_callback : function(field_name, url, type, win) {
+                    var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+                    var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+                    var cmsURL = edit_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+                    if(type == 'image'){
+                        cmsURL = cmsURL + "&type=Images";
+                    }else{
+                        cmsURL = cmsURL + "&type=Files";
+                    }
+                    tinyMCE.activeEditor.windowManager.open({
+                        file : cmsURL,
+                        title : 'Filemanager',
+                        width : x * 0.8,
+                        height : y * 0.8,
+                        resizable : "yes",
+                        close_previous : "no"
+                    });
+                },
+                
+                height : 400,
+                init_instance_callback: function(editor){
+                    editor.on('NodeChange', function (e){
+                        editor.save();
+                        $("textarea#edit_text").val( $("textarea#edit_text").val() );
+                        console.log($("textarea#edit_text").val());
+                    });
+                },
+            };
+            tinyMCE.init(edit_config);
+            console.log(rec.text);
+
+            if(rec.text==null){
+                tinyMCE.activeEditor.setContent('<p></p>');
             }else{
-                tinyMCE.activeEditor.setContent("<p></p>");
                 //tinyMCE.activeEditor.setContent(rec.text);
+                setTimeout(function(){
+                    tinyMCE.activeEditor.setContent(rec.text);
+                    tinyMCE.activeEditor.focus();
+                },100)
             }
 
             if(rec.status==null){
+                
             }else{
                 $("#FormEdit input[value='"+rec.status+"']").prop('checked',true);
             }
@@ -217,14 +305,65 @@
             url : url_gb+"/admin/showAnswerQuestion/"+id,
             dataType : 'json',
         }).done(function(rec){
+            tinymce.EditorManager.execCommand('mceRemoveEditor',true, "textarea#description");
             var str = '';
 			var check = '';
-            //console.log(rec.remark);
-            if(rec.remark){
-                tinyMCE.activeEditor.setContent(rec.remark);
+            //console.log(rec.remark.remark);
+            // if(rec.remark){
+            //     tinyMCE.activeEditor.setContent(rec.remark);
+            // }else{
+            //     tinyMCE.activeEditor.setContent("<p></p>");
+            // }
+
+            var right_config = {
+                path_absolute : "",
+                selector: "textarea#description",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+                relative_urls: false,
+                file_browser_callback : function(field_name, url, type, win) {
+                    var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+                    var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+                    var cmsURL = right_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+                    if(type == 'image'){
+                        cmsURL = cmsURL + "&type=Images";
+                    }else{
+                        cmsURL = cmsURL + "&type=Files";
+                    }
+
+                    tinyMCE.activeEditor.windowManager.open({
+                        file : cmsURL,
+                        title : 'Filemanager',
+                        width : x * 0.8,
+                        height : y * 0.8,
+                        resizable : "yes",
+                        close_previous : "no"
+                    });
+                },
+                height : 400,
+                init_instance_callback: function(editor){
+                    editor.on('NodeChange', function (e){
+                        editor.save();
+                        $("textarea#description").val( $("textarea#description").val() );
+                        console.log($("textarea#description").val());
+                    });
+                },
+
+            };
+            tinymce.init(right_config);
+            if(rec.remark==null){
+                tinyMCE.activeEditor.setContent('<p></p>');
             }else{
-                tinyMCE.activeEditor.setContent("<p></p>");
+                tinyMCE.activeEditor.setContent(rec.remark.remark);
             }
+            
+
             $.each(rec.listAnswer, function(i,val){
 				if(val.ansID!=null) {
 					check = val.ansID;
@@ -560,133 +699,132 @@
 </script>
 <script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script>
 <script>
-    var editor_config = {
-        path_absolute : "",
-        selector: "textarea.text_question",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-        relative_urls: false,
-        file_browser_callback : function(field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+    // var editor_config = {
+    //     path_absolute : "",
+    //     selector: "textarea.text_question",
+    //     plugins: [
+    //         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+    //         "searchreplace wordcount visualblocks visualchars code fullscreen",
+    //         "insertdatetime media nonbreaking save table contextmenu directionality",
+    //         "emoticons template paste textcolor colorpicker textpattern"
+    //     ],
+    //     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    //     relative_urls: false,
+    //     file_browser_callback : function(field_name, url, type, win) {
+    //         var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    //         var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if(type == 'image'){
-                cmsURL = cmsURL + "&type=Images";
-            }else{
-                cmsURL = cmsURL + "&type=Files";
-            }
+    //         var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+    //         if(type == 'image'){
+    //             cmsURL = cmsURL + "&type=Images";
+    //         }else{
+    //             cmsURL = cmsURL + "&type=Files";
+    //         }
 
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : 'Filemanager',
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            });
-        },
-        height : 400,
-        init_instance_callback: function(editor){
-            editor.on('NodeChange', function (e){
-                editor.save();
-                $("textarea.text_question").val( $("textarea.text_question").val() );
-                console.log($("textarea.text_question").val());
-            });
-        },
+    //         tinyMCE.activeEditor.windowManager.open({
+    //             file : cmsURL,
+    //             title : 'Filemanager',
+    //             width : x * 0.8,
+    //             height : y * 0.8,
+    //             resizable : "yes",
+    //             close_previous : "no"
+    //         });
+    //     },
+    //     height : 400,
+    //     init_instance_callback: function(editor){
+    //         editor.on('NodeChange', function (e){
+    //             editor.save();
+    //             $("textarea.text_question").val( $("textarea.text_question").val() );
+    //             console.log($("textarea.text_question").val());
+    //         });
+    //     },
 
-    };
-    tinymce.init(editor_config);
+    // };
+    // tinymce.init(editor_config);
 
-    var edit_config = {
-        path_absolute : "",
-        selector: "textarea#edit_text",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-        relative_urls: false,
-        file_browser_callback : function(field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+    // var edit_config = {
+    //     path_absolute : "",
+    //     selector: "#ModalEdit #edit_text",
+    //     plugins: [
+    //         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+    //         "searchreplace wordcount visualblocks visualchars code fullscreen",
+    //         "insertdatetime media nonbreaking save table contextmenu directionality",
+    //         "emoticons template paste textcolor colorpicker textpattern"
+    //     ],
+    //     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    //     relative_urls: false,
+    //     file_browser_callback : function(field_name, url, type, win) {
+    //         var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    //         var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-            var cmsURL = edit_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if(type == 'image'){
-                cmsURL = cmsURL + "&type=Images";
-            }else{
-                cmsURL = cmsURL + "&type=Files";
-            }
+    //         var cmsURL = edit_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+    //         if(type == 'image'){
+    //             cmsURL = cmsURL + "&type=Images";
+    //         }else{
+    //             cmsURL = cmsURL + "&type=Files";
+    //         }
 
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : 'Filemanager',
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            });
-        },
-        height : 400,
-        init_instance_callback: function(editor){
-            editor.on('NodeChange', function (e){
-                editor.save();
-                $("textarea#edit_text").val( $("textarea#edit_text").val() );
-                console.log($("textarea#edit_text").val());
-            });
-        },
+    //         tinyMCE.activeEditor.windowManager.open({
+    //             file : cmsURL,
+    //             title : 'Filemanager',
+    //             width : x * 0.8,
+    //             height : y * 0.8,
+    //             resizable : "yes",
+    //             close_previous : "no"
+    //         });
+    //     },
+    //     height : 400,
+    //     init_instance_callback: function(editor){
+    //         editor.on('NodeChange', function (e){
+    //             editor.save();
+    //             $("textarea#edit_text").val( $("textarea#edit_text").val() );
+    //             console.log($("textarea#edit_text").val());
+    //         });
+    //     },
+    // };
+    //tinymce.init(edit_config);
 
-    };
-    tinymce.init(edit_config);
+	// var right_config = {
+    //     path_absolute : "",
+    //     selector: "textarea#description",
+    //     plugins: [
+    //         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+    //         "searchreplace wordcount visualblocks visualchars code fullscreen",
+    //         "insertdatetime media nonbreaking save table contextmenu directionality",
+    //         "emoticons template paste textcolor colorpicker textpattern"
+    //     ],
+    //     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    //     relative_urls: false,
+    //     file_browser_callback : function(field_name, url, type, win) {
+    //         var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    //         var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-	var right_config = {
-        path_absolute : "",
-        selector: "textarea#description",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-        relative_urls: false,
-        file_browser_callback : function(field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+    //         var cmsURL = right_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+    //         if(type == 'image'){
+    //             cmsURL = cmsURL + "&type=Images";
+    //         }else{
+    //             cmsURL = cmsURL + "&type=Files";
+    //         }
 
-            var cmsURL = right_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if(type == 'image'){
-                cmsURL = cmsURL + "&type=Images";
-            }else{
-                cmsURL = cmsURL + "&type=Files";
-            }
+    //         tinyMCE.activeEditor.windowManager.open({
+    //             file : cmsURL,
+    //             title : 'Filemanager',
+    //             width : x * 0.8,
+    //             height : y * 0.8,
+    //             resizable : "yes",
+    //             close_previous : "no"
+    //         });
+    //     },
+    //     height : 400,
+    //     init_instance_callback: function(editor){
+    //         editor.on('NodeChange', function (e){
+    //             editor.save();
+    //             $("textarea.text_question").val( $("textarea.text_question").val() );
+    //             console.log($("textarea.text_question").val());
+    //         });
+    //     },
 
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : 'Filemanager',
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            });
-        },
-        height : 400,
-        init_instance_callback: function(editor){
-            editor.on('NodeChange', function (e){
-                editor.save();
-                $("textarea.text_question").val( $("textarea.text_question").val() );
-                console.log($("textarea.text_question").val());
-            });
-        },
-
-    };
-    tinymce.init(right_config);
+    // };
+    // tinymce.init(right_config);
 </script>
 @endsection
