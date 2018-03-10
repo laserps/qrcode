@@ -500,6 +500,7 @@ class ActivitiesController extends Controller
                 'activity_id'=>$activity_id,
                 'user_id'=>$user_id,
                 'reward_id'=>$randomReward->id,
+                'staff_id'=>1,
                 'created_at'=>date('Y-m-d H:i:s')
             ]);
 
