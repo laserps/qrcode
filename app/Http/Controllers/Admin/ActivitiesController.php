@@ -502,6 +502,12 @@ class ActivitiesController extends Controller
                 'reward_id'=>$randomReward->id,
                 'created_at'=>date('Y-m-d H:i:s')
             ]);
+
+            $get_reward_balance = \App\Models\Reward::find($randomReward->id)->amount;
+            \App\Models\Reward::where('id',$randomReward->id)->update([
+                'updated_at' => date('Y-m-d H:i:s'),
+                'amount' => --$get_reward_balance,
+            ]);
         }
         return View::make('Admin.randomReward',$return);
     }
