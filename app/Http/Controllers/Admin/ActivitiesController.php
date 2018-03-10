@@ -424,7 +424,7 @@ class ActivitiesController extends Controller
         $returns['activity_id'] = $request->activity_id;
         $returns['user_id'] = $request->user_id;
         $returns['result'] = $result/$qtyQustion;
-        $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'];
+        $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'].'/'.$str[0];
 
         $return['code'] = base64_encode($string);
 
@@ -485,7 +485,7 @@ class ActivitiesController extends Controller
     public function randomReward($code){
         $str = base64_decode($code);
         $str = explode('/',$str);
-        $activity_id=$str[0];$user_id=$str[1];$result=$str[2];
+        $activity_id=$str[0];$user_id=$str[1];$result=$str[2];$question_id=$str[3];
 
         $listReward = \App\Models\ActivityReward::where([
             'activity_id' => $activity_id,
@@ -510,6 +510,13 @@ class ActivitiesController extends Controller
                 'amount' => --$get_reward_balance,
             ]);
         }
+        $remark = \App\Models\AnswerRight::where('question_id',$question_id)->first();
+        if($result>0) {
+            $return['text'] = '<h3>ยินดีด้วย คุณตอบถูกต้อง</h3><br>'.$remark->remark;
+        } else {
+            $return['text'] = '<h3>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</h3><br>'.$remark->remark;
+        }
+
         return View::make('Admin.randomReward',$return);
     }
 
