@@ -512,9 +512,9 @@ class ActivitiesController extends Controller
         }
         $remark = \App\Models\AnswerRight::where('question_id',$question_id)->first();
         if($result>0) {
-            $return['text'] = '<h3>ยินดีด้วย คุณตอบถูกต้อง</h3><br>'.$remark->remark;
+            $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
         } else {
-            $return['text'] = '<h3>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</h3><br>'.$remark->remark;
+            $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
         }
 
         return View::make('Admin.randomReward',$return);

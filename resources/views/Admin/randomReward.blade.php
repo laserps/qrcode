@@ -65,15 +65,17 @@ body {
     top: 67.5px;
     margin-left: -250px;
     background: #ffffff;
-    box-shadow: 0 0 5px black;
-    box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+    /* box-shadow: 0 0 5px black;
+    box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black; */
     z-index: 5;
 }
 
 #card img {
     margin-bottom: 4%;
+    /* width:125px;
+    height:125px; */
     width:125px;
-    height:125px;
+    height:auto;
 }
 
 #card h2 {
@@ -121,7 +123,7 @@ body {
         z-index: -1;
     }
 
-    #card {
+    /* #card {
         position: absolute;
         width: 450px;
         height: 360px;
@@ -134,7 +136,7 @@ body {
         box-shadow: 0 0 5px black;
         box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
         z-index: 5;
-    }
+    } */
 
     .class-logo {
         width: 90% !important;
@@ -166,7 +168,7 @@ body {
         z-index: -1;
     }
 
-    #card {
+    /* #card {
         position: absolute;
         width: 450px;
         height: 360px;
@@ -179,7 +181,7 @@ body {
         box-shadow: 0 0 5px black;
         box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
         z-index: 5;
-    }
+    } */
 
     .class-logo {
         width: 90% !important;
@@ -206,7 +208,7 @@ body {
             z-index: -1;
         }
 
-        #card {
+        /* #card {
             position: absolute;
             width: 450px;
             height: 360px;
@@ -219,7 +221,7 @@ body {
             box-shadow: 0 0 5px black;
             box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
             z-index: 5;
-        }
+        } */
 
         .class-logo {
             margin-left: 80px;
@@ -251,7 +253,7 @@ body {
             z-index: -1;
         }
 
-        #card {
+        /* #card {
             position: absolute;
             width: 450px;
             height: 360px;
@@ -264,11 +266,13 @@ body {
             box-shadow: 0 0 5px black;
             box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
             z-index: 5;
-        }
+        } */
 
         .class-logo {
             margin-left: 65px;
-            width: 80% !important;
+            /* width: 80% !important; */
+            width: 100%;
+            height: auto;
             margin-bottom: 10px;
         }
 
@@ -398,14 +402,15 @@ html.modal_openoverflow {
 <br>
 </div> -->
 
-<div id="gradient"></div>
+{{--  <div id="gradient"></div>  --}}
 <div id="card" style="text-align:center;">
-    <img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive class-logo" alt="Yout Logo Here">
+    {{--  <img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive class-logo">  --}}
+    <center><img src="{{asset('uploads/logo original.JPG')}}" class="class-logo" style="width:100%; height:auto;"></center>
     <h2>ยินดีด้วยคุณได้รับของรางวัล</h2>
     <p style="font-size:20px;font-weight:700;">{{$reward->name}}</p>
     <div class="row">
         <div class="col-12">
-            <img src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive" alt="Image" />
+            <img width="100%" height="auto" src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive" alt="Image" />
         </div>
     </div>
     <!-- <span class="left bottom">tel: 530 283 ****</span>
