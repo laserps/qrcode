@@ -55,15 +55,12 @@ body {
 }
 
 #card {
-    position: absolute;
-    width: 450px;
+    position: relative;
+    width: 100%;
     height: 355px;
-    padding: 25px;
     padding-top: 0;
     padding-bottom: 0;
-    left: 50%;
     top: 67.5px;
-    margin-left: -250px;
     background: #ffffff;
     /* box-shadow: 0 0 5px black;
     box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black; */
@@ -72,9 +69,6 @@ body {
 
 #card img {
     margin-bottom: 4%;
-    /* width:125px;
-    height:125px; */
-    width:125px;
     height:auto;
 }
 
@@ -98,7 +92,19 @@ body {
 
 
 .class-logo{
-    width:90% !important;
+  width: 30% !important;
+}
+
+#card h2{
+  font-size: 20ptt;
+}
+
+#card p {
+    font-size: 15pt;
+}
+
+.reward-img{
+  width:40%;
 }
 
 
@@ -139,10 +145,17 @@ body {
     } */
 
     .class-logo {
-        width: 90% !important;
+        width: 60% !important;
         margin-bottom: 10px;
     }
 
+    #card h2{
+      font-size: 20ptt;
+    }
+
+    #card p {
+        font-size: 15pt;
+    }
 
 }
 
@@ -183,8 +196,31 @@ body {
         z-index: 5;
     } */
 
-    .class-logo {
-        width: 90% !important;
+    #card h2 {
+        font-size: 15pt;
+    }
+
+    #card p {
+        font-size: 20pt;
+    }
+
+
+}
+
+    @media (max-width:414px){
+
+        #card h2 {
+            font-size: 15pt;
+        }
+
+        #card p {
+            font-size: 15pt;
+        }
+
+        .reward-img{
+          width:70%;
+        }
+
     }
 
     @media (max-width:375px){
@@ -224,9 +260,16 @@ body {
         } */
 
         .class-logo {
-            margin-left: 80px;
-            width: 80% !important;
+            margin-left: 0px;
             margin-bottom: 10px;
+        }
+
+        #card h2{
+          font-size: 10pt;
+        }
+
+        #card p {
+            font-size: 10pt;
         }
 
     }
@@ -269,15 +312,23 @@ body {
         } */
 
         .class-logo {
-            margin-left: 65px;
             /* width: 80% !important; */
             width: 100%;
             height: auto;
             margin-bottom: 10px;
         }
 
+        #card h2{
+          font-size: 10pt;
+        }
+
+        #card p {
+            font-size: 10pt;
+        }
+
     }
-}
+
+
 .modal > .modal-dialog > .modal-content > form > .modal-body > .table > thead > tr > th {
 	color : #555;
 	vertical-align: middle;
@@ -407,16 +458,17 @@ html.modal_openoverflow {
     {{--  <img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive class-logo">  --}}
     <center><img src="{{asset('uploads/logo original.JPG')}}" class="class-logo" style="width:100%; height:auto;"></center>
     <h2>ยินดีด้วยคุณได้รับของรางวัล</h2>
-    <p style="font-size:20px;font-weight:700;">{{$reward->name}}</p>
-    <div class="row">
+    <p style="font-weight:700;">{{$reward->name}}</p>
+    <div class="row" style="margin:0px;">
         <div class="col-12">
-            <img width="100%" height="auto" src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive" alt="Image" />
+            <img height="auto" src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive reward-img" alt="Image" />
         </div>
     </div>
     <!-- <span class="left bottom">tel: 530 283 ****</span>
     <span class="right bottom">Adres:Türkiye/Şanlıurfa</span> -->
 
 </div>
+
 <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -435,6 +487,7 @@ html.modal_openoverflow {
         </div>
     </div>
 </div>
+
 </body>
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
