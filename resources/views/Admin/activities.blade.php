@@ -368,19 +368,19 @@
             <div class="modal-body">
 				<div class="row">
 	                <div class="col-lg-12">
-	                        <div class="body no-margin">
-	                            <table class="table table-bordered table-hover" id="RewardList">
-	                                <thead>
-	                                    <tr>
-											<th style="color:#000;">รหัส</th>
-											<th style="color:#000;">เลือก</th>
-					                        <th style="color:#000;">ชื่อของรางวัล</th>
-					                        <th style="color:#000;">คงเหลือ</th>
-					                        <th></th>
-	                                    </tr>
-	                                </thead>
-	                            </table>
-	                        </div>
+                        <div class="body no-margin">
+                            <table class="table table-bordered table-hover" id="RewardList">
+                                <thead>
+                                    <tr>
+										<th style="color:#000;">รหัส</th>
+										<th style="color:#000;">เลือก</th>
+				                        <th style="color:#000;">ชื่อของรางวัล</th>
+				                        <th style="color:#000;">คงเหลือ</th>
+				                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
 	                </div>
 	            </div>
             </div>
@@ -389,6 +389,26 @@
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
             </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalDownload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-maximize" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">ดาวน์โหลด {{$title_page or 'ข้อมูลใหม่'}}</h4>
+            </div>
+            <div class="modal-body">
+				<div class="row">
+	                <div class="col-lg-12 downloadQrcode" align="center">
+
+	                </div>
+	            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+            </div>
         </div>
     </div>
 </div>
@@ -648,8 +668,25 @@
 				});
 			}
 		});
-		ShowModal('ModalReward');
+	});
+	$('body').on('click','.btn-qrcode',function(data){
+		var btn = $(this);
+		btn.button('loading');
+		var id = $(this).data('id');
+		btn.button("reset");
+		$.ajax({
+            method : "GET",
+            url : url_gb+"/admin/Activities/getDownloadQrcode/"+id,
+            dataType : 'html'
+        }).done(function(rec){
+			$('.downloadQrcode').html(rec);
+		});
+		ShowModal('ModalDownload');
     });
+	$('body').on('click','img.download',function() {
+		// $(this).prop('download',true);
+		$(this).wrap('<a href="' + $(this).attr('src') + '" download="'+$(this).attr('name')+'" />');
+	});
 
 	$('body').on('click','.addQue',function(e){
 		e.preventDefault();

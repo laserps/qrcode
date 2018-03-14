@@ -178,7 +178,7 @@ class ActivitiesController extends Controller
         })
         ->addColumn('qr_code', function($rec){
             // $urlgen = str_replace("http://","",$rec->activity_url);
-            //return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
+            // return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
             return \QrCode::size(100)->generate(url("/QRCODE/".$rec->code));
         })
         ->addColumn('action',function($rec){
@@ -194,6 +194,9 @@ class ActivitiesController extends Controller
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-staff btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
                     <i class="ace-icon fa fa-user bigger-120"></i>
+                </button>
+                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-default btn-condensed btn-qrcode btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="สร้าง QRCode">
+                    <i class="ace-icon fa fa-qrcode bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="แก้ไข">
                     <i class="ace-icon fa fa-edit bigger-120"></i>
@@ -298,6 +301,7 @@ class ActivitiesController extends Controller
     public function QRCODE($code)
     {
         $return['activity'] = \App\Models\Activities::where('code',$code)->first();
+
         return View::make('Admin.qr_code',$return);
     }
     public function StoreQRCODE(Request $request)
@@ -491,8 +495,15 @@ class ActivitiesController extends Controller
             'activity_id' => $activity_id,
             'status' => $result>0?'T':'F'
         ])->first()->reward_id;
+        $table = 'reward';
         $listReward = json_decode($listReward);
         $randomReward = \App\Models\Reward::where('amount','<>',0)->whereIn('id',$listReward)->with('getRewardPicture')->orderBy(\DB::raw('rand()'))->limit(1)->get()->first();
+        // $random = DB::select("
+        // select FLOOR(RAND() * ".$str.") AS random
+        // from ".$table."
+        // where FLOOR(RAND() * ".$str.") in (select r.".$column." from ".$table." r)
+        // limit 1
+        // ");
         $return['reward'] = $randomReward;
         $check = \App\Models\ActivityRewardUser::where('activity_id',$activity_id)->where('user_id',$user_id)->get();
         if(sizeof($check)==0) {
@@ -699,5 +710,10 @@ class ActivitiesController extends Controller
             $result[$key] = json_decode($value->question_group_id);
         }
         return json_encode($result);
+    }
+    public function getDownloadQrcode($id) {
+        $result = \App\Models\Activities::where('activity_id',$id)->first();
+        $data = \QrCode::format('png')->encoding('UTF-8')->size(750)->generate(url("/QRCODE/".$result->code));
+        return '<img name="'.$result->code.'" class="download" src="data:image/png;base64, '.base64_encode($data) .'" title="click for download">';
     }
 }

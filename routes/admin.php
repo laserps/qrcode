@@ -19,6 +19,16 @@
 
 
     Route::group(['middleware' => 'admin_auth','prefix' => 'admin'], function(){
+        Route::get('/testQrcodeByNomklong',function(){
+            $result = \App\Models\Activities::first();
+            $data['png'] = \QrCode::format('png')->encoding('UTF-8')->size(250)->generate(url("/QRCODE/".$result->code));
+
+            $data['main_menu'] = 'ตั้งค่า';
+            $data['sub_menu'] = 'พนักงาน';
+            $data['title_page'] = 'พนักงาน';
+            $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
+            return View::make('test',$data);
+        });
         Route::get('/', 'Admin\HomeController@index');
         Route::get('/logout', 'Admin\AuthController@logout');
         Route::get('/dashboard', 'Admin\HomeController@index');
@@ -122,10 +132,11 @@
         Route::get('/Activities/getStaff/{id}', 'Admin\ActivitiesController@getStaff');
 
         Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
-        
-        
+
+
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
+        Route::get('/Activities/getDownloadQrcode/{id}', 'Admin\ActivitiesController@getDownloadQrcode');
         Route::get('/Activities/getActivityQuestion/{id}', 'Admin\ActivitiesController@getActivityQuestion');
         Route::get('/Activities/getSpecialQuestion/{id}', 'Admin\ActivitiesController@getSpecialQuestion');
         Route::post('/Activities/updateStatus/{id}', 'Admin\ActivitiesController@updateStatus');
