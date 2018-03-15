@@ -422,10 +422,20 @@
 	var add_check = [];
 	var staff_index = 0;
 	var staff_check = [];
-    $('#add_working_time_start').timepicker({ 'timeFormat': 'H:i:s' });
-    $('#add_working_time_end').timepicker({ 'timeFormat': 'H:i:s' });
-    $('#edit_working_time_start').timepicker({ 'timeFormat': 'H:i:s' });
-    $('#edit_working_time_end').timepicker({ 'timeFormat': 'H:i:s' });
+	var datetimenow = new Date();
+	var datenow = datetimenow.getFullYear() + "-" + (datetimenow.getMonth()+1) + "-" + datetimenow.getDate();
+	$('#add_working_time_start').datetimepicker({
+		'pickTime': false,
+	});
+	$('#add_working_time_end').datetimepicker({
+		'pickTime': false
+	});
+	$('#edit_working_time_start').datetimepicker({
+		'pickTime': false
+	});
+	$('#edit_working_time_end').datetimepicker({
+		'pickTime': false
+	});
 
      var TableList = $('#TableList').dataTable({
         "ajax": {
@@ -645,7 +655,6 @@
 		arr_reward_t.length = 0;
 		$('#ModalReward').find('#activity_id').val(id);
 		btn.button("reset");
-		RewardList.api().ajax.reload();
 		$.ajax({
             method : "GET",
             url : url_gb+"/admin/Activities/getReward/"+id,
@@ -668,6 +677,8 @@
 				});
 			}
 		});
+		RewardList.api().ajax.reload();
+		ShowModal('ModalReward');
 	});
 	$('body').on('click','.btn-qrcode',function(data){
 		var btn = $(this);

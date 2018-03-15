@@ -490,33 +490,92 @@ class ActivitiesController extends Controller
         $str = base64_decode($code);
         $str = explode('/',$str);
         $activity_id=$str[0];$user_id=$str[1];$result=$str[2];$question_id=$str[3];
-
         $listReward = \App\Models\ActivityReward::where([
             'activity_id' => $activity_id,
-            'status' => $result>0?'T':'F'
+            'status' => ($result>0)?'T':'F'
         ])->first()->reward_id;
-        $table = 'reward';
         $listReward = json_decode($listReward);
-        $randomReward = \App\Models\Reward::where('amount','<>',0)->whereIn('id',$listReward)->with('getRewardPicture')->orderBy(\DB::raw('rand()'))->limit(1)->get()->first();
-        // $random = DB::select("
-        // select FLOOR(RAND() * ".$str.") AS random
-        // from ".$table."
-        // where FLOOR(RAND() * ".$str.") in (select r.".$column." from ".$table." r)
-        // limit 1
-        // ");
-        $return['reward'] = $randomReward;
+        // $randomReward = \App\Models\Reward::where('amount','<>',0)->whereIn('id',$listReward)->with('getRewardPicture')->orderBy(\DB::raw('rand()'))->limit(1)->get()->first();
+        // $return['reward'] = $randomReward;
+        // $amount_reward = [];
+        // $id_reward = [];
+        // $percent_reward = [];
+        // $i=0;
+        // $count_all = 0;
+        // foreach ($listReward as $key => $value) {
+        //     $check_amount = \App\Models\Reward::find($value);
+        //     if($check_amount->amount!=0) {
+        //         $amount_reward[$i] = $check_amount->amount;
+        //         $id_reward[$i] = $check_amount->id;
+        //         $count_all += $check_amount->amount;
+        //         $i++;
+        //     }
+        // }
+        // foreach ($amount_reward as $key => $value) {
+        //     $percent_reward[$key] = intVal($value*100/$count_all)/100;
+        // }
+        // rsort($percent_reward);
+        \DB::enableQueryLog();
+        $count_all = 0;
+        $percent = 0;
+        $id_reward = '';
+        $res = '(';
+        foreach ($listReward as $key => $value) {
+            $res .=$value.',';
+        }
+        $res = substr($res, 0, -1);
+        $res .=')';
+        $random = \DB::select("
+        SELECT
+            id,amount,(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'SUMALL',amount/(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'Percent'
+            FROM reward
+            WHERE amount <> 0 AND id IN ".$res."
+            GROUP BY id,amount
+            ORDER BY amount DESC
+        ");
+        $ran = \DB::select("
+            SELECT RAND() as rd
+        ")[0]->rd;
+        foreach ($random as $key => $value) {
+            if($key!=0) {
+                $count_all = $value->amount;
+                if($ran>$value->Percent) {
+                    if(($ran-$value->Percent)<$percent) {
+                        $percent = $ran-$value->Percent;
+                        $count_all += $value->Percent;
+                        $id_reward = $value->id;
+                    }
+                } else {
+                    if(($value->Percent-$ran)<$percent) {
+                        $percent = $value->Percent-$ran;
+                        $count_all += $value->Percent;
+                        $id_reward = $value->id;
+                    }
+                }
+            } else {
+                $count_all += $value->Percent;
+                $id_reward = $value->id;
+                if($ran>$value->Percent) {
+                    $percent = $ran-$value->Percent;
+                } else {
+                    $percent = $value->Percent-$ran;
+                }
+            }
+        }
+        // dd(\DB::getQueryLog());
+        $return['reward'] = \App\Models\Reward::find($id_reward);
         $check = \App\Models\ActivityRewardUser::where('activity_id',$activity_id)->where('user_id',$user_id)->get();
         if(sizeof($check)==0) {
             \App\Models\ActivityRewardUser::insert([
                 'activity_id'=>$activity_id,
                 'user_id'=>$user_id,
-                'reward_id'=>$randomReward->id,
+                'reward_id'=>$id_reward,
                 'staff_id'=>1,
                 'created_at'=>date('Y-m-d H:i:s')
             ]);
 
-            $get_reward_balance = \App\Models\Reward::find($randomReward->id)->amount;
-            \App\Models\Reward::where('id',$randomReward->id)->update([
+            $get_reward_balance = \App\Models\Reward::find($id_reward)->amount;
+            \App\Models\Reward::where('id',$id_reward)->update([
                 'updated_at' => date('Y-m-d H:i:s'),
                 'amount' => --$get_reward_balance,
             ]);

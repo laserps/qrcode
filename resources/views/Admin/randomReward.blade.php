@@ -509,5 +509,14 @@ $('body').on('submit','#answer_history',function(e){
 $(function() {
     $('#ModalAdd').modal('show');
 });
+$(function() {
+    $.each($('body').find('#ModalAdd').find('img'),function() {
+        $(this).removeAttr('width height');
+        $(this).attr({
+            'width': '100%',
+            'height': 'auto'
+        });
+    });
+});
 </script>
 </html>

@@ -27,7 +27,7 @@
 
 </head>
 <body>
-@if($activity->status=="T" && date('H:i:s') >= $activity->working_time_start && date('H:i:s') <= $activity->working_time_end)
+@if($activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 logo-margin">
 			<img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive center-block respon" alt="Yout Logo Here">
@@ -74,7 +74,7 @@ swal({
 	window.location = getUrl;
 });
 @endif
-@if(date('H:i:s') > $activity->working_time_end)
+@if(date('Y-m-d H:i:s') > $activity->working_time_end)
 swal({
 	position: 'center',
 	type: 'error',
@@ -86,7 +86,7 @@ swal({
 	window.location = getUrl;
 });
 @endif
-@if(date('H:i:s') < $activity->working_time_start)
+@if(date('Y-m-d H:i:s') < $activity->working_time_start)
 swal({
 	position: 'center',
 	type: 'error',
