@@ -455,66 +455,20 @@ html.modal_openoverflow {
 
 {{--  <div id="gradient"></div>  --}}
 <div id="card" style="text-align:center;">
-    {{--  <img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive class-logo">  --}}
     <center><img src="{{asset('uploads/logo original.JPG')}}" class="class-logo" style="width:100%; height:auto;"></center>
-    <h2>ยินดีด้วยคุณได้รับของรางวัล</h2>
-    <p style="font-weight:700;">{{$reward->name}}</p>
     <div class="row" style="margin:0px;">
         <div class="col-12">
-            <img height="auto" src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive reward-img" alt="Image" />
+            {!!$img!!}
         </div>
     </div>
     <!-- <span class="left bottom">tel: 530 283 ****</span>
     <span class="right bottom">Adres:Türkiye/Şanlıurfa</span> -->
 
 </div>
-
-<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <form id="FormAdd">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel"></h4>
-                </div>
-                <div class="modal-body" style="vertical-align:middle;">
-                    {!!$text!!}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 </body>
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
-$('body').on('submit','#answer_history',function(e){
-    e.preventDefault();
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        method : "POST",
-        url : "{{url('/admin/AnswerHistory')}}",
-        dataType : 'json',
-        data :$(this).serialize()
-    }).done(function(rec){
 
-    });
-});
-$(function() {
-    $('#ModalAdd').modal('show');
-    $.each($('body').find('#ModalAdd').find('img'),function() {
-        $(this).removeAttr('width height');
-        $(this).attr({
-            'width': '100%',
-            'height': 'auto'
-        });
-    });
-});
 </script>
 </html>

@@ -300,7 +300,9 @@ class ActivitiesController extends Controller
     }
     public function QRCODE($code)
     {
-        $return['activity'] = \App\Models\Activities::where('code',$code)->first();
+        $activity = \App\Models\Activities::where('code',$code)->first();
+        $return['activity'] = $activity;
+        $return['check_question'] = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
 
         return View::make('Admin.qr_code',$return);
     }
@@ -308,6 +310,7 @@ class ActivitiesController extends Controller
     {
         // $input_all                 = $request->all();
         $input_all['phone']      = $request->phone;
+        $input_all['branch']      = $request->branch;
         $phone                   = $input_all['phone'];
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
@@ -343,27 +346,38 @@ class ActivitiesController extends Controller
         $return['userid']   = $userid;
         $return['code']     = $code;
         $activity           = \App\Models\Activities::where('code',$code)->first();
-        $check = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
-        if(sizeof($check)==0) {
-            return redirect('admin/QRCODE/'.$code);
-        } else {
-            $question_group_id  = json_decode($check->question_group_id);
-            $return['activity'] = $activity;
-            $test =[];
-            $limit_question = 1;
-            for($i=0;$i<$limit_question;$i++) {
-                if(sizeof($question_group_id)!=0) {
-                    $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
-                    foreach ($question_group_id as $key => $value) {
-                        if($value == $test[$i]['id']) {
-                            unset($question_group_id[$key]);
+        $check              = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
+        if($check) {
+            if(sizeof($check)==0) {
+                return redirect('admin/QRCODE/'.$code);
+            } else {
+                $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
+                if($check_history) {
+                    $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
+                    $str = base64_encode($data_send);
+                    return redirect('Activities/randomReward/'.$str);
+                } else {
+                    $question_group_id  = json_decode($check->question_group_id);
+                    $return['activity'] = $activity;
+                    $test =[];
+                    $limit_question = 1;
+                    for($i=0;$i<$limit_question;$i++) {
+                        if(sizeof($question_group_id)!=0) {
+                            $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                            foreach ($question_group_id as $key => $value) {
+                                if($value == $test[$i]['id']) {
+                                    unset($question_group_id[$key]);
+                                }
+                            }
                         }
                     }
+                    $return['question'] = $test;
+                    // return $return['question'];
+                    return View::make('Admin.randomQuestion',$return);
                 }
             }
-            $return['question'] = $test;
-            // return $return['question'];
-            return View::make('Admin.randomQuestion',$return);
+        } else {
+            return redirect('QRCODE/'.$code);
         }
     }
     public function getAllSpecialQuestion($code,$userid){
@@ -387,7 +401,7 @@ class ActivitiesController extends Controller
         unset($input_all['_token']);
         unset($input_all['activity_id']);
         unset($input_all['user_id']);
-
+        $check_history = \App\Models\AnswerHistory::where('user_id',$request->user_id)->where('activity_id',$request->activity_id)->first();
         $result = 0; $qtyQustion = 0;
         foreach($input_all as $ia){
             $str = explode('|',$ia);
@@ -403,16 +417,26 @@ class ActivitiesController extends Controller
             $result += $this->checkResult($str[0],$str[1]);
         }
         $validator = Validator::make($request->all(), []);
-
+        $string = '';
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
-                if(\App\Models\AnswerHistory::insert($data_insert)){
-                    \DB::commit();
-                    $return['status'] = 1;
-                    $return['content'] = 'สำเร็จ';
-                }else{
-                    throw new $e;
+                if($check_history) {
+                        $string = $request->activity_id.'/'.$request->user_id.'/'.$check_history->result.'/'.$check_history->question_id;
+                        \DB::rollBack();
+                        $return['status'] = 0;
+                } else {
+                    if(\App\Models\AnswerHistory::insert($data_insert)){
+                        \DB::commit();
+                        $return['status'] = 1;
+                        $return['content'] = 'สำเร็จ';
+                        $returns['activity_id'] = $request->activity_id;
+                        $returns['user_id'] = $request->user_id;
+                        $returns['result'] = $result/$qtyQustion;
+                        $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'].'/'.$str[0];
+                    }else{
+                        throw new $e;
+                    }
                 }
             } catch (Exception $e) {
                 \DB::rollBack();
@@ -424,12 +448,6 @@ class ActivitiesController extends Controller
         }
 
         $return['title'] = 'เพิ่มข้อมูล';
-
-        $returns['activity_id'] = $request->activity_id;
-        $returns['user_id'] = $request->user_id;
-        $returns['result'] = $result/$qtyQustion;
-        $string = $returns['activity_id'].'/'.$returns['user_id'].'/'.$returns['result'].'/'.$str[0];
-
         $return['code'] = base64_encode($string);
 
         return json_encode($return);
@@ -566,19 +584,18 @@ class ActivitiesController extends Controller
         $return['reward'] = \App\Models\Reward::find($id_reward);
         $check = \App\Models\ActivityRewardUser::where('activity_id',$activity_id)->where('user_id',$user_id)->get();
         if(sizeof($check)==0) {
-            \App\Models\ActivityRewardUser::insert([
+            $id = \App\Models\ActivityRewardUser::insertGetId([
                 'activity_id'=>$activity_id,
                 'user_id'=>$user_id,
                 'reward_id'=>$id_reward,
-                'staff_id'=>1,
+                // 'staff_id'=>1,
                 'created_at'=>date('Y-m-d H:i:s')
             ]);
 
             $get_reward_balance = \App\Models\Reward::find($id_reward)->amount;
-            \App\Models\Reward::where('id',$id_reward)->update([
-                'updated_at' => date('Y-m-d H:i:s'),
-                'amount' => --$get_reward_balance,
-            ]);
+            $this->rewardCheckout($id_reward,$get_reward_balance);
+        } else {
+            $id = $check[0]->id;
         }
         $remark = \App\Models\AnswerRight::where('question_id',$question_id)->first();
         if($result>0) {
@@ -586,8 +603,15 @@ class ActivitiesController extends Controller
         } else {
             $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
         }
-
-        return View::make('Admin.randomReward',$return);
+        $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$str[2]);
+        // return View::make('Admin.randomReward',$return);
+        return View::make('Admin.randomRewardQrcode',$return);
+    }
+    public function rewardCheckout($id_reward,$get_reward_balance) {
+        \App\Models\Reward::where('id',$id_reward)->update([
+            'updated_at' => date('Y-m-d H:i:s'),
+            'amount' => --$get_reward_balance,
+        ]);
     }
 
     public function AddQuestion(Request $request, $id) {

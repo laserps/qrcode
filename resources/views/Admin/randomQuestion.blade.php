@@ -7,6 +7,7 @@
     <title>Document</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('assets/admin/css/custom.css')}}" />
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
@@ -74,6 +75,7 @@
 </body>
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.js')}}"></script>
 <script>
     $('body').on('submit','#answer_history',function(e){
 		e.preventDefault();
@@ -90,7 +92,18 @@
 					//var getUrl = '{{url("")}}/Activities/randomReward/'+rec.activity_id+'/'+rec.user_id+'/'+rec.result;
                     var getUrl = '{{url("")}}/Activities/randomReward/'+rec.code;
                 	window.location = getUrl;
-				}
+				} else {
+                    swal({
+                    	position: 'center',
+                    	type: 'error',
+                    	title: 'คุณเคยตอบคำถามแล้ว',
+                    	text:  'error',
+                    	showConfirmButton: true
+                    },function(){
+                        var getUrl = '{{url("")}}/Activities/randomReward/'+rec.code;
+                        window.location = getUrl;
+                    });
+                }
             });
 	});
 </script>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <style>
-	.container{
-		padding-left: 0 !important;
-		padding-right: 0 !important;
-	  max-width: 100%;
-	}
+.container{
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	max-width: 100%;
+}
 
-	.padding-0{
-		padding:0;
-	}
+.padding-0{
+	padding:0;
+}
 </style>
 <html>
 <head>
@@ -27,33 +27,35 @@
 
 </head>
 <body>
-@if($activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
+	@if(sizeof($check_question)!=0 && $activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 logo-margin">
 			<img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive center-block respon" alt="Yout Logo Here">
 		</div>
 	</div>
 	<div class="row">
-	  <div class="col-md-6 col-md-offset-3">
-		  	<div class="panel panel-success phone-form" style="margin-top: 41px;">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="panel panel-success phone-form" style="margin-top: 41px;">
 				<div class="panel-heading">
 					<h3 class="panel-title custom-panel-title">กรอกข้อมูลเบอร์โทรศัพท์</h3>
 				</div>
 				<div class="panel-body">
 					<form class="form-inline" id="FormAdd">
-					  <div class="form-group">
-					    <div class="form-group">
-						    <label for="add_phone" class="custom-add-phone">เบอร์โทรศัพท์ : </label>
-						    <input type="text" class="form-control" name="phone" id="add_phone" placeholder="กรอกข้อมูลเบอร์โทรศัพท์">
+						<div class="form-group">
+							<label for="add_phone" class="custom-add-phone">เบอร์โทรศัพท์ : </label>
+							<input type="text" class="form-control" name="phone" id="add_phone" placeholder="กรอกข้อมูลเบอร์โทรศัพท์">
 						</div>
-					  <button type="submit" class="btn btn-custom">บันทึกข้อมูล</button>
+						<div class="form-group">
+							<label for="add_branch" class="custom-add-branch" style="font-size:18px;">สาขา : </label>
+							<input type="text" class="form-control" name="branch" id="add_branch" placeholder="กรอกสาขา">
+						</div>
+						<button type="submit" class="btn btn-custom">บันทึกข้อมูล</button>
 					</form>
 				</div>
 			</div>
-		  </div>
 		</div>
 	</div>
-@endif
+	@endif
 </body>
 </html>
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
@@ -62,6 +64,18 @@
 <script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.js')}}"></script>
 
 <script type="text/javascript">
+@if(!$check_question)
+swal({
+	position: 'center',
+	type: 'error',
+	title: 'กิจกรรมยังไม่พร้อมใช้งาน',
+	text:  'error',
+	showConfirmButton: true
+},function(){
+	var getUrl = '{{url("")}}/admin/Activities';
+	window.location = getUrl;
+});
+@endif
 @if($activity->status=='F')
 swal({
 	position: 'center',
@@ -100,10 +114,10 @@ swal({
 @endif
 </script>
 <script>
-	$('body').on('submit','#FormAdd',function(e){
-		e.preventDefault();
-		if ($.isNumeric($('#add_phone').val()) && $('#add_phone').val().length == 10) {
-			$.ajax({
+$('body').on('submit','#FormAdd',function(e){
+	e.preventDefault();
+	if ($.isNumeric($('#add_phone').val()) && $('#add_phone').val().length == 10) {
+		$.ajax({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
@@ -113,41 +127,41 @@ swal({
 			data :$(this).serialize()
 		}).done(function(rec){
 			if(rec.status==1){
-	              	// var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getSpecialQuestion';
-					var getUrl = '{{url("")}}/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
-	                window.location = getUrl;
-                }else{
-                	swal({
-                        position: 'center',
-                        type: 'error',
-                        title: rec.title,
-                        text:  rec.content,
-                        showConfirmButton: true
-                      },function(){
-                        $('#add_phone').val('');
-                      });
-                }
-			}).error(function(){
+				// var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/'+rec.user_id+'/getSpecialQuestion';
+				var getUrl = '{{url("")}}/Activities/{{$activity->code}}/'+rec.user_id+'/getQuestion';
+				window.location = getUrl;
+			}else{
+				swal({
+					position: 'center',
+					type: 'error',
+					title: rec.title,
+					text:  rec.content,
+					showConfirmButton: true
+				},function(){
+					$('#add_phone').val('');
+				});
+			}
+		}).error(function(){
 
-			});
-		}else{
-			if(!$.isNumeric($('#add_phone').val())) {
-			swal({
-                position: 'center',
-                type: 'error',
-                title: 'ผิดพลาด',
-                text:  'ตัวเลขเท่านั้น',
-                showConfirmButton: true
-              });
-		  } else {
-			  swal({
-                  position: 'center',
-                  type: 'error',
-                  title: 'ผิดพลาด',
-                  text:  '10 ตัวอักษรเท่านั้น',
-                  showConfirmButton: true
-                });
-		  }
-		}
 		});
-	</script>
+	}else{
+		if(!$.isNumeric($('#add_phone').val())) {
+			swal({
+				position: 'center',
+				type: 'error',
+				title: 'ผิดพลาด',
+				text:  'ตัวเลขเท่านั้น',
+				showConfirmButton: true
+			});
+		} else {
+			swal({
+				position: 'center',
+				type: 'error',
+				title: 'ผิดพลาด',
+				text:  '10 ตัวอักษรเท่านั้น',
+				showConfirmButton: true
+			});
+		}
+	}
+});
+</script>

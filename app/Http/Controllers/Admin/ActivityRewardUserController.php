@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
 use QRCode;
+use View;
 class ActivityRewardUserController extends Controller
 {
     /**
@@ -196,7 +197,7 @@ class ActivityRewardUserController extends Controller
         ->rawColumns(['url', 'qrcode', 'action'])
         ->make(true);
     }
-    public function acceptRewardUser($id) {
+    public function acceptRewardUser($id,$result) {
         $encode = base64_decode($id);
         $val = explode('/',$encode);
         $check = \App\Models\ActivityRewardUser::where('id',$val[0])->where('staff_id',NULL)->first();
@@ -207,13 +208,32 @@ class ActivityRewardUserController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                     'staff_id' =>\Auth::guard('admin')->user()->id,
                 ]);
-                $get_reward_balance = \App\Models\Reward::find($val[1])->amount;
-                \App\Models\Reward::where('id',$val[1])->update([
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'amount' => --$get_reward_balance,
-                ]);
+
+
+                // $get_reward_balance = \App\Models\Reward::find($val[1])->amount;
+                // \App\Models\Reward::where('id',$val[1])->update([
+                //     'updated_at' => date('Y-m-d H:i:s'),
+                //     'amount' => --$get_reward_balance,
+                // ]);
             }
+        } else {
+            $check = \App\Models\ActivityRewardUser::where('id',$val[0])->first();
         }
-        return redirect('admin/ActivityRewardUser');
+        $return['reward'] = \App\Models\Reward::find($check->reward_id);
+        $question = \App\Models\AnswerHistory::where('activity_id',$check->activity_id)->where('user_id',$check->user_id)->first();
+        $remark = \App\Models\AnswerRight::where('question_id',$question->question_id)->first();
+        if($result>0) {
+            $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
+        } else {
+            $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
+        }
+        return View::make('Admin.randomReward',$return);
+        // return redirect('admin/ActivityRewardUser');
+    }
+    public static function getRewardQrcode($id,$r) {
+        $result = \App\Models\ActivityRewardUser::where('id',$id)->first();
+        $data = \QrCode::format('png')->encoding('UTF-8')->size(300)->generate(url("ActivityRewardUser/accept/".base64_encode($id.'/'.$result->reward_id).'/'.$r));
+        return '<img src="data:image/png;base64, '.base64_encode($data) .'">';
+        // return "<a href='".url('ActivityRewardUser/accept/'.base64_encode($id.'/'.$result->reward_id).'/'.$r)."'>";
     }
 }
