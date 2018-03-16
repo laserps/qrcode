@@ -196,7 +196,7 @@
 
     //Route::get('/Activities/randomReward/{aid}/{uid}/{result}', 'Admin\ActivitiesController@randomReward');
     Route::get('/Activities/randomReward/{code}', 'Admin\ActivitiesController@randomReward');
-    Route::get('/ActivityRewardUser/accept/{id}/{result}', 'Admin\ActivityRewardUserController@acceptRewardUser');
+    Route::get('/ActivityRewardUser/accept/{id}/{result?}', 'Admin\ActivityRewardUserController@acceptRewardUser');
 
     //OrakUploader
     Route::any('/upload_file', 'OrakController@upload_file');
