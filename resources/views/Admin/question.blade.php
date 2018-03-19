@@ -257,7 +257,7 @@
                         close_previous : "no"
                     });
                 },
-                
+
                 height : 400,
                 init_instance_callback: function(editor){
                     editor.on('NodeChange', function (e){
@@ -281,7 +281,7 @@
             }
 
             if(rec.status==null){
-                
+
             }else{
                 $("#FormEdit input[value='"+rec.status+"']").prop('checked',true);
             }
@@ -362,7 +362,7 @@
             }else{
                 tinyMCE.activeEditor.setContent(rec.remark.remark);
             }
-            
+
 
             $.each(rec.listAnswer, function(i,val){
 				if(val.ansID!=null) {

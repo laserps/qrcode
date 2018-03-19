@@ -616,14 +616,16 @@
 	        }).done(function(result){
 				var str = '';
 				$.each(result[0],function(k,v) {
-					add_index = k+1;
-					add_check[k] = v;
-					str +=
-					`<tr>
-						<td></td>
-						<td>`+$('#allQuestion').find('button[value="'+v+'"]').closest('td').prev().text()+`</td>
-						<td style="vertical-align:middle;text-align:center;"><button value="`+v+`" class="btn btn-sm btn-danger removeQue">ลบ</button></td>
-					</tr>`;
+					if($('#allQuestion').find('button[value="'+v+'"]').closest('td').prev().text()!='') {
+						add_index = k+1;
+						add_check[k] = v;
+						str +=
+						`<tr>
+							<td></td>
+							<td>`+$('#allQuestion').find('button[value="'+v+'"]').closest('td').prev().text()+`</td>
+							<td style="vertical-align:middle;text-align:center;"><button value="`+v+`" class="btn btn-sm btn-danger removeQue">ลบ</button></td>
+						</tr>`;
+					}
 				});
 				$('#allSelect').append(str);
 				$.each($('#allSelect').find('tr'),function(k,v){

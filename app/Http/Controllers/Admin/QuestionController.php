@@ -157,7 +157,9 @@ class QuestionController extends Controller
     public function Lists(){
         $result = \App\Models\Question::select();
         return \Datatables::of($result)
-
+        ->editColumn('status',function($rec) {
+            return ($rec->status=="T")?'เปิดใช้งาน':'ไม่เปิดใช้งาน';
+        })
         ->addColumn('action',function($rec){
             $str='
             <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -177,7 +179,7 @@ class QuestionController extends Controller
         ->make(true);
     }
     public function addQuestion() {
-        $all = \App\Models\Question::get();
+        $all = \App\Models\Question::where('status','T')->get();
         foreach ($all as $k => $v) {
             $result[$k]['id'] = $v->id;
             $result[$k]['text'] = $this->getString($v->text,50);

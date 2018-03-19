@@ -363,7 +363,7 @@ class ActivitiesController extends Controller
                     $limit_question = 1;
                     for($i=0;$i<$limit_question;$i++) {
                         if(sizeof($question_group_id)!=0) {
-                            $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                            $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
                             foreach ($question_group_id as $key => $value) {
                                 if($value == $test[$i]['id']) {
                                     unset($question_group_id[$key]);
