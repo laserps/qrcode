@@ -483,7 +483,23 @@
 		   putvalue();
 	   }
    });
-
+	$('body').on('click','.checkbox[name*="status_f"]',function() {
+		checked_checkbox($(this),'t')
+	});
+	$('body').on('click','.checkbox[name*="status_t"]',function() {
+		checked_checkbox($(this),'f')
+	});
+	function checked_checkbox(this_check,find_check) {
+		if(this_check.prop('checked')==true) {
+			this_check.closest('tr').find('td:first').next().children().prop('checked',true);
+		} else {
+			if(this_check.closest('tr').find('.checkbox[name*="status_'+find_check+'"]').prop('checked')==true) {
+				this_check.closest('tr').find('td:first').next().children().prop('checked',true);
+			} else {
+				this_check.closest('tr').find('td:first').next().children().prop('checked',false);
+			}
+		}
+	}
     $('body').on('click','.btn-add-init-question', function(data){
         console.log($(this).data('id'));
         var str = "";
@@ -1149,7 +1165,8 @@
                     swal(rec.title,rec.content,"error");
                 }
             }).error(function(){
-                swal("system.system_alert","system.system_error","error");
+                // swal("system.system_alert","system.system_error","error");
+                swal("ผิดพลาด","กรุณาตรวจสอบข้อมูล","error");
                 btn.button("reset");
             });
         },

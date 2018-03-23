@@ -186,7 +186,7 @@ class ActivitiesController extends Controller
                 <button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
                     <i class="ace-icon fa fa-question-circle bigger-120"></i>
                 </button>
-                <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบ">
+                <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำถาม">
                     <i class="ace-icon fa fa-plus-square bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
@@ -303,6 +303,12 @@ class ActivitiesController extends Controller
         $activity = \App\Models\Activities::where('code',$code)->first();
         $return['activity'] = $activity;
         $return['check_question'] = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
+        $return['check_reward'] = false;
+        $t = \App\Models\ActivityReward::where('activity_id',$activity->activity_id)->get();
+        if(sizeof($t)!=0) {
+            $return['check_reward'] = true;
+        }
+        // dd($return['check_reward']);
 
         return View::make('Admin.qr_code',$return);
     }
