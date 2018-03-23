@@ -72,7 +72,7 @@
 					<div class="modal-body">
 
 						<div class="form-group">
-							<textarea class="form-control" name="text" id="edit_text" required=""></textarea>
+							<textarea class="form-control editor" name="text" id="edit_text" required=""></textarea>
 						</div>
 
 						<div class="form-inline">
@@ -103,9 +103,9 @@
 						<form id="FormAddAnswer">
 							<div class="form-group row">
 								<input type="hidden" id="idQuestion" name="question_id">
-								<label for="inputPassword" class="col-sm-2 col-form-label"><h4>คำตอบ</h4></label>
+								<label for="textAnswer" class="col-sm-2 col-form-label"><h4>คำตอบ</h4></label>
 								<div class="col-sm-8">
-									<input type="text" name="text" class="form-control" id="inputPassword" placeholder="answer">
+									<input type="text" name="text" class="form-control editor" id="textAnswer" placeholder="answer">
 								</div>
 								<div class="col-sm-2">
 									<button type="submit" class="btn btn-primary">เพิ่ม</button>
@@ -216,6 +216,7 @@
 	    $(this).trigger('dblclick');
 	    $(this).trigger('dblclick');
 	}).on('dblclick','.btn-edit',function(data){
+		tinymce.triggerSave();
 		tinymce.EditorManager.execCommand('mceRemoveEditor',true, "#ModalEdit #edit_text");
 		var btn = $(this);
 		btn.button('loading');
@@ -227,7 +228,7 @@
 			dataType : 'json'
 		}).done(function(rec){
 			btn.button("reset");
-			console.log(rec.text);
+			// console.log(rec.text);
 			//tinyMCE.remove()
 			var edit_config = {
 				path_absolute : "",
@@ -265,7 +266,7 @@
 					editor.on('NodeChange', function (e){
 						editor.save();
 						$("textarea#edit_text").val( $("textarea#edit_text").val() );
-						console.log($("textarea#edit_text").val());
+						// console.log($("textarea#edit_text").val());
 					});
 				},
 			};
@@ -275,13 +276,17 @@
 			if(rec.text==null){
 				tinyMCE.activeEditor.setContent('<p></p>');
 			}else{
-				//tinyMCE.activeEditor.setContent(rec.text);
+				// tinyMCE.activeEditor.setContent(rec.text);
 				setTimeout(function(){
-					tinyMCE.activeEditor.setContent(rec.text);
-					tinyMCE.activeEditor.focus();
-					tinyMCE.activeEditor.selection.select(tinyMCE.activeEditor.getBody(), true);
-					tinyMCE.activeEditor.selection.collapse(false);
-				},100)
+					// tinyMCE.activeEditor.setContent(rec.text);
+					// tinyMCE.activeEditor.setContent(rec.text);
+					// tinymce.activeEditor.setContent(rec.text, {format: 'raw'});
+					tinymce.get('edit_text').setContent(rec.text);
+					// tinymce.activeEditor.setContent(rec.remark.remark, {format: 'bbcode'});
+					tinymce.get('edit_text').focus();
+					tinymce.get('edit_text').selection.select(tinymce.get('edit_text').getBody(), true);
+					tinymce.get('edit_text').selection.collapse(false);
+				},100);
 			}
 
 			if(rec.status==null){
@@ -312,7 +317,8 @@
 			url : url_gb+"/admin/showAnswerQuestion/"+id,
 			dataType : 'json',
 		}).done(function(rec){
-			tinymce.EditorManager.execCommand('mceRemoveEditor',true, "textarea#description");
+			tinymce.triggerSave();
+			tinymce.EditorManager.execCommand('mceRemoveEditor',true, "#ModalAnswer textarea#description");
 			var str = '';
 			var check = '';
 			console.log(rec.remark.remark);
@@ -324,7 +330,7 @@
 
 			var right_config = {
 				path_absolute : "",
-				selector: "textarea#description",
+				selector: "#ModalAnswer textarea#description",
 				plugins: [
 					"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 					"searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -368,11 +374,14 @@
 				tinyMCE.activeEditor.setContent('<p></p>');
 			}else{
 				setTimeout(function(){
-					tinyMCE.activeEditor.setContent(rec.remark.remark);
-					tinyMCE.activeEditor.focus();
-					tinyMCE.activeEditor.selection.select(tinyMCE.activeEditor.getBody(), true);
-					tinyMCE.activeEditor.selection.collapse(false);
-				},100)
+					// tinyMCE.activeEditor.setContent(rec.remark.remark);
+					// tinymce.activeEditor.setContent(rec.remark.remark, {format: 'raw'});
+					tinymce.get('description').setContent(rec.remark.remark);
+					// tinymce.activeEditor.setContent(rec.remark.remark, {format: 'bbcode'});
+					tinymce.get('description').focus();
+					tinymce.get('description').selection.select(tinymce.get('description').getBody(), true);
+					tinymce.get('description').selection.collapse(false);
+				},100);
 			}
 
 			$.each(rec.listAnswer, function(i,val){
@@ -398,19 +407,19 @@
 				$('#ModalAnswer').find('input:radio[value="'+check+'"]').prop('checked',true);
 			}
 			$('#question_id').val(id);
+			$('#textAnswer').removeClass('is-invalid');
 			ShowModal('ModalAnswer');
 		});
 	}
-
 	$('#FormAddAnswer').validate({
 		errorElement: 'div',
 		errorClass: 'invalid-feedback',
 		focusInvalid: false,
 		rules: {
-
+			text: "required",
 		},
 		messages: {
-
+			text: "กรุณากรอกคำตอบก่อน",
 		},
 		highlight: function (e) {
 			validate_highlight(e);
