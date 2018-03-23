@@ -87,7 +87,7 @@ class AnswerController extends Controller
     {
         $result['listAnswer'] = \App\Models\Answer::leftjoin('answer_right','answer.answer_id','=','answer_right.answer_id')->where('answer.question_id',$questionid)->select('answer.*', 'answer_right.answer_id as ansID')
         ->get();
-        $result['remark'] = \App\Models\AnswerRight::where('question_id',$questionid)->first();
+        $result['remark'] = \App\Models\AnswerRight::where('question_id',$questionid)->get();
         return json_encode($result);
     }
 
