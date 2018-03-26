@@ -10,8 +10,8 @@
         </button>
     </div>
 </h2>
-<div class="row">
-    <div class="col-lg-12">
+<div class="col-lg-12">
+    <section class="widget widhget-min-hight">
         <div class="body no-margin">
             <table class="table table-bordered table-hover" id="TableList">
                 <thead>
@@ -25,7 +25,7 @@
                 </thead>
             </table>
         </div>
-    </div>
+    </section>
 </div>
 
 <!-- Modal -->
@@ -149,11 +149,11 @@ var TableList = $('#TableList').dataTable({
         }
     },
     "columns": [
-        {"data" : "id"},
-        {"data" : "img"},
+        {"data" : "id","searchable":false,"orderable":false},
+        {"data" : "img","searchable":false,"orderable":false},
         {"data" : "name"},
         {"data" : "amount"},
-        { "data": "action","className":"action text-center" }
+        { "data": "action","className":"action text-center","searchable":false,"orderable":false }
     ]
 });
 $('body').on('click','.btn-add',function(data){

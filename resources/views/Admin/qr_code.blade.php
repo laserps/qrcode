@@ -116,7 +116,7 @@ swal({
 <script>
 $('body').on('submit','#FormAdd',function(e){
 	e.preventDefault();
-	if ($.isNumeric($('#add_phone').val()) && $('#add_phone').val().length == 10) {
+	if ($.isNumeric($('#add_phone').val()) && $('#add_phone').val().length >=9 && $('#add_phone').val().length <= 10) {
 		$.ajax({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -158,7 +158,7 @@ $('body').on('submit','#FormAdd',function(e){
 				position: 'center',
 				type: 'error',
 				title: 'ผิดพลาด',
-				text:  '10 ตัวอักษรเท่านั้น',
+				text:  '9-10 ตัวอักษรเท่านั้น',
 				showConfirmButton: true
 			});
 		}

@@ -212,6 +212,7 @@ class QuestionController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
+                // print_r($data_insert);
                 \App\Models\AnswerRight::where('question_id',$id)->delete();
                 \App\Models\AnswerRight::insert($data_insert);
                 \DB::commit();
