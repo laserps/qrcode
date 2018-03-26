@@ -149,7 +149,8 @@ var TableList = $('#TableList').dataTable({
         }
     },
     "columns": [
-        {"data" : "id","searchable":false,"orderable":false},
+        { "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
+        // {"data" : "id","searchable":false,"orderable":false},
         {"data" : "img","searchable":false,"orderable":false},
         {"data" : "name"},
         {"data" : "amount"},

@@ -157,6 +157,7 @@ class QuestionController extends Controller
     public function Lists(){
         $result = \App\Models\Question::select();
         return \Datatables::of($result)
+        ->addIndexcolumn()
         ->editColumn('status',function($rec) {
             $str = '<select class="form-control status" name="status" data-id="'.$rec->id.'">';
             if($rec->status == 'T')

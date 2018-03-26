@@ -222,6 +222,7 @@ class UserController extends Controller
     public function ListUser(){
         $result = \App\Models\AdminUser::select();
         return \Datatables::of($result)
+        ->addIndexColumn()
         ->editColumn('firstname',function($rec){
             $str = $rec->firstname.' '.$rec->lastname.' ('.$rec->nickname.')';
             return $str;

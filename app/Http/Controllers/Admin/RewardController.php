@@ -169,6 +169,7 @@ class RewardController extends Controller
     public function Lists(){
         $result = \App\Models\Reward::select();
         return \Datatables::of($result)
+        ->addIndexColumn()
         ->addColumn('img', function($rec) {
             $str = '';
             $img = \App\Models\RewardPicture::where('reward_id',$rec->id)->first();

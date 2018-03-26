@@ -16,6 +16,7 @@
 			<table class="table table-bordered table-hover" id="TableList">
 				<thead>
 					<tr>
+						<th>ลำดับ</th>
 						<th>ชื่อกิจกรรม</th>
 						<th>QR Code</th>
 						<th>ลิงก์</th>
@@ -445,6 +446,7 @@ var TableList = $('#TableList').dataTable({
 		}
 	},
 	"columns": [
+		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		{"data" : "activity_name"},
 		{"data" : "qr_code","searchable":false,"orderable":false},
 		{"data" : "activity_url","searchable":false,"orderable":false},

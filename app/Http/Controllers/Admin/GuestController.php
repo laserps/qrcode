@@ -165,8 +165,9 @@ class GuestController extends Controller
     }
 
     public function Lists(){
-        $result = \App\Models\Guest::select();
+        $result = \App\Models\Guest::leftjoin('answer_history','guests.guest_id','=','answer_history.user_id')->leftjoin('activity','answer_history.activity_id','=','activity.activity_id')->select();
         return \Datatables::of($result)
+        ->addIndexColumn()
         ->editColumn('guest_type_id', function($rec){
             $str =($rec->guest_type_id == 'T')? 'ใช่':'ไมใช่';
             return $str;

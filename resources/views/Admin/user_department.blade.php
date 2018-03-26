@@ -16,6 +16,7 @@
 			<table class="table table-bordered table-hover" id="TableList">
 				<thead>
 					<tr>
+						<th>ลำดับ</th>
 						<th>ชื่อแผนก</th>
 						<th>วันที่สร้าง</th>
 						<th></th>
@@ -92,6 +93,7 @@ var TableList = $('#TableList').dataTable({
 		}
 	},
 	"columns": [
+		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		{"data" : "department_name"},
 		{"data" : "created_at"},
 		{ "data": "action","className":"action text-center","searchable":false,"orderable":false }

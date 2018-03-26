@@ -16,13 +16,17 @@
 			<table class="table table-bordered table-hover" id="TableList">
 				<thead>
 					<tr>
-						<th>รหัส</th>
+						<th>ลำดับ</th>
 						<th>qrcode</th>
 						<th>รหัสกิจกรรม</th>
 						<th>ลิงก์</th>
 						<th>รหัสของรางวัล</th>
 						<th>รหัสผู้ใช้งาน</th>
+						<th>firstname</th>
+						<th>lastname</th>
 						<th>รหัสผู้ดูแลกิจกรรม</th>
+						<th>staff_firstname</th>
+						<th>staff_lastname</th>
 						<th>วันที่ตอบคำถาม</th>
 						<th>วันที่ยืนยัน</th>
 						<th></th>
@@ -129,13 +133,18 @@ var TableList = $('#TableList').dataTable({
 		}
 	},
 	"columns": [
-		{"data" : "id","searchable":false,"orderable":false},
+		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
+		// {"data" : "id","searchable":false,"orderable":false},
 		{"data" : "qrcode","searchable":false,"orderable":false},
-		{"data" : "activity_id","searchable":false,"orderable":false},
+		{"data" : "activity_name", "name" : "activity.activity_name"},
 		{"data" : "url","searchable":false,"orderable":false},
-		{"data" : "reward_id","searchable":false,"orderable":false},
+		{"data" : "name", "name" : "reward.name"},
 		{"data" : "user_id","searchable":false,"orderable":false},
+		{"data" : "firstname", "name" : "users.firstname" ,"visible":false},
+		{"data" : "lastname", "name" : "users.lastname" ,"visible":false},
 		{"data" : "staff_id","searchable":false,"orderable":false},
+		{"data" : "firstname", "name" : "admin_users.firstname" ,"visible":false},
+		{"data" : "lastname", "name" : "admin_users.lastname" ,"visible":false},
 		{"data" : "created_at"},
 		{"data" : "updated_at"},
 		{ "data": "action","className":"action text-center","searchable":false,"orderable":false }

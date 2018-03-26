@@ -16,6 +16,8 @@
 			<table class="table table-bordered table-hover" id="TableList">
 				<thead>
 					<tr>
+						<th>ลำดับ</th>
+						<th>กิจกรรม</th>
 						<th>โทรศัพท์</th>
 						<th>ชื่อ</th>
 						<th>นามสกุล</th>
@@ -159,6 +161,8 @@ var TableList = $('#TableList').dataTable({
 		}
 	},
 	"columns": [
+		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
+		{"data" : "activity_name", "name" : "activity.activity_name"},
 		{"data" : "phone"},
 		{"data" : "firstname"},
 		{"data" : "lastname"},

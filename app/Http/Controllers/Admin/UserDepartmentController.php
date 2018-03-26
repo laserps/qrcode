@@ -157,7 +157,7 @@ class UserDepartmentController extends Controller
     public function Lists(){
         $result = \App\Models\UserDepartment::select();
         return \Datatables::of($result)
-
+        ->addIndexColumn()
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->department_id.'" title="แก้ไข">

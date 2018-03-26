@@ -161,6 +161,7 @@ class ActivityRewardUserController extends Controller
         ->leftjoin('admin_users','activity_reward_user.staff_id','=','admin_users.id')
         ->select('activity_reward_user.*','users.firstname','users.lastname','reward.name','activity.activity_name','admin_users.firstname as staff_firstname','admin_users.lastname as staff_lastname');
         return \Datatables::of($result)
+        ->addIndexColumn()
         ->editColumn('user_id', function($rec) {
             return $rec->firstname.' '.$rec->lastname;
         })

@@ -163,6 +163,7 @@ class ActivitiesController extends Controller
     public function Lists(){
         $result = \App\Models\Activities::select();
         return \Datatables::of($result)
+        ->addIndexColumn()
         ->editColumn('status', function($rec){
             $str = '<select class="form-control status" name="status" data-id="'.$rec->activity_id.'">';
             if($rec->status == 'T')

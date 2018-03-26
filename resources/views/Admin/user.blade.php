@@ -319,7 +319,8 @@
             }
         },
         "columns": [
-            { "data": "id" },
+            { "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
+            // { "data": "id" },
             { "data": "firstname" },
             { "data": "lastname" , visible : false },
             { "data": "nickname" , visible : false},
