@@ -14,6 +14,11 @@
 	<section class="widget widhget-min-hight">
 		<div class="body no-margin">
 			<table class="table table-bordered table-hover" id="TableList">
+				<col width="10%">
+				<col width="45%">
+				<col width="15%">
+				<col width="15%">
+				<col width="15%">
 				<thead>
 					<tr>
 						<th>id</th>
@@ -164,7 +169,7 @@ var TableList = $('#TableList').dataTable({
 	"columns": [
 		{"data" : "id","searchable":false,"orderable":false},
 		{"data" : "text"},
-		{"data" : "status","searchable":false,"orderable":false},
+		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
 		{"data" : "created_at"},
 		{ "data": "action","className":"action text-center","searchable":false,"orderable":false }
 	]
@@ -830,5 +835,23 @@ $('body').on('click','.btn-delete',function(e){
 
 // };
 // tinymce.init(right_config);
+$('body').on('change','.status',function() {
+	var id = $(this).data('id');
+	$.ajax({
+		method : "POST",
+		url : url_gb+"/admin/Question/updateStatus/"+id,
+		data : {status : $(this).val()},
+		dataType: 'json',
+	}).done(function(rec){
+		if(rec.status==1){
+			swal(rec.title,rec.content,"success");
+			TableList.api().ajax.reload();
+		}else{
+			swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+		}
+	}).error(function(data){
+		swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+	});
+});
 </script>
 @endsection

@@ -18,6 +18,7 @@ class UserController extends Controller
         $data['main_menu'] = 'user';
         $data['sub_menu'] = 'user';
         $data['title_page'] = 'สมาชิก';
+        $data['department'] = \App\Models\UserDepartment::get();
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
         $data['menu_all'] = \App\Models\AdminMenu::with(['SubMenu','MainMenu'])->where('show','=','T')->get();
         return view('Admin.user',$data);
@@ -60,6 +61,7 @@ class UserController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
         $photo = $request->input('photo_add');
+        $department_id = $request->input('department_id');
         $new_password = \Hash::make($password);
 
         $validator = Validator::make($request->all(), [
@@ -87,6 +89,7 @@ class UserController extends Controller
                     'firstname'=>$firstname,
                     'lastname'=>$lastname,
                     'photo_profile'=>$photo,
+                    'department_id'=>$department_id,
                 ];
                 \App\Models\AdminUser::insert($data_insert);
                 \DB::commit();
@@ -131,7 +134,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        
+
     }
 
     /**
@@ -148,6 +151,7 @@ class UserController extends Controller
         $nickname = $request->input('nickname');
         $mobile = $request->input('mobile');
         $photo_old = $request->input('photo_old');
+        $department_id = $request->input('department_id');
         $photo = $request->input('photo_edit');
 
         $validator = Validator::make($request->all(), [
@@ -173,6 +177,7 @@ class UserController extends Controller
                     'nickname'=>$nickname,
                     'firstname'=>$firstname,
                     'lastname'=>$lastname,
+                    'department_id'=>$department_id,
                     // 'photo_profile'=>$photo,
                 ];
                 \App\Models\AdminUser::where('id',$id)->update($data_insert);
@@ -230,14 +235,16 @@ class UserController extends Controller
                 </button>
                 <button  data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-success btn-condensed btn-change-permission btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="จัดการสิทธิ">
                     <i class="ace-icon fa fa-lock bigger-120"></i>
-                </button>
-                <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
+                </button>';
+                if($rec->id!=1) {
+                    $str .= '<button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
                     <i class="ace-icon fa fa-trash bigger-120"></i>
-                </button>
-            ';
+                    </button>
+                    ';
+                }
             return $str;
         })->make(true);
-    }   
+    }
 
     public function change_password(Request $request){
         $id = $request->input('id');

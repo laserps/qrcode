@@ -168,7 +168,7 @@ class GuestController extends Controller
         $result = \App\Models\Guest::select();
         return \Datatables::of($result)
         ->editColumn('guest_type_id', function($rec){
-            $str =($rec->guest_type_id == 'T')? 'เป็นเภสัช':'ไม่เป็นเภสัช';
+            $str =($rec->guest_type_id == 'T')? 'ใช่':'ไมใช่';
             return $str;
         })
         ->addColumn('action',function($rec){

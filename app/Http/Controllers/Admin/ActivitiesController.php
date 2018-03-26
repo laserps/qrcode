@@ -802,6 +802,7 @@ class ActivitiesController extends Controller
         //     $result = \App\Models\AdminUser::whereNotIn('id',json_decode($staff->staff_id))->get();
         // else
             $result = \App\Models\AdminUser::get();
+            // $result = \App\Models\Employee::get();
 
         return json_encode($result);
     }

@@ -19,6 +19,7 @@
 						<th>ชื่อ</th>
 						<th>นามสกุล</th>
 						<th>ชื่อเล่น</th>
+						<th>แผนก</th>
 						<th>มือถือ</th>
 						<th>ที่อยู่</th>
 						<th>อีเมล</th>
@@ -58,6 +59,16 @@
 					<div class="form-group">
 						<label for="add_mobile">มือถือ</label>
 						<input type="text" class="form-control number-only" name="mobile" id="add_mobile"  placeholder="mobile">
+					</div>
+
+					<div class="form-group">
+						<label for="add_mobile">แผนก</label>
+						<select class="form-control" name="department_id">
+							<option value="">กรุณาเลือก</option>
+							@foreach($department as $k => $v)
+							<option value="{{$v->department_id}}">{{$v->department_name}}</option>
+							@endforeach
+						</select>
 					</div>
 
 					<div class="form-group">
@@ -112,6 +123,16 @@
 					</div>
 
 					<div class="form-group">
+						<label for="add_mobile">แผนก</label>
+						<select class="form-control" name="department_id" id="edit_departmene_id">
+							<option value="">กรุณาเลือก</option>
+							@foreach($department as $k => $v)
+							<option value="{{$v->department_id}}">{{$v->department_name}}</option>
+							@endforeach
+						</select>
+					</div>
+
+					<div class="form-group">
 						<label for="edit_mobile">มือถือ</label>
 						<input type="text" class="form-control number-only" name="mobile" id="edit_mobile"  placeholder="mobile">
 					</div>
@@ -153,6 +174,7 @@ var TableList = $('#TableList').dataTable({
 		{"data" : "firstname"},
 		{"data" : "lastname"},
 		{"data" : "nickname"},
+		{"data" : "department_name","searchable":false,"orderable":false},
 		{"data" : "mobile"},
 		{"data" : "address"},
 		{"data" : "email"},
@@ -178,6 +200,7 @@ $('body').on('click','.btn-edit',function(data){
 		$('#edit_mobile').val(rec.mobile);
 		$('#edit_address').val(rec.address);
 		$('#edit_email').val(rec.email);
+		$('#edit_departmene_id').val(rec.department_id);
 
 		btn.button("reset");
 		ShowModal('ModalEdit');

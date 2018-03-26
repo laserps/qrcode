@@ -158,7 +158,13 @@ class QuestionController extends Controller
         $result = \App\Models\Question::select();
         return \Datatables::of($result)
         ->editColumn('status',function($rec) {
-            return ($rec->status=="T")?'เปิดใช้งาน':'ไม่เปิดใช้งาน';
+            $str = '<select class="form-control status" name="status" data-id="'.$rec->id.'">';
+            if($rec->status == 'T')
+                $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
+            else
+                $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
+            $str .= '</select>';
+            return $str;
         })
         ->addColumn('action',function($rec){
             $str='
@@ -175,7 +181,7 @@ class QuestionController extends Controller
             ';
             return $str;
         })
-        ->rawColumns(['text', 'action'])
+        ->rawColumns(['text','status', 'action'])
         ->make(true);
     }
     public function addQuestion() {
@@ -227,6 +233,33 @@ class QuestionController extends Controller
             $return['status'] = 0;
         }
         $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+    public function updateStatus(Request $request,$id) {
+        $status = $request->status;
+
+        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $input_all['status'] = $status;
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\question::where('id',$id)->update($data_insert);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เปลี่ยนสถานะ';
         return json_encode($return);
     }
     // public function QustionAnswer(){

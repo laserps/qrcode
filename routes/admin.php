@@ -180,6 +180,7 @@
         Route::post('/Question', 'Admin\QuestionController@store');
         Route::get('/Questionall', 'Admin\QuestionController@addQuestion');
         Route::get('/Question/{id}', 'Admin\QuestionController@show');
+        Route::post('/Question/updateStatus/{id}', 'Admin\QuestionController@updateStatus');
         Route::post('/Question/{id}', 'Admin\QuestionController@update');
         Route::post('/Question/AnswerRight/{id}', 'Admin\QuestionController@AnswerRight');
         Route::post('/Question/Delete/{id}', 'Admin\QuestionController@destroy');

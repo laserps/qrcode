@@ -190,6 +190,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+    						<label for="add_mobile">แผนก</label>
+    						<select class="form-control bg-gray-lighter" name="department_id">
+    							<option value="">กรุณาเลือก</option>
+    							@foreach($department as $k => $v)
+    							<option value="{{$v->department_id}}">{{$v->department_name}}</option>
+    							@endforeach
+    						</select>
+    					</div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -242,6 +255,19 @@
                     <div class="col-md-6">
                         <label for="mobile">เบอร์โทร</label>
                         <input type="text" class="form-control" name="mobile" id="edit_mobile" placeholder="เบอร์โทร">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+    						<label for="add_mobile">แผนก</label>
+    						<select class="form-control bg-gray-lighter" id="edit_departmene_id" name="department_id">
+    							<option value="">กรุณาเลือก</option>
+    							@foreach($department as $k => $v)
+    							<option value="{{$v->department_id}}">{{$v->department_name}}</option>
+    							@endforeach
+    						</select>
+    					</div>
                     </div>
                 </div>
             </div>
@@ -318,6 +344,7 @@
             $('#edit_lastname').val(rec.lastname);
             $('#edit_nickname').val(rec.nickname);
             $('#edit_mobile').val(rec.mobile);
+            $('#edit_departmene_id').val(rec.department_id);
             // $('#photo_old').val(rec.photo_profile);
             if(rec.photo_profile){
                 var photo = rec.photo_profile;

@@ -18,6 +18,7 @@ class EmployeeController extends Controller
         $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'พนักงาน';
         $data['title_page'] = 'พนักงาน';
+        $data['department'] = \App\Models\UserDepartment::get();
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
 
         return view('Admin.employee',$data);
@@ -164,16 +165,15 @@ class EmployeeController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
         }
         $return['title'] = 'ลบข่อมูล';
         return $return;
     }
 
     public function Lists(){
-        $result = \App\Models\Employee::select();
+        $result = \App\Models\Employee::leftjoin('user_departments','users.department_id','=','user_departments.department_id')->select('users.*','user_departments.department_name');
         return \Datatables::of($result)
-
         ->addColumn('mobile',function($rec){
             if(is_numeric($rec->mobile)){
                 return number_format($rec->mobile);
@@ -181,7 +181,6 @@ class EmployeeController extends Controller
                 return $rec->mobile;
             }
         })
-
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
