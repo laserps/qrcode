@@ -27,7 +27,7 @@
 
 </head>
 <body>
-	@if($check_reward && sizeof($check_question)!=0 && $activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
+	@if($check_amount_reward && $check_reward && sizeof($check_question)!=0 && $activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 logo-margin">
 			<img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive center-block respon" alt="Yout Logo Here">
@@ -64,7 +64,7 @@
 <script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.js')}}"></script>
 
 <script type="text/javascript">
-@if(!$check_question || !$check_reward)
+@if(!$check_amount_reward || !$check_question || !$check_reward)
 swal({
 	position: 'center',
 	type: 'error',

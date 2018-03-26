@@ -157,6 +157,7 @@ var TableList = $('#TableList').dataTable({
     ]
 });
 $('body').on('click','.btn-add',function(data){
+    // $('#ModalAdd').find('div.picture_delete').trigger('click');
     ShowModal('ModalAdd');
 });
 $('body').on('click','.btn-edit',function(data){
@@ -266,6 +267,23 @@ $('#FormAdd').validate({
             }else{
                 swal(rec.title,rec.content,"error");
             }
+            $('#photo').parent().html('<div id="photo" orakuploader="on"></div>');
+            $('#photo').orakuploader({
+                orakuploader_path         : url_gb+'/',
+                orakuploader_ckeditor         : true,
+                orakuploader_use_dragndrop            : true,
+                orakuploader_use_sortable   : true,
+                orakuploader_main_path : 'uploads/temp/',
+                orakuploader_thumbnail_path : 'uploads/temp/',
+                orakuploader_thumbnail_real_path : asset_gb+'uploads/temp/',
+                orakuploader_loader_image       : asset_gb+'images/loader.gif',
+                orakuploader_no_image       : asset_gb+'images/no-image.jpg',
+                orakuploader_add_label       : 'เลือกรูปภาพ',
+                orakuploader_use_rotation: true,
+                orakuploader_maximum_uploads : 1,
+                orakuploader_hide_on_exceed : true,
+                orakuploader_maximum_uploads : 1,
+            });
         }).error(function(){
             swal("system.system_alert","system.system_error","error");
             btn.button("reset");

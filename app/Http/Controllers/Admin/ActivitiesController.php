@@ -302,6 +302,30 @@ class ActivitiesController extends Controller
     {
         $activity = \App\Models\Activities::where('code',$code)->first();
         $return['activity'] = $activity;
+        $return['check_amount_reward'] = 0;
+        $res='';
+        $listRewards = \App\Models\ActivityReward::where(['activity_id' => $activity->activity_id])->get();
+        foreach ($listRewards as $key => $listReward) {
+            $listReward = json_decode($listReward->reward_id);
+            $res .= '(';
+            foreach ($listReward as $key => $value) {
+                $res .=$value.',';
+            }
+            $res = substr($res, 0, -1);
+            $res .=')';
+            $random = \DB::select("
+            SELECT
+            id,amount,(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'SUMALL',amount/(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'Percent'
+            FROM reward
+            WHERE amount <> 0 AND id IN ".$res."
+            GROUP BY id,amount
+            ORDER BY amount DESC
+            ");
+            if($random) {
+                $return['check_amount_reward'] = 1;
+            }
+            $res = '';
+        }
         $return['check_question'] = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
         $return['check_reward'] = false;
         $t = \App\Models\ActivityReward::where('activity_id',$activity->activity_id)->get();

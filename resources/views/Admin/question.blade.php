@@ -310,7 +310,7 @@ $('body').on('click','.btn-add-answer',function(){
 	var question_id = $(this).data('id');
 	$('#idQuestion').val(question_id);
 	getQuestionAnswer(question_id);
-	//ShowModal('ModalAnswer');
+	// ShowModal('ModalAnswer');
 });
 
 function getQuestionAnswer(id){
@@ -372,7 +372,8 @@ function getQuestionAnswer(id){
 
 		};
 		tinymce.init(right_config);
-		if(rec.remark[0].remark==null){
+		console.log(rec.remark.length);
+		if(rec.remark.length==0){
 			tinyMCE.activeEditor.setContent('<p></p>');
 		}else{
 			setTimeout(function(){
