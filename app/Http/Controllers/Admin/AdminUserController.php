@@ -19,7 +19,7 @@ class AdminUserController extends Controller
         $data['sub_menu'] = 'user';
         $data['title_page'] = 'สมาชิก';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-        
+
         return view('Admin.admin',$data);
     }
 
@@ -42,12 +42,12 @@ class AdminUserController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-        
+
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -60,7 +60,7 @@ class AdminUserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -78,7 +78,7 @@ class AdminUserController extends Controller
     public function show($id)
     {
         $result = \App\Models\AdminUser::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -103,11 +103,11 @@ class AdminUserController extends Controller
     public function update(Request $request, $id)
     {
         $input_all = $request->all();
-        
+
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -146,16 +146,16 @@ class AdminUserController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สเร็จ'.$e->getMessage();;
         }
-        $return['title'] = 'ลบข่อมูล';
+        $return['title'] = 'ลบข้อมูล';
         return $return;
     }
 
     public function Lists(){
         $result = \App\Models\AdminUser::select();
         return \Datatables::of($result)
-        
+
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">

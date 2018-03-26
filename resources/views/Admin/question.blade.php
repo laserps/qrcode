@@ -676,7 +676,7 @@ $('body').on('click','.btn-delete',function(e){
 	var id = btn.data('id');
 	swal({
 		title: "คุณต้องการลบคำถามใช่หรือไม่",
-		text: "หากคุณลบจะไม่สามารถุเรียกคืนข้อมูกลับมาได้",
+		text: "หากคุณลบจะไม่สามารถเรียกคืนข้อมูกลับมาได้",
 		type: "warning",
 		showCancelButton: true,
 		confirmButtonColor: "#DD6B55",

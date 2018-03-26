@@ -235,7 +235,7 @@ class UserController extends Controller
                 </button>
                 <button  data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-success btn-condensed btn-change-permission btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="จัดการสิทธิ">
                     <i class="ace-icon fa fa-lock bigger-120"></i>
-                </button>';
+                </button> ';
                 if($rec->id!=1) {
                     $str .= '<button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
                     <i class="ace-icon fa fa-trash bigger-120"></i>

@@ -647,8 +647,8 @@
         var btn = $(this);
         var id = btn.data('id');
         swal({
-            title: "คุณต้องการลบสินค้าใช่หรือไม่",
-            text: "หากคุณลบจะไม่สามารถุเรียกคืนข้อมูกลับมาได้",
+            title: "คุณต้องการลบผู้ใช้งานนี้ใช่หรือไม่",
+            text: "หากคุณลบจะไม่สามารถเรียกคืนข้อมูกลับมาได้",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",

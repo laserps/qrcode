@@ -450,7 +450,7 @@ var TableList = $('#TableList').dataTable({
 		{"data" : "activity_url","searchable":false,"orderable":false},
 		{"data" : "working_time_start"},
 		{"data" : "working_time_end"},
-		{"data" : "status","searchable":false,"orderable":false},
+		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
 		{"data" : "created_at"},
 		{ "data": "action","className":"action text-center","searchable":false ,"orderable":false}
 	]
@@ -1178,8 +1178,8 @@ $('body').on('click','.btn-delete',function(e){
 	var btn = $(this);
 	var id = btn.data('id');
 	swal({
-		title: "คุณต้องการลบสินค้าใช่หรือไม่",
-		text: "หากคุณลบจะไม่สามารถุเรียกคืนข้อมูกลับมาได้",
+		title: "คุณต้องการลบกิจกรรมนี้ใช่หรือไม่",
+		text: "หากคุณลบจะไม่สามารถเรียกคืนข้อมูกลับมาได้",
 		type: "warning",
 		showCancelButton: true,
 		confirmButtonColor: "#DD6B55",

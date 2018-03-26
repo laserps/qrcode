@@ -156,7 +156,7 @@ class ActivitiesController extends Controller
             $return['status'] = 0;
             $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
         }
-        $return['title'] = 'ลบข่อมูล';
+        $return['title'] = 'ลบข้อมูล';
         return $return;
     }
 
@@ -183,9 +183,9 @@ class ActivitiesController extends Controller
         })
         ->addColumn('action',function($rec){
             $str='
-                <button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
+                <!--<button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
                     <i class="ace-icon fa fa-question-circle bigger-120"></i>
-                </button>
+                </button>-->
                 <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำถาม">
                     <i class="ace-icon fa fa-plus-square bigger-120"></i>
                 </button>
