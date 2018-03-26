@@ -321,11 +321,11 @@
         "columns": [
             { "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
             // { "data": "id" },
-            { "data": "firstname" },
-            { "data": "lastname" , visible : false },
-            { "data": "nickname" , visible : false},
-            { "data": "mobile" },
-            { "data": "action","className":"action text-center" }
+            { "data": "firstname","orderable": false , "searchable": false},
+            { "data": "nickname" , "name":"firstname","visible" : false},
+            { "data": "lastname" ,"name":"lastname", "visible" : false },
+            { "data": "mobile" ,"name":"mobile"},
+            { "data": "action","className":"action text-center","orderable": false , "searchable": false }
         ]
     });
     $('body').on('click','.btn-add',function(data){
