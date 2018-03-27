@@ -42,6 +42,7 @@
 				<div class="panel-body">
 					<form class="form-inline" id="FormAdd">
 						<div class="form-group">
+							<input type="hidden" name="activity_id" value="{{$activity->activity_id}}">
 							<label for="add_phone" class="custom-add-phone">เบอร์โทรศัพท์ : </label>
 							<input type="text" class="form-control" name="phone" id="add_phone" placeholder="กรอกข้อมูลเบอร์โทรศัพท์">
 						</div>

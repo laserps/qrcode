@@ -133,7 +133,7 @@ class ActivitiesController extends Controller
         }else{
             $return['status'] = 0;
         }
-        $return['title'] = 'เพิ่มข้อมูล';
+        $return['title'] = 'แก้ไขข้อมูล';
         return json_encode($return);
     }
 
@@ -283,7 +283,7 @@ class ActivitiesController extends Controller
         // }else{
         //     $return['status'] = 0;
         // }
-        $return['title'] = 'เพิ่มข้อมูล';
+        $return['title'] = 'เพิ่มของรางวัล';
         return json_encode($return);
     }
     public function getReward($id)
@@ -340,6 +340,7 @@ class ActivitiesController extends Controller
     public function StoreQRCODE(Request $request)
     {
         // $input_all                 = $request->all();
+        // dd($request->all());
         $input_all['phone']      = $request->phone;
         $input_all['branch']      = $request->branch;
         $phone                   = $input_all['phone'];
@@ -349,8 +350,19 @@ class ActivitiesController extends Controller
 
         ]);
         if (!$validator->fails()) {
-            $check_phone_dup = \App\Models\Guest::where('phone',$phone)->first();
-            if (!$check_phone_dup) {
+            $check_phone_dup = 0;
+            $check_phones = \App\Models\Guest::where('phone',$phone)->get();
+            if($check_phones) {
+                foreach($check_phones as $check_phone) {
+                    $check_phone_activity = \App\Models\AnswerHistory::where(['user_id'=>$check_phone->guest_id,'activity_id'=>$request->activity_id])->first();
+                    if($check_phone_activity) {
+                        $check_phone_dup = 1;
+                    }
+                }
+            } else {
+                $check_phone_dup = 0;
+            }
+            if ($check_phone_dup==0) {
                 \DB::beginTransaction();
                 try {
                     $data_insert = $input_all;
@@ -794,7 +806,7 @@ class ActivitiesController extends Controller
         }else{
             $return['status'] = 0;
         }
-        $return['title'] = 'เพิ่มข้อมูล';
+        $return['title'] = 'เปลี่ยนสถานะกิจกรรม';
         return json_encode($return);
     }
     public function staff($id) {

@@ -256,11 +256,7 @@ $('#FormAdd').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		if(CKEDITOR!==undefined){
-			for ( instance in CKEDITOR.instances ){
-				CKEDITOR.instances[instance].updateElement();
-			}
-		}
+		
 		var btn = $(form).find('[type="submit"]');
 		var data_ar = removePriceFormat(form,$(form).serializeArray());
 		btn.button("loading");
@@ -346,11 +342,7 @@ $('#FormEdit').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		if(CKEDITOR!==undefined){
-			for ( instance in CKEDITOR.instances ){
-				CKEDITOR.instances[instance].updateElement();
-			}
-		}
+		
 		var btn = $(form).find('[type="submit"]');
 		var id = $('#edit_user_id').val();
 		btn.button("loading");
