@@ -303,7 +303,7 @@ class ActivitiesController extends Controller
     {
         $activity = \App\Models\Activities::where('code',$code)->first();
         $return['activity'] = $activity;
-        $return['check_amount_reward'] = 0;
+        $return['check_amount_reward'] = 1;
         $res='';
         $listRewards = \App\Models\ActivityReward::where(['activity_id' => $activity->activity_id])->get();
         foreach ($listRewards as $key => $listReward) {
@@ -322,8 +322,8 @@ class ActivitiesController extends Controller
             GROUP BY id,amount
             ORDER BY amount DESC
             ");
-            if($random) {
-                $return['check_amount_reward'] = 1;
+            if(!$random) {
+                $return['check_amount_reward'] = 0;
             }
             $res = '';
         }
@@ -354,9 +354,14 @@ class ActivitiesController extends Controller
             $check_phones = \App\Models\Guest::where('phone',$phone)->get();
             if($check_phones) {
                 foreach($check_phones as $check_phone) {
-                    $check_phone_activity = \App\Models\AnswerHistory::where(['user_id'=>$check_phone->guest_id,'activity_id'=>$request->activity_id])->first();
-                    if($check_phone_activity) {
-                        $check_phone_dup = 1;
+                    $check_activity = \App\Models\AnswerHistory::where('user_id',$check_phone->guest_id)->first();
+                    if($check_activity) {
+                        $check_phone_activity = \App\Models\AnswerHistory::where(['user_id'=>$check_phone->guest_id,'activity_id'=>$request->activity_id])->first();
+                        if($check_phone_activity) {
+                            $check_phone_dup = 1;
+                        }
+                    } else {
+                        \App\Models\Guest::where('guest_id',$check_phone->guest_id)->delete();
                     }
                 }
             } else {
