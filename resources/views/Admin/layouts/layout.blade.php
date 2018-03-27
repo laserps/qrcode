@@ -17,7 +17,7 @@
     <meta name="author" content="WorkByThai.Co.Ltd.">
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @yield('css_bottom')
+
     <style>
             body {
                 font-weight: 400;
@@ -101,6 +101,7 @@
                 color: black;
             }
         </style>
+        @yield('css_bottom')
 </head>
 <body>
     <div class="logo">
@@ -310,9 +311,10 @@
     var asset_gb = '{{asset('')}}';
 </script>
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
+{{--  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>  --}}
 <script src="{{asset('assets/global/plugins/orakuploader/jquery-ui.min.js')}}"></script>
 <script src="{{asset('assets/global/plugins/bootstrap-daterangepicker-master/moment.js')}}"></script>
-<script src="{{asset('assets/admin/lib/jquery-pjax/jquery.pjax.js')}}"></script>
+{{--  <script src="{{asset('assets/admin/lib/jquery-pjax/jquery.pjax.js')}}"></script>  --}}
 <script src="{{asset('assets/admin/lib/bootstrap-sass/assets/javascripts/bootstrap.min.js')}}"></script>
 <script src="{{asset('assets/admin/lib/widgster/widgster.js')}}"></script>
 <script src="{{asset('assets/admin/lib/underscore/underscore.js')}}"></script>
@@ -332,8 +334,8 @@
 <script src="{{asset('assets/global/plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js')}}"></script>
 <script src="{{asset('assets/global/plugins/bootstrap-daterangepicker-master/daterangepicker.js')}}"></script>
 <script src="{{asset('assets/global/plugins/Jquery-Price-Format/jquery.priceformat.js')}}"></script>
-<script src="{{asset('assets/global/plugins/ckeditor/ckeditor.js')}}"></script>
-<script src="{{asset('assets/global/plugins/ckeditor/config.js')}}"></script>
+{{--  <script src="{{asset('assets/global/plugins/ckeditor/ckeditor.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/global/plugins/ckeditor/config.js')}}"></script>  --}}
 <script src="{{asset('assets/admin/js/function.js')}}"></script>
 <script src="{{asset('assets/admin/js/jquery.timepicker.js')}}"></script>
 <!-- common templates -->
