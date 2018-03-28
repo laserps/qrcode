@@ -408,7 +408,7 @@ class ActivitiesController extends Controller
                     $question_group_id  = json_decode($check->question_group_id);
                     $return['activity'] = $activity;
                     $test =[];
-                    $limit_question = 1;
+                    $limit_question = $check->limit_random;
                     for($i=0;$i<$limit_question;$i++) {
                         if(sizeof($question_group_id)!=0) {
                             $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
@@ -673,6 +673,7 @@ class ActivitiesController extends Controller
         $input_all['question_group_id'] = json_encode($question_group_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
         $input_all['status']   = 'T';
+        $input_all['limit_random']   = $request->limit_random;
         $input_all['activity_id']   = $id;
         $validator = Validator::make($request->all(), [
 
@@ -776,8 +777,9 @@ class ActivitiesController extends Controller
     public function getActivityQuestion($id) {
         $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
         foreach ($all as $key => $value) {
-            $result[$key] = json_decode($value->question_group_id);
+            $result['question'][$key] = json_decode($value->question_group_id);
         }
+        $result['limit_random'] = $all[0]->limit_random;
         return json_encode($result);
     }
     public function getSpecialQuestion($id) {

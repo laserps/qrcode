@@ -92,6 +92,14 @@
 					<h4 class="modal-title" id="myModalLabel">จัดการคำถาม</h4>
 				</div>
 				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="add_activity_name">จำนวนคำถามสำหรับสุ่ม</label>
+								<input type="text" class="form-control" name="limit_random" id="limit_random"  placeholder="limit question random">
+							</div>
+						</div>
+					</div>
 					<div class="col-md-6">
 						<div class="row">
 							<div class="text-center">
@@ -631,7 +639,8 @@ $('body').on('click','.btn-add-question',function(data){
 			dataType : 'json'
 		}).done(function(result){
 			var str = '';
-			$.each(result[0],function(k,v) {
+			$('#limit_random').val(result.limit_random);
+			$.each(result.question[0],function(k,v) {
 				if($('#allQuestion').find('button[value="'+v+'"]').closest('td').prev().text()!='') {
 					add_index = k+1;
 					add_check[k] = v;
@@ -977,6 +986,7 @@ $('#FormAddQuestion').validate({
 			dataType : 'json',
 			data : {
 				question_group_id : add_check,
+				limit_random : $('#limit_random').val(),
 			},
 		}).done(function(rec){
 			btn.button("reset");

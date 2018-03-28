@@ -165,4 +165,12 @@ $('body').on('submit','#FormAdd',function(e){
 		}
 	}
 });
+$('#add_phone').keypress(function(e){
+	if (this.value.length == 0 && e.which != 48 ){
+		return false;
+	}
+	if (this.value.length == 1 && e.which == 48 ){
+		return false;
+	}
+});
 </script>
