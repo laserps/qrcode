@@ -383,6 +383,7 @@
 											<th style="color:#000;">เลือก</th>
 											<th style="color:#000;">ชื่อของรางวัล</th>
 											<th style="color:#000;">คงเหลือ</th>
+											<th style="color:#000;">รางวัลสำหรับการตอบคำถาม</th>
 											<th></th>
 										</tr>
 									</thead>
@@ -419,12 +420,62 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="ModalImport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="FormImport">
+                <input type="hidden" name="reward_id" id="import_user_id">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">ขำเข้า {{$title_page or 'ข้อมูลใหม่'}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="import_name">จำนวนนำเข้า</label>
+                        <input type="text" class="form-control" name="qty" id="import_qty" required="" placeholder="qty">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalExport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="FormExport">
+                <input type="hidden" name="reward_id" id="export_user_id">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">ขำเข้า {{$title_page or 'ข้อมูลใหม่'}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="export_name">จำนวนนำออก</label>
+                        <input type="text" class="form-control" name="qty" id="export_qty" required="" placeholder="qty">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @section('js_bottom')
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
 var arr_reward_t = [];
 var arr_reward_f = [];
+var amount = [];
+var reward_id = [];
 var add_index = 0;
 var add_check = [];
 var staff_index = 0;
@@ -443,7 +494,24 @@ $('#edit_working_time_start').datetimepicker({
 $('#edit_working_time_end').datetimepicker({
 	'pickTime': false
 });
-
+$('body').on('click','.btn-import',function(e){
+    e.preventDefault();
+    var btn = $(this);
+    var id = btn.data('id');
+    $('#import_user_id').val(id);
+	$('#import_qty').val('');
+	$('#ModalReward').removeClass('in');
+    ShowModal('ModalImport');
+});
+$('body').on('click','.btn-export',function(e){
+	$('#export_qty').val('');
+    e.preventDefault();
+    var btn = $(this);
+    var id = btn.data('id');
+    $('#export_user_id').val(id);
+	$('#ModalReward').removeClass('in');
+    ShowModal('ModalExport');
+});
 var TableList = $('#TableList').dataTable({
 	"ajax": {
 		"url": url_gb+"/admin/Activities/Lists",
@@ -476,10 +544,11 @@ var RewardList = $('#RewardList').dataTable({
 	},
 	"columns": [
 		{"data" : "id"},
-		{"data" : "reward"},
+		{"data" : "reward","searchable": false,"orderable": false},
 		{"data" : "name"},
-		{"data" : "amount"},
-		{ "data": "action","className":"action text-center" }
+		{"data" : "amount","className":"text-center","searchable": false,"orderable": false },
+		{ "data": "check","className":"check text-center","searchable": false,"orderable": false },
+		{ "data": "action","className":"action text-center","searchable": false,"orderable": false },
 	],
 	responsive: true,
 	"drawCallback": function (settings) {
@@ -489,6 +558,12 @@ var RewardList = $('#RewardList').dataTable({
 	initComplete: function () {
 		//alert('a');
 		putvalue();
+	}
+});
+$('body').on('click','.checkbox[name*="reward_id"]',function() {
+	if($(this).prop('checked')==false) {
+		$(this).closest('tr').find('.checkbox[name*="status_t"]').prop('checked',false);
+		$(this).closest('tr').find('.checkbox[name*="status_f"]').prop('checked',false);
 	}
 });
 $('body').on('click','.checkbox[name*="status_f"]',function() {
@@ -673,9 +748,14 @@ function putvalue() {
 		$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_t[i]+'"]').prop('checked',true);
 		$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_t[i]+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
 	}
+	for (i = 0; i < reward_id.length; i++) {
+		$('#ModalReward').find('tbody').find('input[name="amount['+reward_id[i]+']"]').val(amount[i]);
+	}
 }
 $('body').on('click','.btn-reward',function(data){
 	var btn = $(this);
+	amount.length = 0;
+	reward_id.length = 0;
 	btn.button('loading');
 	var id = $(this).data('id');
 	arr_reward_f.length = 0;
@@ -690,21 +770,19 @@ $('body').on('click','.btn-reward',function(data){
 		if(rec['F']) {
 			$.each(rec['F'],function(k,v) {
 				arr_reward_f[k] = v;
-				// arr_reward_f.push(v);
-				// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
-				// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_f"]').prop('checked',true);
 			});
 		}
 		if(rec['T']) {
 			$.each(rec['T'],function(k,v) {
 				arr_reward_t[k] = v;
-				// arr_reward_t.push(v);
-				// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').prop('checked',true);
-				// $('#ModalReward').find('tbody').find('input:checkbox[value="'+v+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
 			});
 		}
+		RewardList.api().ajax.reload();
+		$.each(rec.amount,function(k,v) {
+			reward_id[k] = v.reward_id;
+			amount[k] = v.amount;
+		});
 	});
-	RewardList.api().ajax.reload();
 	ShowModal('ModalReward');
 });
 $('body').on('click','.btn-qrcode',function(data){
@@ -1139,9 +1217,10 @@ $('#FormReward').validate({
 			btn.button("reset");
 			if(rec.status==1){
 				TableList.api().ajax.reload();
+				// RewardList.api().ajax.reload();
 				resetFormCustom(form);
 				swal(rec.title,rec.content,"success");
-				$('#ModalReward').modal('hide');
+				// $('#ModalReward').modal('hide');
 			}else{
 				swal(rec.title,rec.content,"error");
 			}
@@ -1207,6 +1286,150 @@ $('body').on('change','.status',function() {
 		swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
 	});
 });
+$('#FormImport').find('button.btn-primary').on('click',function(e) {
+	console.log($('#import_user_id').val());
+	console.log($('#import_qty').val());
+	sum_amount($('#import_user_id').val(),$('#import_qty').val(),'in');
+	$('#ModalReward').addClass('in');
+	$('#ModalImport').modal('hide');
+});
+$('#FormExport').find('button.btn-primary').on('click',function(e) {
+	console.log($('#export_user_id').val());
+	console.log($('#export_qty').val());
+	sum_amount($('#export_user_id').val(),$('#export_qty').val(),'out');
+	$('#ModalReward').addClass('in');
+	$('#ModalExport').modal('hide');
+});
+
+function sum_amount(reward_id, amount, type) {
+	sum = parseInt($('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val()?$('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val():0);
+	if(type=="in") {
+		sum += parseInt(amount);
+		console.log(sum);
+	} else {
+		if(sum>amount) {
+			sum -= amount;
+		} else {
+			sum = 0;
+		}
+	}
+	$('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val(sum);
+}
+$('#ModalImport, #ModalExport').find('.btn-default, .close').on('click',function() {
+	$('#ModalReward').addClass('in');
+});
+// $('#FormExport').validate({
+//     errorElement: 'div',
+//     errorClass: 'invalid-feedback',
+//     focusInvalid: false,
+//     rules: {
+//
+//         qty: {
+//             required: true,
+//         },
+//     },
+//     messages: {
+//
+//         qty: {
+//             required: "กรุณาระบุ",
+//         },
+//     },
+//     highlight: function (e) {
+//         validate_highlight(e);
+//     },
+//     success: function (e) {
+//         validate_success(e);
+//     },
+//
+//     errorPlacement: function (error, element) {
+//         validate_errorplacement(error, element);
+//     },
+//     submitHandler: function (form) {
+//
+//         var btn = $(form).find('[type="submit"]');
+//         btn.button("loading");
+//         $.ajax({
+//             method : "POST",
+//             url : url_gb+"/admin/Reward/Export/"+$('#ModalReward').find('#activity_id').val(),
+//             dataType : 'json',
+//             data : $(form).serialize()
+//         }).done(function(rec){
+//             btn.button("reset");
+//             if(rec.status==1){
+//                 TableList.api().ajax.reload();
+//                 resetFormCustom(form);
+//                 swal(rec.title,rec.content,"success");
+//                 $('#ModalExport').modal('hide');
+//             }else{
+//                 swal(rec.title,rec.content,"error");
+//             }
+//         }).error(function(){
+//             swal("system.system_alert","system.system_error","error");
+//             btn.button("reset");
+//         });
+// 		$('#ModalReward').addClass('in');
+// 		RewardList.api().ajax.reload();
+//     },
+//     invalidHandler: function (form) {
+//
+//     }
+// });
+// $('#FormImport').validate({
+//     errorElement: 'div',
+//     errorClass: 'invalid-feedback',
+//     focusInvalid: false,
+//     rules: {
+//
+//         qty: {
+//             required: true,
+//         },
+//     },
+//     messages: {
+//
+//         qty: {
+//             required: "กรุณาระบุ",
+//         },
+//     },
+//     highlight: function (e) {
+//         validate_highlight(e);
+//     },
+//     success: function (e) {
+//         validate_success(e);
+//     },
+//
+//     errorPlacement: function (error, element) {
+//         validate_errorplacement(error, element);
+//     },
+//     submitHandler: function (form) {
+//
+//         var btn = $(form).find('[type="submit"]');
+//         btn.button("loading");
+//         $.ajax({
+//             method : "POST",
+//             url : url_gb+"/admin/Reward/Import/"+$('#ModalReward').find('#activity_id').val(),
+//             dataType : 'json',
+//             data : $(form).serialize()
+//         }).done(function(rec){
+//             btn.button("reset");
+//             if(rec.status==1){
+//                 TableList.api().ajax.reload();
+//                 resetFormCustom(form);
+//                 swal(rec.title,rec.content,"success");
+//                 $('#ModalImport').modal('hide');
+//             }else{
+//                 swal(rec.title,rec.content,"error");
+//             }
+//         }).error(function(){
+//             swal("system.system_alert","system.system_error","error");
+//             btn.button("reset");
+//         });
+// 		$('#ModalReward').addClass('in');
+// 		RewardList.api().ajax.reload();
+//     },
+//     invalidHandler: function (form) {
+//
+//     }
+// });
 // $('body').on('click','.btn-detail',function(data){
 //         var btn = $(this);
 //         btn.button('loading');

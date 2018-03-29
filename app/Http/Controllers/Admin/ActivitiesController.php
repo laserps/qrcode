@@ -184,14 +184,14 @@ class ActivitiesController extends Controller
         })
         ->addColumn('action',function($rec){
             $str='
-                <!--<button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
+                <button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
                     <i class="ace-icon fa fa-question-circle bigger-120"></i>
-                </button>-->
+                </button>
                 <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำถาม">
                     <i class="ace-icon fa fa-plus-square bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
-                    <i class="ace-icon fa fa-key bigger-120"></i>
+                    <i class="ace-icon fa fa-cube bigger-120"></i>
                 </button>
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-staff btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
                     <i class="ace-icon fa fa-user bigger-120"></i>
@@ -214,24 +214,41 @@ class ActivitiesController extends Controller
     public function RewardLists() {
         $result = \App\Models\Reward::select();
         return \Datatables::of($result)
+        ->editColumn('amount',function($rec) {
+            $str='
+            <input class="form-control" type="text" name="amount['.$rec->id.']" readonly>
+            ';
+            return $str;
+        })
         ->addColumn('reward',function($rec) {
             $str = '<input class="checkbox" type="checkbox" name="reward_id[]" value="'.$rec->id.'">';
             return $str;
         })
-        ->addColumn('action',function($rec){
+        ->addColumn('check',function($rec){
             $str='
                 <input class="checkbox" type="checkbox" name="status_t['.$rec->id.']" value="T">
                 <label for="add_show">
-                    true
+                    ถูก
                 </label>
                 <input class="checkbox" type="checkbox" name="status_f['.$rec->id.']" value="F">
                 <label for="add_show">
-                    false
+                    ผิด
                 </label>
             ';
             return $str;
         })
-        ->rawColumns(['reward', 'action'])
+        ->addColumn('action',function($rec){
+            $str='
+            <button type="button" class="btn btn-xs btn-info btn-condensed btn-import btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำเข้า">
+                <i class="ace-icon fa fa-arrow-down bigger-120"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-info btn-condensed btn-export btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำออก">
+                <i class="ace-icon fa fa-arrow-up bigger-120"></i>
+            </button>
+            ';
+            return $str;
+        })
+        ->rawColumns(['reward','amount','action','check'])
         ->make(true);
     }
     public function RewardAccept(Request $request) {
@@ -257,20 +274,22 @@ class ActivitiesController extends Controller
                 unset($input_all['status_f']);
                 unset($input_all['status_t']);
                 unset($input_all['RewardList_length']);
-                \App\Models\ActivityReward::where('activity_id',$request->activity_id)->delete();
+                // \App\Models\ActivityReward::where('activity_id',$request->activity_id)->delete();
                 if(sizeof($reward_t)!=0) {
                     $reward_t = json_encode($reward_t);
                     $input_all['reward_id'] = $reward_t;
-                    $input_all['status'] = 'T';
+                    // $input_all['status'] = 'T';
                     $data_insert = $input_all;
-                    \App\Models\ActivityReward::insert($data_insert);
+                    \App\Models\ActivityReward::where(['status'=>'T','activity_id'=>$request->activity_id])->update($data_insert);
+                    // \App\Models\ActivityReward::insert($data_insert);
                 }
                 if(sizeof($reward_f)!=0) {
                     $reward_f = json_encode($reward_f);
                     $input_all['reward_id'] = $reward_f;
                     $input_all['status'] = 'F';
                     $data_insert = $input_all;
-                    \App\Models\ActivityReward::insert($data_insert);
+                    // \App\Models\ActivityReward::insert($data_insert);
+                    \App\Models\ActivityReward::where(['status'=>'F','activity_id'=>$request->activity_id])->update($data_insert);
                 }
                 \DB::commit();
                 $return['status'] = 1;
@@ -292,6 +311,7 @@ class ActivitiesController extends Controller
         foreach ($all as $key => $value) {
             $result[$value->status] = json_decode($value->reward_id);
         }
+        $result['amount'] = \App\Models\ActivityRewardAmount::where('activity_id',$id)->get();
         return json_encode($result);
     }
     public function gen_qr_code(Request $request){
@@ -682,9 +702,10 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\ActivityQuestion::where('activity_id',$id)->delete();
+                // \App\Models\ActivityQuestion::where('activity_id',$id)->delete();
                 if(sizeof($request->question_group_id)!=0) {
-                    \App\Models\ActivityQuestion::insert($data_insert);
+                    \App\Models\ActivityQuestion::where('activity_id',$id)->update($data_insert);
+                    // \App\Models\ActivityQuestion::insert($data_insert);
                 }
                 \DB::commit();
                 $return['status'] = 1;
@@ -718,8 +739,9 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\ActivityStaff::where('activity_id',$id)->delete();
+                // \App\Models\ActivityStaff::where('activity_id',$id)->delete();
                 if(sizeof($request->staff_id)!=0) {
+                    \App\Models\ActivityStaff::where('activity_id',$id)->update($data_insert);
                     \App\Models\ActivityStaff::insert($data_insert);
                 }
                 \DB::commit();
@@ -755,9 +777,10 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
-                \App\Models\ActivityQuestionInit::where('activity_id',$id)->delete();
+                // \App\Models\ActivityQuestionInit::where('activity_id',$id)->delete();
                 if(sizeof($request->question_group_id)!=0) {
-                    \App\Models\ActivityQuestionInit::insert($data_insert);
+                    \App\Models\ActivityQuestionInit::where('activity_id',$id)->update($data_insert);
+                    // \App\Models\ActivityQuestionInit::insert($data_insert);
                 }
                 \DB::commit();
                 $return['status'] = 1;

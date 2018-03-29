@@ -186,12 +186,12 @@ class RewardController extends Controller
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
                     <i class="ace-icon fa fa-trash bigger-120"></i>
                 </button>
-                <button  class="btn btn-xs btn-info btn-condensed btn-import btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำเข้า">
+                <!--<button  class="btn btn-xs btn-info btn-condensed btn-import btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำเข้า">
                     <i class="ace-icon fa fa-arrow-down bigger-120"></i>
                 </button>
                 <button  class="btn btn-xs btn-info btn-condensed btn-export btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำออก">
                     <i class="ace-icon fa fa-arrow-up bigger-120"></i>
-                </button>
+                </button>-->
             ';
             return $str;
         })
@@ -199,7 +199,7 @@ class RewardController extends Controller
         ->make(true);
     }
 
-    public function Import(Request $request) {
+    public function Import(Request $request,$id=null) {
         $input_all = $request->all();
         $input_all['created_at'] = date('Y-m-d H:i:s');
         // $input_all['updated_at'] = date('Y-m-d H:i:s');
@@ -232,7 +232,7 @@ class RewardController extends Controller
         return json_encode($return);
     }
 
-    public function Export(Request $request) {
+    public function Export(Request $request,$id=null) {
         $input_all = $request->all();
         $input_all['created_at'] = date('Y-m-d H:i:s');
         // $input_all['updated_at'] = date('Y-m-d H:i:s');
@@ -245,11 +245,23 @@ class RewardController extends Controller
             try {
                 $user = \Auth::guard('admin')->user();
                 $input_all['staff_id'] = $user->id;
-                \App\Models\RewardExport::insert($input_all);
-                $amount = \App\Models\Reward::find($input_all['reward_id']);
-                $balance = ($amount->amount != NULL)?$amount->amount:0;
-                $balance -= $input_all['qty'];
-                \App\Models\Reward::where('id',$input_all['reward_id'])->update(['amount'=>$balance,"updated_at"=>date('Y-m-d H:i:s')]);
+                if($id==null) {
+                    \App\Models\RewardExport::insert($input_all);
+                    $amount = \App\Models\Reward::find($input_all['reward_id']);
+                    $balance = ($amount->amount != NULL)?$amount->amount:0;
+                    $balance -= $input_all['qty'];
+                    \App\Models\Reward::where('id',$input_all['reward_id'])->update(['amount'=>$balance,"updated_at"=>date('Y-m-d H:i:s')]);
+                } else {
+                    // $reward_id = \App\Models\ActivityRewardAmount::where(['activity_id'=>$id,'reward_id',$request->reward_id])->first();
+                    // if($reward_id) {
+                    //     $input_all['reward_id'] = $reward_id->id;
+                    //     \App\Models\RewardExport::insert($input_all);
+                    //     $amount = \App\Models\ActivityRewardAmount::find($input_all['reward_id']);
+                    //     $balance = ($amount->amount != NULL)?$amount->amount:0;
+                    //     $balance -= $input_all['qty'];
+                    //     \App\Models\ActivityRewardAmount::where('id',$input_all['reward_id'])->update(['amount'=>$balance,"updated_at"=>date('Y-m-d H:i:s')]);
+                    // }
+                }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
