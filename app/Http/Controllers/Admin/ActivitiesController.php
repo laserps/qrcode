@@ -263,7 +263,14 @@ class ActivitiesController extends Controller
             try {
                 $reward_t = array();
                 $reward_f = array();
+                \App\Models\ActivityRewardAmount::where('activity_id',$request->activity_id)->update(['amount'=>0]);
                 foreach ($request->reward_id as $key => $value) {
+                    $check = \App\Models\ActivityRewardAmount::where(['activity_id'=>$request->activity_id,'reward_id'=>$value])->first();
+                    $amount = isset($request->amount[$value])?$request->amount[$value]:0;
+                    if($check)
+                        \App\Models\ActivityRewardAmount::where('id',$check->id)->update(['amount'=>$amount,'updated_at'=>date('Y-m-d H:i:s')]);
+                    else
+                        \App\Models\ActivityRewardAmount::insert(['activity_id'=>$request->activity_id,'reward_id'=>$value,'amount'=>$amount,'created_at'=>date('Y-m-d H:i:s')]);
                     if(!empty($request->status_t[$value])) {
                         $reward_t[] = $value;
                     }
@@ -271,6 +278,7 @@ class ActivitiesController extends Controller
                         $reward_f[] = $value;
                     }
                 }
+                unset($input_all['amount']);
                 unset($input_all['status_f']);
                 unset($input_all['status_t']);
                 unset($input_all['RewardList_length']);
@@ -336,11 +344,11 @@ class ActivitiesController extends Controller
             $res .=')';
             $random = \DB::select("
             SELECT
-            id,amount,(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'SUMALL',amount/(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'Percent'
-            FROM reward
-            WHERE amount <> 0 AND id IN ".$res."
-            GROUP BY id,amount
-            ORDER BY amount DESC
+                id,reward_id,amount,(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity->activity_id.") as 'SUMALL',amount/(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity->activity_id.") as 'Percent'
+                FROM activity_reward_amount
+                WHERE amount <> 0 AND reward_id IN ".$res." AND activity_id = ".$activity->activity_id."
+                GROUP BY id,amount,reward_id
+                ORDER BY amount DESC
             ");
             if(!$random) {
                 $return['check_amount_reward'] = 0;
@@ -613,10 +621,10 @@ class ActivitiesController extends Controller
         $res .=')';
         $random = \DB::select("
         SELECT
-            id,amount,(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'SUMALL',amount/(SELECT SUM(amount) FROM reward WHERE id IN ".$res.") as 'Percent'
-            FROM reward
-            WHERE amount <> 0 AND id IN ".$res."
-            GROUP BY id,amount
+            id,reward_id,amount,(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity_id.") as 'SUMALL',amount/(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity_id.") as 'Percent'
+            FROM activity_reward_amount
+            WHERE amount <> 0 AND reward_id IN ".$res." AND activity_id = ".$activity_id."
+            GROUP BY id,amount,reward_id
             ORDER BY amount DESC
         ");
         $ran = \DB::select("
@@ -629,18 +637,18 @@ class ActivitiesController extends Controller
                     if(($ran-$value->Percent)<$percent) {
                         $percent = $ran-$value->Percent;
                         $count_all += $value->Percent;
-                        $id_reward = $value->id;
+                        $id_reward = $value->reward_id;
                     }
                 } else {
                     if(($value->Percent-$ran)<$percent) {
                         $percent = $value->Percent-$ran;
                         $count_all += $value->Percent;
-                        $id_reward = $value->id;
+                        $id_reward = $value->reward_id;
                     }
                 }
             } else {
                 $count_all += $value->Percent;
-                $id_reward = $value->id;
+                $id_reward = $value->reward_id;
                 if($ran>$value->Percent) {
                     $percent = $ran-$value->Percent;
                 } else {
@@ -659,9 +667,8 @@ class ActivitiesController extends Controller
                 // 'staff_id'=>1,
                 'created_at'=>date('Y-m-d H:i:s')
             ]);
-
-            $get_reward_balance = \App\Models\Reward::find($id_reward)->amount;
-            $this->rewardCheckout($id_reward,$get_reward_balance);
+            $get_reward_balance = \App\Models\ActivityRewardAmount::where(['activity_id'=>$activity_id, 'reward_id'=>$id_reward])->first()->amount;
+            $this->rewardCheckout($id_reward,$get_reward_balance,$activity_id);
         } else {
             $id = $check[0]->id;
         }
@@ -671,12 +678,14 @@ class ActivitiesController extends Controller
         } else {
             $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
         }
+        $return['id'] = base64_encode($id.'/'.$id_reward);
+        $return['str'] = $str[2];
         $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$str[2]);
-        // return View::make('Admin.randomReward',$return);
-        return View::make('Admin.randomRewardQrcode',$return);
+        return View::make('Admin.randomReward',$return);
+        // return View::make('Admin.randomRewardQrcode',$return);
     }
-    public function rewardCheckout($id_reward,$get_reward_balance) {
-        \App\Models\Reward::where('id',$id_reward)->update([
+    public function rewardCheckout($id_reward,$get_reward_balance,$activity_id) {
+        \App\Models\ActivityRewardAmount::where(['activity_id'=>$activity_id, 'reward_id'=>$id_reward])->update([
             'updated_at' => date('Y-m-d H:i:s'),
             'amount' => --$get_reward_balance,
         ]);

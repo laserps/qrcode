@@ -1220,7 +1220,7 @@ $('#FormReward').validate({
 				// RewardList.api().ajax.reload();
 				resetFormCustom(form);
 				swal(rec.title,rec.content,"success");
-				// $('#ModalReward').modal('hide');
+				$('#ModalReward').modal('hide');
 			}else{
 				swal(rec.title,rec.content,"error");
 			}
@@ -1286,16 +1286,22 @@ $('body').on('change','.status',function() {
 		swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
 	});
 });
+$("#import_qty, #export_qty").keydown(function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
 $('#FormImport').find('button.btn-primary').on('click',function(e) {
-	console.log($('#import_user_id').val());
-	console.log($('#import_qty').val());
 	sum_amount($('#import_user_id').val(),$('#import_qty').val(),'in');
 	$('#ModalReward').addClass('in');
 	$('#ModalImport').modal('hide');
 });
 $('#FormExport').find('button.btn-primary').on('click',function(e) {
-	console.log($('#export_user_id').val());
-	console.log($('#export_qty').val());
 	sum_amount($('#export_user_id').val(),$('#export_qty').val(),'out');
 	$('#ModalReward').addClass('in');
 	$('#ModalExport').modal('hide');
@@ -1305,7 +1311,6 @@ function sum_amount(reward_id, amount, type) {
 	sum = parseInt($('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val()?$('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val():0);
 	if(type=="in") {
 		sum += parseInt(amount);
-		console.log(sum);
 	} else {
 		if(sum>amount) {
 			sum -= amount;

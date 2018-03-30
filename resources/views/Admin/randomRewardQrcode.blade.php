@@ -458,6 +458,7 @@ html.modal_openoverflow {
     <center><img src="{{asset('uploads/logo original.JPG')}}" class="class-logo" style="width:100%; height:auto;"></center>
     <div class="row" style="margin:0px;">
         <div class="col-12">
+            <img height="auto" src="{{asset('uploads/temp/'.$pic->path_picture)}}" class="img-responsive reward-img" alt="Image" /><br>
             {!!$img!!}
         </div>
     </div>
@@ -469,6 +470,12 @@ html.modal_openoverflow {
 <script src="{{asset('assets/admin/lib/jquery/dist/jquery.min.js')}}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
-
+$.each($('body').find('img'),function() {
+    $(this).removeAttr('width height');
+    $(this).attr({
+        'width': '100%',
+        'height': 'auto'
+    });
+});
 </script>
 </html>

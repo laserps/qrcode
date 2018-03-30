@@ -457,11 +457,16 @@ html.modal_openoverflow {
 <div id="card" style="text-align:center;">
     {{--  <img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive class-logo">  --}}
     <center><img src="{{asset('uploads/logo original.JPG')}}" class="class-logo" style="width:100%; height:auto;"></center>
-    <h2>ยินดีด้วยคุณได้รับของรางวัล</h2>
-    <p style="font-weight:700;">{{$reward->name}}</p>
+    <!-- <h2>ยินดีด้วยคุณได้รับของรางวัล</h2> -->
+    <h2>ตอบคำถามสำเร็จ</h2>
+    <!-- <p style="font-weight:700;">{{$reward->name}}</p> -->
     <div class="row" style="margin:0px;">
         <div class="col-12">
-            <img height="auto" src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive reward-img" alt="Image" />
+            {!!$text!!}
+            <!-- <img height="auto" src="{{asset('uploads/temp/'.$reward->getRewardPicture->path_picture)}}" class="img-responsive reward-img" alt="Image" /> -->
+        </div>
+        <div class="col-md-12">
+            <button type="button" class="submit_reward text-center btn btn-md btn-success" name="button">กดเพื่อรับของรางวัล</button>
         </div>
     </div>
     <!-- <span class="left bottom">tel: 530 283 ****</span>
@@ -507,13 +512,17 @@ $('body').on('submit','#answer_history',function(e){
     });
 });
 $(function() {
-    $('#ModalAdd').modal('show');
-    $.each($('body').find('#ModalAdd').find('img'),function() {
-        $(this).removeAttr('width height');
-        $(this).attr({
-            'width': '100%',
-            'height': 'auto'
-        });
+    // $('#ModalAdd').modal('show');
+    // $.each($('body').find('#ModalAdd').find('img'),function() {
+    //     $(this).removeAttr('width height');
+    //     $(this).attr({
+    //         'width': '100%',
+    //         'height': 'auto'
+    //     });
+    // });
+    $('.submit_reward').click(function() {
+        var getUrl = '{{url("ActivityRewardUser/accept")}}/{{$id}}/{{$str}}';
+        window.location = getUrl;
     });
 });
 </script>

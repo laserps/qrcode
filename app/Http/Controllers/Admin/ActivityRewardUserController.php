@@ -221,6 +221,7 @@ class ActivityRewardUserController extends Controller
             $check = \App\Models\ActivityRewardUser::where('id',$val[0])->first();
         }
         $return['reward'] = \App\Models\Reward::find($check->reward_id);
+        $return['pic'] = \App\Models\RewardPicture::where('reward_id',$check->reward_id)->first();
         $question = \App\Models\AnswerHistory::where('activity_id',$check->activity_id)->where('user_id',$check->user_id)->first();
         $remark = \App\Models\AnswerRight::where('question_id',$question->question_id)->first();
         if($result!=null) {
@@ -229,15 +230,21 @@ class ActivityRewardUserController extends Controller
             } else {
                 $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
             }
-            return View::make('Admin.randomReward',$return);
+            $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$result);
+            // dd($return['img']);
+
+            return View::make('Admin.randomRewardQrcode',$return);
+            // return View::make('Admin.randomReward',$return);
         } else {
             return redirect('admin/ActivityRewardUser');
         }
     }
     public static function getRewardQrcode($id,$r) {
         $result = \App\Models\ActivityRewardUser::where('id',$id)->first();
-        $data = \QrCode::format('png')->encoding('UTF-8')->size(300)->generate(url("ActivityRewardUser/accept/".base64_encode($id.'/'.$result->reward_id).'/'.$r));
+        // $data = \QrCode::format('png')->encoding('UTF-8')->size(300)->generate(url("ActivityRewardUser/accept/".base64_encode($id.'/'.$result->reward_id).'/'.$r));
+        $data = \QrCode::format('png')->encoding('UTF-8')->size(300)->generate(url("ActivityRewardUser/accept/".$id.'/'.$r));
         return '<img src="data:image/png;base64, '.base64_encode($data) .'">';
         // return "<a href='".url('ActivityRewardUser/accept/'.base64_encode($id.'/'.$result->reward_id).'/'.$r)."'>";
+        // return "<a href='".url('ActivityRewardUser/accept/'.$id.'/'.$r)."'>";
     }
 }
