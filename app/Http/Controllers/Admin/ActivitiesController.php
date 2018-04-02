@@ -425,8 +425,10 @@ class ActivitiesController extends Controller
         $check_init         = \App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first();
         $status_init        = ''; #if status init = 1 go to random main question
         if($check_init && !empty(json_decode($check_init->question_group_id))) {
+            // \DB::enableQueryLog();
+            // dd(\DB::getQueryLog());
             $check_init_history = \App\Models\AnswerHistoryInit::where('activity_id',$activity->activity_id)->where('user_id',$userid)->first();
-            if($check_init_history) {
+            if(sizeof($check_init_history)!=0) {
                 $status_init = 1;
             } else {
                 $status_init = 0;
@@ -470,14 +472,43 @@ class ActivitiesController extends Controller
         }
     }
     public function getAllSpecialQuestion($code,$userid){
-        $return['userid']   = $userid;
-        $return['code']     = $code;
-        $return['id']       = 1;
         $activity           = \App\Models\Activities::where('code',$code)->first();
-        $question_group_id  = json_decode(\App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first()->question_group_id);
-        $return['activity'] = $activity;
-        $return['SpecialQuestion'] = \App\Models\QuestionInit::whereIn('id',$question_group_id)->where('status','T')->get();
-        return View::make('Admin.randomSpecialQuestion',$return);
+        $check              = \App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first();
+        $status_init        = ''; #if status init = 1 go to random main question
+        if($check && !empty(json_decode($check->question_group_id))) {
+            // \DB::enableQueryLog();
+            // dd(\DB::getQueryLog());
+            $check_history = \App\Models\AnswerHistoryInit::where('activity_id',$activity->activity_id)->where('user_id',$userid)->first();
+            if(sizeof($check_history)!=0) {
+                $status_init = 1;
+            } else {
+                $status_init = 0;
+            }
+        } else {
+            $status_init = 1;
+        }
+        if($status_init==1)  {
+            return redirect('Activities/'.$code.'/'.$userid.'/getQuestion');
+        } else {
+            $return['userid']   = $userid;
+            $return['code']     = $code;
+            $return['id']       = 1;
+            $question_group_id  = json_decode($check->question_group_id);
+            $limit_question = $check->limit_random;
+            $return['activity'] = $activity;
+            for($i=0;$i<$limit_question;$i++) {
+                if(sizeof($question_group_id)!=0) {
+                    $test[$i] = \App\Models\QuestionInit::whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                    foreach ($question_group_id as $key => $value) {
+                        if($value == $test[$i]['id']) {
+                            unset($question_group_id[$key]);
+                        }
+                    }
+                }
+            }
+            $return['SpecialQuestion'] = $test;
+            return View::make('Admin.randomSpecialQuestion',$return);
+        }
     }
     public static function checkResult($question_id,$answer_id){
         return \App\Models\AnswerRight::where([
@@ -622,7 +653,6 @@ class ActivitiesController extends Controller
         //     $percent_reward[$key] = intVal($value*100/$count_all)/100;
         // }
         // rsort($percent_reward);
-        \DB::enableQueryLog();
         $count_all = 0;
         $percent = 0;
         $id_reward = '';
@@ -669,7 +699,6 @@ class ActivitiesController extends Controller
                 }
             }
         }
-        // dd(\DB::getQueryLog());
         $return['reward'] = \App\Models\Reward::find($id_reward);
         $check = \App\Models\ActivityRewardUser::where('activity_id',$activity_id)->where('user_id',$user_id)->get();
         if(sizeof($check)==0) {
