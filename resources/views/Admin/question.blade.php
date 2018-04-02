@@ -1,8 +1,6 @@
 @extends('Admin.layouts.layout')
-@section('css_bottom')
-@endsection
-@section('body')
 
+@section('body')
 <div class="col-lg-12">
 	<h2 class="page-title">
 		{{$title_page or '' }}
@@ -152,7 +150,13 @@
 	</div>
 </div>
 @endsection
+@section('css_bottom')
+
+@endsection
+
 @section('js_bottom')
+<!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script> -->
+<script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script>
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
 $('.save_answer').click(function() {
@@ -708,7 +712,7 @@ $('body').on('click','.btn-delete',function(e){
 
 
 </script>
-<script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script>
+<!-- <script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script> -->
 <script>
 // var editor_config = {
 //     path_absolute : "",

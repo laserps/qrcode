@@ -10,9 +10,9 @@
         "laravel/tinker": "~1.0",
         "maatwebsite/excel": "~2.1.0",
         "niklasravnsborg/laravel-pdf": "^2.0",
+        "simplesoftwareio/simple-qrcode": "~2",
         "unisharp/laravel-filemanager": "~1.8",
-        "yajra/laravel-datatables-oracle": "7.0",
-        "simplesoftwareio/simple-qrcode": "~2"
+        "yajra/laravel-datatables-oracle": "7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
