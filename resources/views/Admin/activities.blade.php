@@ -15,12 +15,12 @@
 	<section class="widget widhget-min-hight">
 		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover" id="TableList">
-				<col width="10%">
+				<col width="5%">
 				<col width="20%">
-				<col width="10%">
-				<col width="10%">
-				<col width="10%">
-				<col width="10%">
+				<col width="5%">
+				<col width="12%">
+				<col width="12%">
+				<col width="16%">
 				<col width="10%">
 				<col width="20%">
 				<thead>
@@ -535,9 +535,9 @@ var TableList = $('#TableList').dataTable({
 		{"data" : "activity_name"},
 		// {"data" : "qr_code","searchable":false,"orderable":false},
 		{"data" : "activity_url","searchable":false,"orderable":false},
-		{"data" : "working_time_start"},
-		{"data" : "working_time_end"},
-		{"data" : "created_at"},
+		{"data" : "working_time_start","className":"text-center"},
+		{"data" : "working_time_end","className":"text-center"},
+		{"data" : "created_at","className":"text-center"},
 		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
 		{ "data": "action","className":"action text-center","searchable":false ,"orderable":false}
 	]
