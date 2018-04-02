@@ -1,5 +1,19 @@
+@charset "UTF-8";
+@font-face {
+  font-family: 'Kanit';
+  src: url('fonts/google/kanit/kanit-light-webfont.eot');
+  src: url('fonts/google/kanit/kanit-light-webfont.eot?#iefix')format('embedded-opentype'),
+    url('fonts/google/kanit/kanit-light-webfont.woff2')format('woff2'),
+    url('fonts/google/kanit/kanit-light-webfont.woff')format('woff'),
+    url('fonts/google/kanit/kanit-light-webfont.ttf')format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+html{
+	font-family: 'Kanit';
+}
 body{
-	font-family: 'Kanit', sans-serif;
+	font-family: 'Kanit';
 }
 
 
