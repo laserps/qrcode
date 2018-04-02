@@ -15,21 +15,15 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-	<title></title>
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap.min.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap.min.css.map')}}" />
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map')}}" />
-
 	<link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/admin/css_main_process/custom.css')}}" />
-	<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
-
+	<!-- <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet"> -->
 </head>
 <body>
 	@if($check_amount_reward && $check_reward && sizeof($check_question)!=0 && $activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
