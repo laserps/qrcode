@@ -14,17 +14,17 @@
     <section class="widget widhget-min-hight ">
         <div class="body no-margin table-responsive">
             <table class="table table-bordered table-hover table-sm" id="TableList">
-                <col width="10%">
+                <col width="15%">
 				<col width="35%">
 				<col width="35%">
-				<col width="10%">
-				<col width="10%">
+				<!-- <col width="10%"> -->
+				<col width="15%">
                 <thead>
                     <tr>
                         <th class="text-center">รหัส</th>
                         <th class="text-center">ภาพ</th>
                         <th class="text-center">ชื่อของรางวัล</th>
-                        <th class="text-center">คงเหลือ</th>
+                        <!-- <th class="text-center">คงเหลือ</th> -->
                         <th class="text-center"></th>
                     </tr>
                 </thead>
@@ -158,7 +158,7 @@ var TableList = $('#TableList').dataTable({
         // {"data" : "id","searchable":false,"orderable":false},
         {"data" : "img","searchable":false,"orderable":false},
         {"data" : "name"},
-        {"data" : "amount", "className": "text-right"},
+        // {"data" : "amount", "className": "text-right"},
         { "data": "action","className":"action text-center","searchable":false,"orderable":false }
     ]
 });
