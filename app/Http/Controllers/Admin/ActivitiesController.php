@@ -420,16 +420,16 @@ class ActivitiesController extends Controller
         return json_encode($return);
     }
     public function getQuestion($code,$userid){
-        $return['userid']   = $userid;
-        $return['code']     = $code;
         $activity           = \App\Models\Activities::where('code',$code)->first();
         $check              = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
         $check_init         = \App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first();
-        $status_init        = 0; #if status init = 1 go to random main question
-        if($check_init) {
+        $status_init        = ''; #if status init = 1 go to random main question
+        if($check_init && !empty(json_decode($check_init->question_group_id))) {
             $check_init_history = \App\Models\AnswerHistoryInit::where('activity_id',$activity->activity_id)->where('user_id',$userid)->first();
             if($check_init_history) {
                 $status_init = 1;
+            } else {
+                $status_init = 0;
             }
         } else {
             $status_init = 1;
@@ -438,6 +438,8 @@ class ActivitiesController extends Controller
             if($status_init==0) {
                 return redirect('Activities/'.$code.'/'.$userid.'/getSpecialQuestion');
             } else {
+                $return['userid']   = $userid;
+                $return['code']     = $code;
                 $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
                 if($check_history) {
                     $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
@@ -705,10 +707,12 @@ class ActivitiesController extends Controller
     public function AddQuestion(Request $request, $id) {
         $question = $request->question_group_id;
         $question_group_id = array();
-        if(sizeof($request->question_group_id)!=0) {
+        if(sizeof($request->question_group_id)!=0 || isset($request->question_group_id)) {
             foreach ($question as $k => $v) {
                 $question_group_id[$k] = $v;
             }
+        } else {
+            $question_group_id = [];
         }
         $input_all['question_group_id'] = json_encode($question_group_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
@@ -724,12 +728,12 @@ class ActivitiesController extends Controller
                 $data_insert = $input_all;
                 $check = \App\Models\ActivityQuestion::where('activity_id',$id)->first();
                 // \App\Models\ActivityQuestion::where('activity_id',$id)->delete();
-                if(sizeof($request->question_group_id)!=0) {
+                // if(sizeof($request->question_group_id)!=0) {
                     if($check)
                         \App\Models\ActivityQuestion::where('activity_id',$id)->update($data_insert);
                     else
                         \App\Models\ActivityQuestion::insert($data_insert);
-                }
+                // }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
