@@ -13,7 +13,7 @@
                     </h2>
                     <section class="widget widhget-min-hight">
                         <div class="body no-margin table-responsive">
-                            <table class="table table-bordered table-hover" id="TableUser">
+                            <table class="table table-bordered table-hover table-sm" id="TableUser">
                                 <col width="10%">
                                 <col width="60%">
                                 <col width="15%">

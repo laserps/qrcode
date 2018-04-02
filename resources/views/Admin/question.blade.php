@@ -14,7 +14,7 @@
 	</h2>
 	<section class="widget widhget-min-hight">
 		<div class="body no-margin table-responsive">
-			<table class="table table-bordered table-hover" id="TableList">
+			<table class="table table-bordered table-hover table-sm" id="TableList">
 				<col width="10%">
 				<col width="45%">
 				<col width="15%">
