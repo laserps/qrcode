@@ -15,7 +15,8 @@
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap.min.css.map')}}" />
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/global/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map')}}" />
-	<link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/admin/css_main_process/application.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/admin/css_main_process/custom.css')}}" />
 </head>
 <body>
