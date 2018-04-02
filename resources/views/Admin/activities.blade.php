@@ -28,8 +28,8 @@
 						<th class="text-center">ลำดับ</th>
 						<th class="text-center">ชื่อกิจกรรม</th>
 						<!-- <th>QR Code</th> -->
-						<th class="text-center">ลิงก์</th>
-						<th class="text-center">เร้ิมต้น</th>
+						<th class="text-center">ลิงค์</th>
+						<th class="text-center">เริ่มต้น</th>
 						<th class="text-center">สิ้นสุด</th>
 						<th class="text-center">วันที่สร้าง</th>
 						<th class="text-center">สถานะ</th>
