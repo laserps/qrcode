@@ -104,7 +104,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label for="add_activity_name">จำนวนคำถามสำหรับสุ่ม</label>
+								<label for="limit_random">จำนวนคำถามสำหรับสุ่ม</label>
 								<input type="text" class="form-control" name="limit_random" id="limit_random"  placeholder="limit question random">
 							</div>
 						</div>
@@ -171,6 +171,14 @@
 					<h4 class="modal-title" id="myModalLabel">จัดการคำถาม</h4>
 				</div>
 				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="limit_random">จำนวนคำถามสำหรับสุ่ม</label>
+								<input type="text" class="form-control" name="limit_random" id="limit_random"  placeholder="limit question random">
+							</div>
+						</div>
+					</div>
 					<div class="col-md-6">
 						<div class="row">
 							<div class="text-center">
@@ -639,6 +647,7 @@ $('body').on('click','.btn-add-init-question', function(data){
 			$.each($('#SpecialSelect').find('tr'),function(k,v){
 				$(v).find('td:first').text((k+1));
 			});
+			$('#ModalAddInitQuestion').find('input#limit_random').val(result.limit_random);
 		});
 		ShowModal('ModalAddInitQuestion');
 	});
@@ -1049,10 +1058,16 @@ $('#FormAddQuestion').validate({
 	errorClass: 'invalid-feedback',
 	focusInvalid: false,
 	rules: {
-
+		limit_random : {
+			required:true,
+			number: true,
+		},
 	},
 	messages: {
-
+		limit_random : {
+			required:"กรุณาระบุ",
+			number: "ตัวเลลขเท่านั้น",
+		}
 	},
 	highlight: function (e) {
 		validate_highlight(e);
@@ -1074,7 +1089,7 @@ $('#FormAddQuestion').validate({
 			dataType : 'json',
 			data : {
 				question_group_id : add_check,
-				limit_random : $('#limit_random').val(),
+				limit_random : $('#ModalAddQuestion').find('#limit_random').val(),
 			},
 		}).done(function(rec){
 			btn.button("reset");
@@ -1175,6 +1190,7 @@ $('#FormAddSpecialQuestion').validate({
 			dataType : 'json',
 			data : {
 				question_group_id : add_check,
+				limit_random : $('#ModalAddInitQuestion').find('#limit_random').val(),
 			},
 		}).done(function(rec){
 			btn.button("reset");

@@ -42,7 +42,6 @@ class QuestionInitController extends Controller
     public function store(Request $request)
     {
         $input_all = $request->all();
-
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 

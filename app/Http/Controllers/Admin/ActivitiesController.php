@@ -712,10 +712,13 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
+                $check = \App\Models\ActivityQuestion::where('activity_id',$id)->first();
                 // \App\Models\ActivityQuestion::where('activity_id',$id)->delete();
                 if(sizeof($request->question_group_id)!=0) {
-                    \App\Models\ActivityQuestion::where('activity_id',$id)->update($data_insert);
-                    // \App\Models\ActivityQuestion::insert($data_insert);
+                    if($check)
+                        \App\Models\ActivityQuestion::where('activity_id',$id)->update($data_insert);
+                    else
+                        \App\Models\ActivityQuestion::insert($data_insert);
                 }
                 \DB::commit();
                 $return['status'] = 1;
@@ -749,10 +752,13 @@ class ActivitiesController extends Controller
             \DB::beginTransaction();
             try {
                 $data_insert = $input_all;
+                $check  = \App\Models\ActivityStaff::where('activity_id',$id)->first();
                 // \App\Models\ActivityStaff::where('activity_id',$id)->delete();
                 if(sizeof($request->staff_id)!=0) {
-                    \App\Models\ActivityStaff::where('activity_id',$id)->update($data_insert);
-                    \App\Models\ActivityStaff::insert($data_insert);
+                    if($check)
+                        \App\Models\ActivityStaff::where('activity_id',$id)->update($data_insert);
+                    else
+                        \App\Models\ActivityStaff::insert($data_insert);
                 }
                 \DB::commit();
                 $return['status'] = 1;
@@ -778,6 +784,7 @@ class ActivitiesController extends Controller
         }
         $input_all['question_group_id'] = json_encode($question_group_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
+        $input_all['limit_random'] = $request->limit_random;
         $input_all['status']   = 'T';
         $input_all['activity_id']   = $id;
         $validator = Validator::make($request->all(), [
@@ -788,9 +795,12 @@ class ActivitiesController extends Controller
             try {
                 $data_insert = $input_all;
                 // \App\Models\ActivityQuestionInit::where('activity_id',$id)->delete();
+                $check = \App\Models\ActivityQuestionInit::where('activity_id',$id)->first();
                 if(sizeof($request->question_group_id)!=0) {
-                    \App\Models\ActivityQuestionInit::where('activity_id',$id)->update($data_insert);
-                    // \App\Models\ActivityQuestionInit::insert($data_insert);
+                    if($check)
+                        \App\Models\ActivityQuestionInit::where('activity_id',$id)->update($data_insert);
+                    else
+                        \App\Models\ActivityQuestionInit::insert($data_insert);
                 }
                 \DB::commit();
                 $return['status'] = 1;
@@ -807,19 +817,20 @@ class ActivitiesController extends Controller
         return json_encode($return);
     }
 
-    public function getActivityQuestion($id) {
-        $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
-        foreach ($all as $key => $value) {
-            $result['question'][$key] = json_decode($value->question_group_id);
-        }
-        $result['limit_random'] = $all[0]->limit_random;
-        return json_encode($result);
-    }
+    // public function getActivityQuestion($id) {
+    //     $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
+    //     foreach ($all as $key => $value) {
+    //         $result['question'][$key] = json_decode($value->question_group_id);
+    //     }
+    //     $result['limit_random'] = $all[0]->limit_random;
+    //     return json_encode($result);
+    // }
     public function getSpecialQuestion($id) {
         $all = \App\Models\ActivityQuestionInit::where('activity_id',$id)->get();
         foreach ($all as $key => $value) {
             $result[$key] = json_decode($value->question_group_id);
         }
+        $result['limit_random'] = $all[0]->limit_random;
         return json_encode($result);
     }
     public function updateStatus(Request $request,$id) {
@@ -876,6 +887,7 @@ class ActivitiesController extends Controller
         foreach ($all as $key => $value) {
             $result[$key] = json_decode($value->question_group_id);
         }
+        $result['limit_random'] = $all[0]->limit_random;
         return json_encode($result);
     }
     public function getDownloadQrcode($id) {
