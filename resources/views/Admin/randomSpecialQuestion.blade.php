@@ -97,7 +97,7 @@
  }).done(function(rec){
     if (rec.status == 1) {
         // alert('success');
-            var getUrl = '{{url("")}}/admin/Activities/{{$activity->code}}/{{$userid}}/getQuestion';
+            var getUrl = '{{url("")}}/Activities/{{$activity->code}}/{{$userid}}/getQuestion';
             window.location = getUrl;
         }else{
             alert('Error');

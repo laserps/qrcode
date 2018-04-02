@@ -299,15 +299,15 @@
         </header>  --}}
         <div class="content container">
             @yield('body')
-            <footer class="content-footer">
+            <!-- <footer class="content-footer">
                 <div class="pull-right float-right">
                     Develope By <a href="https://www.workbythai.com/" target="_blank">WorkByThai Internet And Marketing</a> V 1.1
                 </div>
-            </footer>
+            </footer> -->
         </div>
-        <div class="loader-wrap hiding hide">
+        <!-- <div class="loader-wrap hiding hide">
             <i class="fa fa-circle-o-notch fa-spin"></i>
-        </div>
+        </div> -->
     </div>
 <!-- common libraries. required for every page-->
 <script>

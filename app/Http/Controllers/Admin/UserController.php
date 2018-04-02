@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $data['main_menu'] = 'user';
         $data['sub_menu'] = 'user';
-        $data['title_page'] = 'สมาชิก';
+        $data['title_page'] = 'ผู้ดูแลระบบ';
         $data['department'] = \App\Models\UserDepartment::get();
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
         $data['menu_all'] = \App\Models\AdminMenu::with(['SubMenu','MainMenu'])->where('show','=','T')->get();
@@ -242,6 +242,11 @@ class UserController extends Controller
                     <i class="ace-icon fa fa-trash bigger-120"></i>
                     </button>
                     ';
+                }else{
+                    $str .= '<button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ" disabled>
+                    <i class="ace-icon fa fa-trash bigger-120"></i>
+                    </button>
+                    '; 
                 }
             return $str;
         })->make(true);

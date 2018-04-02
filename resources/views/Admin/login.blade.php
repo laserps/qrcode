@@ -22,7 +22,7 @@
         <div class="single-widget-container">
             <section class="widget login-widget">
                 <header class="text-align-center">
-                    <h4>Login to your account</h4>
+                    <h3>MENARINI</h3>
                 </header>
                 <div class="body">
                     <form class="no-margin" id="FormLogin" action="" method="get">
@@ -51,17 +51,18 @@
                         <div class="form-actions">
                             <button type="submit" class="btn btn-block btn-lg btn-danger">
                                 <span class="small-circle"><i class="fa fa-caret-right"></i></span>
-                                <small>Sign In</small>
+                                <small>เข้าสู่ระบบ</small>
                             </button>
-                            <a class="forgot" href="{{asset('#')}}">Forgot Username or Password?</a>
+                            <br><br>
+                            <!-- <a class="forgot" href="{{asset('#')}}">Forgot Username or Password?</a> -->
                         </div>
                     </form>
                 </div>
-                <footer>
+                <!-- <footer>
                     <div class="facebook-login">
                         <a href="{{url('index.html')}}"><span><i class="fa fa-facebook-square fa-lg"></i> LogIn with Facebook</span></a>
                     </div>
-                </footer>
+                </footer> -->
             </section>
         </div>
 <!-- common libraries. required for every page-->

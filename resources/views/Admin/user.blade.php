@@ -2,33 +2,38 @@
 @section('css_bottom')
 @endsection
 @section('body')
-        <h2 class="page-title">
-            {{$title_page or '' }}
-            <div class="pull-right">
-                <button class="btn btn-success btn-add">
-                    + เพิ่ม {{$title_page or '' }}
-                </button>
-            </div>
-        </h2>
-            <div class="row">
                 <div class="col-lg-12">
+                    <h2 class="page-title">
+                        {{$title_page or '' }}
+                        <div class="pull-right">
+                            <button class="btn btn-success btn-add">
+                                + เพิ่ม{{$title_page or '' }}
+                            </button>
+                        </div>
+                    </h2>
                     <section class="widget widhget-min-hight">
                         <div class="body no-margin table-responsive">
                             <table class="table table-bordered table-hover" id="TableUser">
+                                <col width="10%">
+                                <col width="60%">
+                                <col width="15%">
+                                <col width="15%">
+
                                 <thead>
                                     <tr>
-                                        <th>ลำดับ</th>
-                                        <th>ชื่อ-นามสกุล</th>
-                                        <th>นามสกุล</th>
-                                        <th>ชื่อเล่น</th>
-                                        <th>เบอร์โทร</th>
-                                        <th></th>
+                                        <th class="text-center">ลำดับ</th>
+                                        <th class="text-center">ชื่อ-นามสกุล</th>
+                                        <th class="text-center">นามสกุล</th>
+                                        <th class="text-center">ชื่อเล่น</th>
+                                        <th class="text-center">เบอร์โทร</th>
+                                        <th class="text-center"></th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
+                    </section>
                 </div>
-            </div>
+
 
 <div class="modal fade" id="ModalPermission" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

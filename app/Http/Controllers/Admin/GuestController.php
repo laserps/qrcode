@@ -15,9 +15,9 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $data['main_menu'] = 'ผู้เข้าร่วม';
-        $data['sub_menu'] = 'ผู้เข้าร่วม';
-        $data['title_page'] = 'ผู้เข้าร่วม';
+        $data['main_menu'] = 'ผู้เข้าร่วมกิจกรรม';
+        $data['sub_menu'] = 'ผู้เข้าร่วมกิจกรรม';
+        $data['title_page'] = 'ผู้เข้าร่วมกิจกรรม';
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
 
         return view('Admin.guest',$data);

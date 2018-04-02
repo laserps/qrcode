@@ -1122,7 +1122,7 @@ html {
 body {
   font-family: 'Kanit', sans-serif;
   font-size: 13px;
-  line-height: 1.42857;
+  /* line-height: 1.42857; */
   color: #f8f8f8;
   background-color: #fff; }
 
@@ -16679,7 +16679,7 @@ html {
 
 body {
   font-weight: 300;
-  padding-bottom: 100px;
+  /* padding-bottom: 100px; */
   background-color: #414e60 20%;
   background-image: -webkit-linear-gradient(to right bottom, #e1c076, #ffc3a7, #ffd3da, #ffeaf9, #ffffff);
   background-image: linear-gradient(to right bottom, #e1c076, #ffc3a7, #ffd3da, #ffeaf9, #ffffff);

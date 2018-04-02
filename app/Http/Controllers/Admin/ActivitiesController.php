@@ -434,37 +434,33 @@ class ActivitiesController extends Controller
         } else {
             $status_init = 1;
         }
-        if($check) {
-            if(sizeof($check)==0) {
-                return redirect('admin/QRCODE/'.$code);
+        if($check || sizeof($check)==0) {
+            if($status_init==0) {
+                return redirect('Activities/'.$code.'/'.$userid.'/getSpecialQuestion');
             } else {
-                if($status_init==0) {
-                    return redirect('Activities/'.$code.'/'.$userid.'/getSpecialQuestion');
+                $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
+                if($check_history) {
+                    $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
+                    $str = base64_encode($data_send);
+                    return redirect('Activities/randomReward/'.$str);
                 } else {
-                    $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
-                    if($check_history) {
-                        $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
-                        $str = base64_encode($data_send);
-                        return redirect('Activities/randomReward/'.$str);
-                    } else {
-                        $question_group_id  = json_decode($check->question_group_id);
-                        $return['activity'] = $activity;
-                        $test =[];
-                        $limit_question = $check->limit_random;
-                        for($i=0;$i<$limit_question;$i++) {
-                            if(sizeof($question_group_id)!=0) {
-                                $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
-                                foreach ($question_group_id as $key => $value) {
-                                    if($value == $test[$i]['id']) {
-                                        unset($question_group_id[$key]);
-                                    }
+                    $question_group_id  = json_decode($check->question_group_id);
+                    $return['activity'] = $activity;
+                    $test =[];
+                    $limit_question = $check->limit_random;
+                    for($i=0;$i<$limit_question;$i++) {
+                        if(sizeof($question_group_id)!=0) {
+                            $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                            foreach ($question_group_id as $key => $value) {
+                                if($value == $test[$i]['id']) {
+                                    unset($question_group_id[$key]);
                                 }
                             }
                         }
-                        $return['question'] = $test;
-                        // return $return['question'];
-                        return View::make('Admin.randomQuestion',$return);
                     }
+                    $return['question'] = $test;
+                    // return $return['question'];
+                    return View::make('Admin.randomQuestion',$return);
                 }
             }
         } else {

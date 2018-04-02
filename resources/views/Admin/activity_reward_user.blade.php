@@ -2,34 +2,42 @@
 @section('css_bottom')
 @endsection
 @section('body')
-<h2 class="page-title">
-	{{$title_page or '' }}
-	<div class="pull-right">
-		<!-- <button class="btn btn-success btn-add">
-		+ เพิ่ม {{$title_page or '' }}
-	</button> -->
-</div>
-</h2>
 <div class="col-lg-12">
+	<h2 class="page-title">
+		{{$title_page or '' }}
+		<div class="pull-right">
+			<!-- <button class="btn btn-success btn-add">
+			+ เพิ่ม {{$title_page or '' }}
+		</button> -->
+		</div>
+	</h2>
 	<section class="widget widhget-min-hight">
 		<div class="body no-margin table-responsive">
-			<table class="table table-bordered table-hover" id="TableList">
+			<table class="table table-bordered table-hover table-sm" id="TableList">
+				<col width="10%">
+				<col width="10%">
+				<col width="10%">
+				<col width="10%">
+				<col width="20%">
+				<col width="20%">
+				<col width="10%">
+				<col width="10%">
 				<thead>
 					<tr>
-						<th>ลำดับ</th>
-						<th>qrcode</th>
-						<th>รหัสกิจกรรม</th>
-						<th>ลิงก์</th>
-						<th>รหัสของรางวัล</th>
-						<th>รหัสผู้ใช้งาน</th>
-						<th>firstname</th>
-						<th>lastname</th>
-						<th>รหัสผู้ดูแลกิจกรรม</th>
-						<th>staff_firstname</th>
-						<th>staff_lastname</th>
-						<th>วันที่ตอบคำถาม</th>
-						<th>วันที่ยืนยัน</th>
-						<th></th>
+						<th class="text-center">ลำดับ</th>
+						<!-- <th class="text-center">qrcode</th> -->
+						<th class="text-center">กิจกรรม</th>
+						<th class="text-center">ยืนยัน</th>
+						<th class="text-center">ของรางวัล</th>
+						<th class="text-center">ผู้เข้าร่วมกิจกรรม</th>
+						<!-- <th class="text-center">firstname</th>
+						<th class="text-center">lastname</th> -->
+						<th class="text-center">พนักงาน</th>
+						<!-- <th class="text-center"staff_firstname</th>
+						<th class="text-center">staff_lastname</th> -->
+						<th class="text-center">วันที่กิจกรรม</th>
+						<th class="text-center">วันที่ยืนยัน</th>
+						<!-- <th class="text-center"></th> -->
 					</tr>
 				</thead>
 			</table>
@@ -135,19 +143,19 @@ var TableList = $('#TableList').dataTable({
 	"columns": [
 		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		// {"data" : "id","searchable":false,"orderable":false},
-		{"data" : "qrcode","searchable":false,"orderable":false},
+		// {"data" : "qrcode","searchable":false,"orderable":false},
 		{"data" : "activity_name", "name" : "activity.activity_name"},
 		{"data" : "url","searchable":false,"orderable":false},
 		{"data" : "name", "name" : "reward.name"},
 		{"data" : "user_id","searchable":false,"orderable":false},
-		{"data" : "firstname", "name" : "users.firstname" ,"visible":false},
-		{"data" : "lastname", "name" : "users.lastname" ,"visible":false},
+		// {"data" : "firstname", "name" : "users.firstname" ,"visible":false},
+		// {"data" : "lastname", "name" : "users.lastname" ,"visible":false},
 		{"data" : "staff_id","searchable":false,"orderable":false},
-		{"data" : "firstname", "name" : "admin_users.firstname" ,"visible":false},
-		{"data" : "lastname", "name" : "admin_users.lastname" ,"visible":false},
+		// {"data" : "firstname", "name" : "admin_users.firstname" ,"visible":false},
+		// {"data" : "lastname", "name" : "admin_users.lastname" ,"visible":false},
 		{"data" : "created_at"},
 		{"data" : "updated_at"},
-		{ "data": "action","className":"action text-center","searchable":false,"orderable":false }
+		// { "data": "action","className":"action text-center","searchable":false,"orderable":false }
 	]
 });
 $('body').on('click','.btn-add',function(data){
@@ -197,7 +205,7 @@ $('#FormAdd').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-
+		
 		var btn = $(form).find('[type="submit"]');
 		var data_ar = removePriceFormat(form,$(form).serializeArray());
 		btn.button("loading");
@@ -247,7 +255,7 @@ $('#FormEdit').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-
+		
 		var btn = $(form).find('[type="submit"]');
 		var id = $('#edit_user_id').val();
 		btn.button("loading");

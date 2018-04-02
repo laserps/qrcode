@@ -2,25 +2,30 @@
 @section('css_bottom')
 @endsection
 @section('body')
-<h2 class="page-title">
-    {{$title_page or '' }}
-    <div class="pull-right">
-        <button class="btn btn-success btn-add">
-            + เพิ่ม {{$title_page or '' }}
-        </button>
-    </div>
-</h2>
 <div class="col-lg-12">
-    <section class="widget widhget-min-hight">
+    <h2 class="page-title">
+        {{$title_page or '' }}
+        <div class="pull-right">
+            <button class="btn btn-success btn-add">
+                + เพิ่ม{{$title_page or '' }}
+            </button>
+        </div>
+    </h2>
+    <section class="widget widhget-min-hight ">
         <div class="body no-margin table-responsive">
             <table class="table table-bordered table-hover" id="TableList">
+                <col width="10%">
+				<col width="35%">
+				<col width="35%">
+				<col width="10%">
+				<col width="10%">
                 <thead>
                     <tr>
-                        <th>รหัส</th>
-                        <th>ภาพ</th>
-                        <th>ชื่อของรางวัล</th>
-                        <th>คงเหลือ</th>
-                        <th></th>
+                        <th class="text-center">รหัส</th>
+                        <th class="text-center">ภาพ</th>
+                        <th class="text-center">ชื่อของรางวัล</th>
+                        <th class="text-center">คงเหลือ</th>
+                        <th class="text-center"></th>
                     </tr>
                 </thead>
             </table>
@@ -153,7 +158,7 @@ var TableList = $('#TableList').dataTable({
         // {"data" : "id","searchable":false,"orderable":false},
         {"data" : "img","searchable":false,"orderable":false},
         {"data" : "name"},
-        {"data" : "amount"},
+        {"data" : "amount", "className": "text-right"},
         { "data": "action","className":"action text-center","searchable":false,"orderable":false }
     ]
 });
@@ -245,7 +250,7 @@ $('#FormAdd').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-
+        
         var btn = $(form).find('[type="submit"]');
         var data_ar = removePriceFormat(form,$(form).serializeArray());
         btn.button("loading");
@@ -318,7 +323,7 @@ $('#FormEdit').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-
+        
         var btn = $(form).find('[type="submit"]');
         var id = $('#edit_user_id').val();
         btn.button("loading");
@@ -373,7 +378,7 @@ $('#FormExport').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-
+        
         var btn = $(form).find('[type="submit"]');
         btn.button("loading");
         $.ajax({
@@ -427,7 +432,7 @@ $('#FormImport').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-
+        
         var btn = $(form).find('[type="submit"]');
         btn.button("loading");
         $.ajax({
