@@ -2,29 +2,38 @@
 @section('css_bottom')
 @endsection
 @section('body')
-<h2 class="page-title">
-	{{$title_page or '' }}
-	<div class="pull-right">
-		<button class="btn btn-success btn-add">
-			+ เพิ่ม {{$title_page or '' }}
-		</button>
-	</div>
-</h2>
 <div class="col-lg-12">
+	<h2 class="page-title">
+		{{$title_page or '' }}
+		<div class="pull-right">
+			<button class="btn btn-success btn-add">
+				+ เพิ่ม {{$title_page or '' }}
+			</button>
+		</div>
+	</h2>
+
 	<section class="widget widhget-min-hight">
-		<div class="body no-margin">
+		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover" id="TableList">
+				<col width="10%">
+				<col width="20%">
+				<col width="10%">
+				<col width="10%">
+				<col width="10%">
+				<col width="10%">
+				<col width="10%">
+				<col width="20%">
 				<thead>
 					<tr>
-						<th>ลำดับ</th>
-						<th>ชื่อกิจกรรม</th>
-						<th>QR Code</th>
-						<th>ลิงก์</th>
-						<th>เวลาเริ่มกิจกรรม</th>
-						<th>เวลาสิ้นสุดกิจกรรม</th>
-						<th>สถานะ</th>
-						<th>วันที่สร้าง</th>
-						<th></th>
+						<th class="text-center">ลำดับ</th>
+						<th class="text-center">ชื่อกิจกรรม</th>
+						<!-- <th>QR Code</th> -->
+						<th class="text-center">ลิงก์</th>
+						<th class="text-center">เร้ิมต้น</th>
+						<th class="text-center">สิ้นสุด</th>
+						<th class="text-center">วันที่สร้าง</th>
+						<th class="text-center">สถานะ</th>
+						<th class="text-center"></th>
 					</tr>
 				</thead>
 			</table>
@@ -524,12 +533,12 @@ var TableList = $('#TableList').dataTable({
 	"columns": [
 		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		{"data" : "activity_name"},
-		{"data" : "qr_code","searchable":false,"orderable":false},
+		// {"data" : "qr_code","searchable":false,"orderable":false},
 		{"data" : "activity_url","searchable":false,"orderable":false},
 		{"data" : "working_time_start"},
 		{"data" : "working_time_end"},
-		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
 		{"data" : "created_at"},
+		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
 		{ "data": "action","className":"action text-center","searchable":false ,"orderable":false}
 	]
 });
@@ -634,6 +643,7 @@ $('body').on('click','.btn-add-init-question', function(data){
 		ShowModal('ModalAddInitQuestion');
 	});
 });
+
 $('body').on('click','.btn-staff', function(data){
 	var str = "";
 	staff_index = 0;

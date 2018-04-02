@@ -8,10 +8,14 @@
     <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-daterangepicker-master/daterangepicker.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/global/plugins/orakuploader/orakuploader.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/global/css/modal.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/admin/css/custom.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/admin/css/jquery.timepicker.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
+    
+    <link rel="stylesheet" href="{{asset('assets/admin/css/application.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/admin/css/custom.css')}}" />
+
     <link rel="shortcut icon" href="{{asset('assets/admin/img/favicon.png')}}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="WorkByThai.Co.Ltd.">
@@ -105,7 +109,7 @@
 </head>
 <body>
     <div class="logo">
-        <h4><a href="{{url('admin')}}">Work <strong>By Thai</strong></a></h4>
+        <h4><a href="{{url('admin')}}"><strong>MENARINI</strong></a></h4>
     </div>
         @include('Admin.layouts.sidebar')
     <div class="wrap">
