@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <section class="widget widhget-min-hight">
-                        <div class="body no-margin">
+                        <div class="body no-margin table-responsive">
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
@@ -38,17 +38,17 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล {{$title or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <label for="add_firstname">firstname</label>
                     <input type="text" class="form-control" name="firstname" id="add_firstname"  placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="add_lastname">lastname</label>
                     <input type="text" class="form-control" name="lastname" id="add_lastname"  placeholder="lastname">
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -69,17 +69,17 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <label for="edit_firstname">firstname</label>
                     <input type="text" class="form-control" name="firstname" id="edit_firstname"  placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="edit_lastname">lastname</label>
                     <input type="text" class="form-control" name="lastname" id="edit_lastname"  placeholder="lastname">
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -124,7 +124,7 @@
         }).done(function(rec){
             $('#edit_firstname').val(rec.firstname);
             $('#edit_lastname').val(rec.lastname);
-            
+
             btn.button("reset");
             ShowModal('ModalEdit');
         }).error(function(){
@@ -138,10 +138,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -192,10 +192,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -276,6 +276,6 @@
         });
     });
 
-    
+
 </script>
 @endsection

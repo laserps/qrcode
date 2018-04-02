@@ -131,7 +131,6 @@
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getStaff/{id}', 'Admin\ActivitiesController@getStaff');
 
-        Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
 
 
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
@@ -210,5 +209,6 @@
     Route::get('/QRCODE/{code}', 'Admin\ActivitiesController@QRCODE');
     Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
     Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
+    Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
     Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
 ?>

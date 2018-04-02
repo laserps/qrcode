@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <section class="widget widhget-min-hight">
-                        <div class="body no-margin">
+                        <div class="body no-margin table-responsive">
                             <table class="table table-bordered table-hover" id="TableUser">
                                 <thead>
                                     <tr>

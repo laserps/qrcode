@@ -424,33 +424,47 @@ class ActivitiesController extends Controller
         $return['code']     = $code;
         $activity           = \App\Models\Activities::where('code',$code)->first();
         $check              = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
+        $check_init         = \App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first();
+        $status_init        = 0; #if status init = 1 go to random main question
+        if($check_init) {
+            $check_init_history = \App\Models\AnswerHistoryInit::where('activity_id',$activity->activity_id)->where('user_id',$userid)->first();
+            if($check_init_history) {
+                $status_init = 1;
+            }
+        } else {
+            $status_init = 1;
+        }
         if($check) {
             if(sizeof($check)==0) {
                 return redirect('admin/QRCODE/'.$code);
             } else {
-                $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
-                if($check_history) {
-                    $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
-                    $str = base64_encode($data_send);
-                    return redirect('Activities/randomReward/'.$str);
+                if($status_init==0) {
+                    return redirect('Activities/'.$code.'/'.$userid.'/getSpecialQuestion');
                 } else {
-                    $question_group_id  = json_decode($check->question_group_id);
-                    $return['activity'] = $activity;
-                    $test =[];
-                    $limit_question = $check->limit_random;
-                    for($i=0;$i<$limit_question;$i++) {
-                        if(sizeof($question_group_id)!=0) {
-                            $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
-                            foreach ($question_group_id as $key => $value) {
-                                if($value == $test[$i]['id']) {
-                                    unset($question_group_id[$key]);
+                    $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
+                    if($check_history) {
+                        $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
+                        $str = base64_encode($data_send);
+                        return redirect('Activities/randomReward/'.$str);
+                    } else {
+                        $question_group_id  = json_decode($check->question_group_id);
+                        $return['activity'] = $activity;
+                        $test =[];
+                        $limit_question = $check->limit_random;
+                        for($i=0;$i<$limit_question;$i++) {
+                            if(sizeof($question_group_id)!=0) {
+                                $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                                foreach ($question_group_id as $key => $value) {
+                                    if($value == $test[$i]['id']) {
+                                        unset($question_group_id[$key]);
+                                    }
                                 }
                             }
                         }
+                        $return['question'] = $test;
+                        // return $return['question'];
+                        return View::make('Admin.randomQuestion',$return);
                     }
-                    $return['question'] = $test;
-                    // return $return['question'];
-                    return View::make('Admin.randomQuestion',$return);
                 }
             }
         } else {
@@ -777,10 +791,12 @@ class ActivitiesController extends Controller
     public function AddSpecialQuestion(Request $request, $id) {
         $question = $request->question_group_id;
         $question_group_id = array();
-        if(sizeof($request->question_group_id)!=0) {
+        if(isset($request->question_group_id) || sizeof($request->question_group_id)!=0) {
             foreach ($question as $k => $v) {
                 $question_group_id[$k] = $v;
             }
+        } else {
+            $question_group_id = [];
         }
         $input_all['question_group_id'] = json_encode($question_group_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
@@ -796,12 +812,12 @@ class ActivitiesController extends Controller
                 $data_insert = $input_all;
                 // \App\Models\ActivityQuestionInit::where('activity_id',$id)->delete();
                 $check = \App\Models\ActivityQuestionInit::where('activity_id',$id)->first();
-                if(sizeof($request->question_group_id)!=0) {
+                // if(sizeof($request->question_group_id)!=0) {
                     if($check)
                         \App\Models\ActivityQuestionInit::where('activity_id',$id)->update($data_insert);
                     else
                         \App\Models\ActivityQuestionInit::insert($data_insert);
-                }
+                // }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';
@@ -817,22 +833,22 @@ class ActivitiesController extends Controller
         return json_encode($return);
     }
 
-    // public function getActivityQuestion($id) {
-    //     $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
-    //     foreach ($all as $key => $value) {
-    //         $result['question'][$key] = json_decode($value->question_group_id);
-    //     }
-    //     $result['limit_random'] = $all[0]->limit_random;
-    //     return json_encode($result);
-    // }
-    public function getSpecialQuestion($id) {
-        $all = \App\Models\ActivityQuestionInit::where('activity_id',$id)->get();
+    public function getActivityQuestion($id) {
+        $all = \App\Models\ActivityQuestion::where('activity_id',$id)->get();
         foreach ($all as $key => $value) {
-            $result[$key] = json_decode($value->question_group_id);
+            $result['question'][$key] = json_decode($value->question_group_id);
         }
         $result['limit_random'] = $all[0]->limit_random;
         return json_encode($result);
     }
+    // public function getSpecialQuestion($id) {
+    //     $all = \App\Models\ActivityQuestionInit::where('activity_id',$id)->get();
+    //     foreach ($all as $key => $value) {
+    //         $result[$key] = json_decode($value->question_group_id);
+    //     }
+    //     $result['limit_random'] = $all[0]->limit_random;
+    //     return json_encode($result);
+    // }
     public function updateStatus(Request $request,$id) {
         $status = $request->status;
 

@@ -12,7 +12,7 @@
 </h2>
 <div class="col-lg-12">
 	<section class="widget widhget-min-hight">
-		<div class="body no-margin">
+		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover" id="TableList">
 				<thead>
 					<tr>
@@ -197,7 +197,7 @@ $('#FormAdd').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		
+
 		var btn = $(form).find('[type="submit"]');
 		var data_ar = removePriceFormat(form,$(form).serializeArray());
 		btn.button("loading");
@@ -247,7 +247,7 @@ $('#FormEdit').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		
+
 		var btn = $(form).find('[type="submit"]');
 		var id = $('#edit_user_id').val();
 		btn.button("loading");

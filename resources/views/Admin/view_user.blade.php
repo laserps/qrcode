@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <section class="widget widhget-min-hight">
-                        <div class="body no-margin">
+                        <div class="body no-margin table-responsive">
                             <table class="table table-bordered table-hover" id="TableList">
                                 <thead>
                                     <tr>
@@ -41,34 +41,34 @@
                 <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล {{$title or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <label for="add_firstname">firstname</label>
                     <input type="text" class="form-control" name="firstname" id="add_firstname"  placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="add_lastname">lastname</label>
                     <textarea id="add_lastname" name="lastname" class="form-control"></textarea>
                 </div>
-        
+
                 <div class="form-group">
                     <label for="add_nickname">nickname</label>
                     <input type="text" class="form-control number-only price" name="nickname" id="add_nickname"  placeholder="nickname">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="add_mobile">mobile</label>
                     <input type="text" class="form-control number-only" name="mobile" id="add_mobile"  placeholder="mobile">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="add_photo_profile">photo_profile</label>
                     <div id="orak_add_photo_profile">
                         <div id="add_photo_profile" orakuploader="on"></div>
                     </div>
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -89,27 +89,27 @@
                 <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title or 'ข้อมูลใหม่'}}</h4>
             </div>
             <div class="modal-body">
-            	
+
                 <div class="form-group">
                     <label for="edit_firstname">firstname</label>
                     <input type="text" class="form-control" name="firstname" id="edit_firstname"  placeholder="firstname">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="edit_lastname">lastname</label>
                     <textarea id="edit_lastname" name="lastname" class="form-control"></textarea>
                 </div>
-        
+
                 <div class="form-group">
                     <label for="edit_nickname">nickname</label>
                     <input type="text" class="form-control number-only price" name="nickname" id="edit_nickname"  placeholder="nickname">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="edit_mobile">mobile</label>
                     <input type="text" class="form-control number-only" name="mobile" id="edit_mobile"  placeholder="mobile">
                 </div>
-        
+
                 <input type="hidden" name="org_photo_profile" id="org_photo_profile">
                 <div class="form-group">
                     <label for="edit_photo_profile">photo_profile</label>
@@ -117,7 +117,7 @@
                         <div id="edit_photo_profile" orakuploader="on"></div>
                     </div>
                 </div>
-        
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
@@ -214,10 +214,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -268,10 +268,10 @@
         errorClass: 'invalid-feedback',
         focusInvalid: false,
         rules: {
-        	
+
         },
         messages: {
-        	
+
         },
         highlight: function (e) {
             validate_highlight(e);
@@ -374,6 +374,6 @@
 
             }
         });
-        
+
 </script>
 @endsection
