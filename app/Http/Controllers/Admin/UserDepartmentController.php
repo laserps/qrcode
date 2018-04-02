@@ -109,7 +109,6 @@ class UserDepartmentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'department_name' => 'required',
-
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();

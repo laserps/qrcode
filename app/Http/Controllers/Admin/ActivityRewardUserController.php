@@ -62,7 +62,7 @@ class ActivityRewardUserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -122,7 +122,7 @@ class ActivityRewardUserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
             }
         }else{
             $return['status'] = 0;
@@ -148,7 +148,7 @@ class ActivityRewardUserController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
         }
         $return['title'] = 'ลบข่อมูล';
         return $return;
@@ -175,26 +175,26 @@ class ActivityRewardUserController extends Controller
             return $rec->name;
         })
         ->addColumn('url',function($rec){
-            return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'</a>';
-
+            // return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'</a>';
+            return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">ยืนยัน</a>';
         })
         ->addColumn('qrcode',function($rec){
             return \QrCode::size(100)->generate(url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)));
         })
-        ->addColumn('action',function($rec){
-            $str = '';
-            if($rec->staff_id==null) {
-                $str='
-                    <!--<button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
-                        <i class="ace-icon fa fa-edit bigger-120"></i>
-                    </button> -->
-                    <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
-                        <i class="ace-icon fa fa-trash bigger-120"></i>
-                    </button>
-                ';
-            }
-            return $str;
-        })
+        // ->addColumn('action',function($rec){
+        //     $str = '';
+        //     if($rec->staff_id==null) {
+        //         $str='
+        //             <!--<button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
+        //                 <i class="ace-icon fa fa-edit bigger-120"></i>
+        //             </button> -->
+        //             <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
+        //                 <i class="ace-icon fa fa-trash bigger-120"></i>
+        //             </button>
+        //         ';
+        //     }
+        //     return $str;
+        // })
         ->rawColumns(['url', 'qrcode', 'action'])
         ->make(true);
     }
@@ -204,7 +204,7 @@ class ActivityRewardUserController extends Controller
         $check = \App\Models\ActivityRewardUser::where('id',$val[0])->where('staff_id',NULL)->first();
         if($check) {
             $staff = \App\Models\ActivityStaff::where('activity_id',$check->activity_id)->first();
-            if (in_array(\Auth::guard('admin')->user()->id, json_decode($staff->staff_id))) {
+            if (in_array(\Auth::guard('admin')->user()->id, json_decode($staff->staff_id))){
                 \App\Models\ActivityRewardUser::where('id',$val[0])->update([
                     'updated_at' => date('Y-m-d H:i:s'),
                     'staff_id' =>\Auth::guard('admin')->user()->id,

@@ -2,17 +2,17 @@
 @section('css_bottom')
 @endsection
 @section('body')
-<h2 class="page-title">
-	{{$title_page or '' }}
-	<div class="pull-right">
-		<button class="btn btn-success btn-add">
-			+ เพิ่ม {{$title_page or '' }}
-		</button>
-	</div>
-</h2>
 <div class="col-lg-12">
+	<h2 class="page-title">
+		{{$title_page or '' }}
+		<div class="pull-right">
+			<button class="btn btn-success btn-add">
+				+ เพิ่ม{{$title_page or '' }}
+			</button>
+		</div>
+	</h2>
 	<section class="widget widhget-min-hight">
-		<div class="body no-margin">
+		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover" id="TableList">
 				<thead>
 					<tr>
@@ -23,7 +23,7 @@
 						<th>นามสกุล</th>
 						<th>อีเมล</th>
 						<th>บริษัท</th>
-						<th>อาชีพเภสัช</th>
+						<th>เภสัช?</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -150,7 +150,6 @@
 @section('js_bottom')
 <script src="{{asset('assets/global/plugins/orakuploader/orakuploader.js')}}"></script>
 <script>
-
 var TableList = $('#TableList').dataTable({
 	"ajax": {
 		"url": url_gb+"/admin/Guest/Lists",
