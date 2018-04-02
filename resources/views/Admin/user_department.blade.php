@@ -2,15 +2,16 @@
 @section('css_bottom')
 @endsection
 @section('body')
-<h2 class="page-title">
-	{{$title_page or '' }}
-	<div class="pull-right">
-		<button class="btn btn-success btn-add">
-			+ เพิ่ม{{$title_page or '' }}
-		</button>
-	</div>
-</h2>
+
 <div class="col-lg-12">
+	<h2 class="page-title">
+		{{$title_page or '' }}
+		<div class="pull-right">
+			<button class="btn btn-success btn-add">
+				+ เพิ่ม{{$title_page or '' }}
+			</button>
+		</div>
+	</h2>
 	<section class="widget widhget-min-hight">
 		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover table-sm" id="TableList">
