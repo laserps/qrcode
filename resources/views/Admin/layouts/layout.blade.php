@@ -19,7 +19,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
-            body {
+            /* body {
                 font-weight: 400;
                 padding-bottom: 100px;
                 background-color: #2b6e80 20%;
@@ -27,15 +27,15 @@
                 background-image: -webkit-radial-gradient(10% 0, farthest-side ellipse, #2b6e80 20%, #0c3252);
                 background-image: -moz-radial-gradient(10% 0, farthest-side ellipse, #2b6e80 20%, #0c3252);
                 background-attachment: fixed, fixed;
-            }
-            body {
+            } */
+            /* body {
                 font-family: 'Kanit', sans-serif;
                 font-size: 14px;
                 line-height: 1.428571429;
                 color: #f8f8f8;
                 background-color: #fff;
-            }    
-            .widget {
+            }     */
+            /* .widget {
                 border-radius: 3px;
                 -webkit-box-sizing: content-box;
                 -moz-box-sizing: content-box;
@@ -45,20 +45,20 @@
                 background: #ffffff;
                 margin-bottom: 30px;
                 position: relative;
-            }
-            .widget .table th {
+            } */
+            /* .widget .table th {
                 color: #606060;
-            }
-            .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+            } */
+            /* .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
                 color: #020202;
                 background-color: transparent;
                 border-color: transparent;
                 cursor: not-allowed;
-            }
-            .checkbox label::after {
+            } */
+            /* .checkbox label::after {
                 color: #100f0f;
-            }
-            .page-header .nav > li > a {
+            } */
+            /* .page-header .nav > li > a {
                 color: rgba(255, 255, 255, 0.8);
                 width: 40px;
                 padding: 0;
@@ -69,21 +69,21 @@
                 vertical-align: middle;
                 line-height: 36px;
                 text-shadow: none;
-            }
-            .sweet-alert {
+            } */
+            /* .sweet-alert {
                 color: black;
-            }
-            .text-muted {
+            } */
+            /* .text-muted {
                 color: #ff0000;
-            }
-            .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
+            } */
+            /* .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
                 z-index: 2;
                 color: #f8f8f8;
                 background-color: #2b6e80;
                 border-color: #2b6e80;
                 cursor: default;
-            }
-            .pagination > li > a, .pagination > li > span {
+            } */
+            /* .pagination > li > a, .pagination > li > span {
                 position: relative;
                 float: left;
                 padding: 5px 12px;
@@ -93,13 +93,13 @@
                 background-color: transparent;
                 border: 1px solid transparent;
                 margin-left: -1px;
-            }
-            .pie-chart-footer .control {
+            } */
+            /* .pie-chart-footer .control {
                 color: black;
-            }
-            .pie-chart .visits {
+            } */
+            /* .pie-chart .visits {
                 color: black;
-            }
+            } */
         </style>
         @yield('css_bottom')
 </head>

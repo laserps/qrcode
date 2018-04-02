@@ -1,8 +1,7 @@
 body{
-	font-family: 'Kanit', sans-serif;
+  /*background-image: linear-gradient(to right bottom, #e1c076, #e4c783, #e7ce8f, #ebd49c, #eedba9);*/
+  background-image: linear-gradient(to right bottom, #e1c076, #ffc3a7, #ffd3da, #ffeaf9, #ffffff);
 }
-
-
 .modal > .modal-dialog > .modal-content > form > .modal-body > .table > thead > tr > th {
 	color : #555;
 	vertical-align: middle;
@@ -119,7 +118,7 @@ body{
 
 
 .widhget-min-hight{
-  min-height: 600px;
+  min-height: 500px;
 }
 
 
@@ -136,221 +135,252 @@ body{
 }
 
 
-/*#################  PHONE PAGE ###################*/
-
-	.panel-success>.panel-heading {
-	    background-image: -webkit-linear-gradient(top,#000000 0,#4a3c3c 100%);
-	    background-image: -o-linear-gradient(top,#000000 0,#4a3c3c 100%);
-	    background-image: -webkit-gradient(linear,left top,left bottom,from(#000000),to(#4a3c3c));
-	    background-image: linear-gradient(to bottom,#000000 0,#4a3c3c 100%);
-	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#4a3c3c', GradientType=0);
-	    background-repeat: repeat-x;
-	}
-
-	.panel-success>.panel-heading {
-	    color: #ffffff;
-	    background-color: #777777;
-	    border-color: #ff0000;
-	}
-
-	.form-control:focus{
-		border-color:red;
-		transition: all 0.5s;
-	}
-
-
-	.btn-custom {
-			font-size: 18px;
-			color: white;
-			background-color: red;
-	    border-color:orange;
-			transition: all 0.5s;
-	}
-
-	.btn-custom:focus, .btn-custom:hover {
-    background-color: white;
-    background-position: 0 -15px;
-	}
-
-	.btn-custom:hover {
-    color: red;
-    background-color: white;
-    border-color: orange;
-	}
-
-	.custom-panel-title{
-		font-size: 20px;
-	}
-
-	.custom-add-phone{
-		font-size: 18px;
-	}
-
-	.logo-margin{
-		margin-top: 3%;
-	}
-
-
-
-/*#################  ENDPHONE PAGE ###################*/
-
-
-
-/*#################  Random question PAGE ###################*/
-
-	.question-title{
-		background-color: #333030;
-		color: white;
-		border-bottom: 25px solid red;
-		padding: 1px 0px 5px 10px;
-	}
-
-	.question-form{
-		background-color: white;
-		box-shadow: 5px 6px 20px 0px lightslategrey;
-	}
-
-	.submit-margin{
-		margin-top: 1%;
-		margin-bottom: 1%;
-	}
-
-	.question{
-		margin-top: 3%;
-		margin-left: 3%;
-		font-size: 18px;
-	}
-
-	.question-top{
-		font-weight: 700;
-	}
-
-/*#################   END Random question PAGE ###################*/
-
-
-/*#################  Random question pharse 2 PAGE ###################*/
-
-.question-title-2 {
-	background-color: #333030;
-	color: white;
-	border-bottom: 25px solid red;
-	padding: 15px 0px 10px 15px;
+/*=================================================
+--------------------OVER ALL-----------------------
+==================================================*/
+/********************** LOGIN *********************/
+ .widget > header h1{
+  color: #ffcabf;
+}
+/******************** NAVBaR **********************/
+.page-header .nav > li > a{
+  color: #ffffff;
+}
+.side-nav {
+    color: #666666;
+    background-color: #ffffff;
+    margin: 0px 10px 0px 0px;
+    box-shadow: 6px 6px 8px -4px #b1b1b1;
+}
+.side-nav li a {
+    color: inherit;
+    -webkit-transition: background-color 0.2s;
+    -o-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    display: block;
+    padding: 15px 15px;
+    border-radius: unset;
+}
+.side-nav li a:hover, .side-nav li a:focus{
+    background: #e1c07633;
+    color: #666666;
+}
+.side-nav li a:active{
+    background: #e1c076;
+    color: #ffffff;
+}
+.side-nav li.active > a{
+      background: #e1c076;
+    color: #ffffff;
+}
+.side-nav li i[class*=fa] {
+    opacity: .7;
+}
+.side-nav .panel-collapse li a {
+    padding: 10px 20px;
+    padding-left: 50px;
 }
 
-.card-title-font{
-	font-weight: 600;
+.logo-admin{
+  max-width: 170px;
 }
 
-/*#################   END Random question pharse 2 PAGE ###################*/
+/*********************** FORM *********************/
 
-
-.padding-zero{
-	padding:0;
+input[type=search].input-transparent, input.search.input-transparent {
+    border: none;
+    color: #666666;
+    background: url(../img/search.png) 5px 5px no-repeat #f8f8f8;
+}
+.form-control.input-transparent:focus {
+    color: #666666;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-
-.container{
-	padding-left: 0 !important;
-	padding-right: 0 !important;
-	max-width: 100%;
+.btn-default{
+    color: #ffffff;
+    /*background-color: #e1c077;*/
+    border-color: unset;
+}
+.btn-default:hover{
+    color: #ffffff;
+    background-color: #e1c077d9;
+    border-color: unset;
+}
+.btn-default:focus, .btn-default.focus {
+    color: #ffffff;
+    background-color: #e1c077;
+    border-color: unset;
+    border-radius: unset;
+}
+.btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle{
+    color: #ffffff;
+    background-color: #e1c077;
+    border-color: unset;
+    border-radius: unset;
+}
+.btn-default:active:hover, 
+.btn-default:active:focus, 
+.btn-default:active.focus, 
+.btn-default.active:hover, 
+.btn-default.active:focus, 
+.btn-default.active.focus, 
+.open > .btn-default.dropdown-toggle:hover, 
+.open > .btn-default.dropdown-toggle:focus, 
+.open > .btn-default.dropdown-toggle.focus{
+    color: #ffffff;
+    background-color: #e1c077;
+    border-color: unset;
+    border-radius: unset;
 }
 
-.padding-0{
-	padding:0;
+.btn-success{
+    background-color: #82bf57;
+    border: unset;
+}
+.btn-success:hover, .btn-success:focus {
+    color: #fff;
+    background-color: #72ad45;
+    border: unset;
 }
 
-
-
-@media (max-width: 1366px) {
-
+.btn-primary {
+    color: #fff;
+    background-color: #3598db;
+    border-color: unset;
+}
+.btn-primary:hover, .btn-primary:focus {
+    color: #fff;
+    background-color: #2a80b9;
+    border-color: unset;
 }
 
-@media (max-width: 1024px) {
-
-	/*#################  PHONE PAGE ###################*/
-
-			.phone-form{
-				margin-right: 30%;
-		    /* margin-left: 15%; */
-		    margin-top: 41px;
-		    width: 100%;
-			}
-
- /*################# END  PHONE PAGE ###################*/
-
-
-	.override{
-    width: 121%;
-    margin-left: -104px;
-		max-width: 121%;
-	}
-
-
+.btn-condensed{
+  margin: 3px 0px;
 }
 
 
-@media (max-width: 768px) {
-
-	.override{
-		width: 100%;;
-		margin-left: 0;
-		max-width: 100%;
-	}
-
-	.container{
-		padding-left: 0 !important;
-		padding-right: 0 !important;
-	}
-
-
-	.sidebar{
-		width : 200px;
-	}
-
-	/*#################  PHONE PAGE ###################*/
-		.respon{
-			max-width: 50%;
-		}
-		.phone-form{
-			margin-right: 15%;
-	    margin-left: 15%;
-	    margin-top: 41px;
-	    max-width: 70%;
-		}
-
-	/*################# END  PHONE PAGE ###################*/
-
-
+.dropdown-menu {
+    border-radius: unset;
+    border: unset;
+    padding: 0px 0px;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    text-decoration: none;
+    color: #555;
+    background-color: #e1c07633;
 }
 
-@media (max-width: 414px) {
-
-	/*#################  PHONE PAGE ###################*/
-
-	.custom-add-phone{
-		margin-bottom: 10px;
-	}
-
-	/*################# END  PHONE PAGE ###################*/
-
-
-
+/********************* TABLE *********************/
+.table-hover > tbody > tr:hover {
+    background-color: #e1c07633;
 }
 
-@media (max-width: 375px) {
 
-
+/*********************** CARD *********************/
+.page-title {
+    background-color: #ffffff;
+    padding: 15px 20px;
+    color: #666666;
+    font-weight: 300;
+    line-height: 1;
+    /* border-bottom: solid 1px #ccc; */
+    margin: 10px 0 15px;
+}
+.widget {
+    box-shadow: 6px 6px 8px -4px #b1b1b1;
+    border-radius: unset;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    padding: 30px 15px;
+    color: #666;
+    background: #ffffff;
+    margin-bottom: 30px;
+    position: relative;
 }
 
-@media (max-width: 320px) {
+.widget_dashboard {
+    /* box-shadow: 0px 6px 8px -4px #b1b1b1; */
+    border-radius: unset;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    padding: 30px 15px;
+    color: #666;
+    background: #bbbbbb00;
+    margin-bottom: 30px;
+    position: relative;
+}
 
-	/*#################  PHONE PAGE ###################*/
+/******************* PAGINATION *******************/
+.pagination > li > a, .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 5px 12px;
+    line-height: 1.42857;
+    text-decoration: none;
+    color: #666;
+    background-color: #cccccc36;
+    border: 1px solid transparent;
+}
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    color: #dddddd;
+    background-color: transparent;
+    border-color: transparent;
+    cursor: not-allowed;
+}
 
-		.custom-panel-title{
-			font-size: 18px;
-		}
-
-	/*################# END  PHONE PAGE ###################*/
+/*=================================================
+--------------------DASHBOARD----------------------
+=================================================*/
 
 
+/********************* MODAL **********************/
+.sweet-alert h2{
+  margin-top: 30px;
+}
+
+.modal .rotate_picture {
+  right: -2px;
+}
+.modal .picture_delete{
+  right: -2px;
+}
+
+
+/*=================================================
+-------------------- RESPONSIVE ----------------------
+=================================================*/
+
+@media (max-width: 1366px){
+  .wrap {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 1024px){
+  .wrap {
+    margin-left: 210px;
+  }
+}
+
+@media (max-width: 768px){
+  .wrap {
+    margin-left: 215px;
+  }
+  .rotate_picture {
+    right: -2px;
+  }
+  .picture_delete{
+    right: -2px;
+  }
+}
+
+@media (min-width: 768px) {
+  .sidebar{
+    width : 200px;
+  }
 }
