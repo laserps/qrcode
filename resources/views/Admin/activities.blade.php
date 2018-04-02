@@ -7,7 +7,7 @@
 		{{$title_page or '' }}
 		<div class="pull-right">
 			<button class="btn btn-success btn-add">
-				+ เพิ่ม {{$title_page or '' }}
+				+เพิ่ม{{$title_page or '' }}
 			</button>
 		</div>
 	</h2>
