@@ -131,8 +131,6 @@
         Route::get('/Activities/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getStaff/{id}', 'Admin\ActivitiesController@getStaff');
 
-
-
         Route::get('/Activities/Detail/{id}', 'Admin\ActivitiesController@show');
         Route::get('/Activities/getReward/{id}', 'Admin\ActivitiesController@getReward');
         Route::get('/Activities/getDownloadQrcode/{id}', 'Admin\ActivitiesController@getDownloadQrcode');
@@ -156,7 +154,6 @@
         Route::post('/Answer/{id}', 'Admin\AnswerController@update');
         Route::post('/Answer/Delete/{id}', 'Admin\AnswerController@destroy');
         Route::post('/Answer/deleteAnswer/{id}', 'Admin\AnswerController@deleteAnswer');
-
 
       Route::get('/ActivityRewardUser', 'Admin\ActivityRewardUserController@index');
         Route::get('/ActivityRewardUser/Lists', 'Admin\ActivityRewardUserController@Lists');
@@ -196,6 +193,14 @@
         Route::get('/Reward/{id}', 'Admin\RewardController@show');
         Route::post('/Reward/{id}', 'Admin\RewardController@update');
         Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
+
+        #REPORT
+        Route::get('/report',function(){
+          $data['main_menu'] = 'รายงาน';
+          $data['title_page'] = 'รายงาน';
+          $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
+          return view('admin.report',$data);
+        });
     });
 
     //Route::get('/Activities/randomReward/{aid}/{uid}/{result}', 'Admin\ActivitiesController@randomReward');
