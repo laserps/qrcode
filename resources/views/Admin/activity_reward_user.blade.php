@@ -78,7 +78,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
 					<button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
 				</div>
 			</form>

@@ -75,7 +75,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
 					<button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
 				</div>
 			</form>
@@ -111,14 +111,14 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="status">ประเภทคำถาม</label>
+						<label for="free_form">ประเภทคำถาม</label>
 						<div class="radio radio-primary">
-							<input type="radio" name="free_form" id="add_free_form1" value="T">
-							<label for="add_free_form1"> อัตนัย </label>
+							<input type="radio" name="free_form" id="edit_free_form1" value="T">
+							<label for="edit_free_form1"> อัตนัย </label>
 						</div>
 						<div class="radio radio-primary">
-							<input type="radio" name="free_form" id="add_free_form2" value="F">
-							<label for="add_free_form2"> ปรนัย </label>
+							<input type="radio" name="free_form" id="edit_free_form2" value="F">
+							<label class="checkbox-inline" for="edit_free_form2"> ปรนัย </label>
 						</div>
 					</div>
 				</div>
@@ -175,8 +175,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
-				<button type="submit" class="btn btn-primary save_answer"><i class="fa fa-save"></i> บันทึก</button>
+				<button type="submit" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-save"></i> บันทึก</button>
 			</div>
 		</div>
 	</div>
@@ -196,7 +195,7 @@ var TableList = $('#TableList').dataTable({
 		}
 	},
 	"columns": [
-		{"data" : "id"},
+		{"data" : "id","className":"action text-center"},
 		{"data" : "text"},
 		{"data" : "free_form","searchable": false},
 		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
@@ -226,6 +225,8 @@ $('body').on('click','.btn-add',function(data){
 	ShowModal('ModalAdd');
 	$('#add_status1').prop('checked', false);
 	$('#add_status2').prop('checked', false);
+	$('#add_free_form1').prop('checked', false);
+	$('#add_free_form2').prop('checked', false);
 });
 $('body').on('click','.btn-edit',function(data){
 	var btn = $(this);

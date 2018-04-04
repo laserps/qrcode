@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                     <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
                 </div>
             </form>
@@ -250,7 +250,7 @@ $('#FormAdd').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-        
+
         var btn = $(form).find('[type="submit"]');
         var data_ar = removePriceFormat(form,$(form).serializeArray());
         btn.button("loading");
@@ -323,7 +323,7 @@ $('#FormEdit').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-        
+
         var btn = $(form).find('[type="submit"]');
         var id = $('#edit_user_id').val();
         btn.button("loading");
@@ -378,7 +378,7 @@ $('#FormExport').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-        
+
         var btn = $(form).find('[type="submit"]');
         btn.button("loading");
         $.ajax({
@@ -432,7 +432,7 @@ $('#FormImport').validate({
         validate_errorplacement(error, element);
     },
     submitHandler: function (form) {
-        
+
         var btn = $(form).find('[type="submit"]');
         btn.button("loading");
         $.ajax({
@@ -495,8 +495,8 @@ $('body').on('click','.btn-delete',function(e){
 });
 $('#photo').orakuploader({
     orakuploader_path         : url_gb+'/',
-    orakuploader_ckeditor         : true,
-    orakuploader_use_dragndrop            : true,
+    orakuploader_ckeditor : true,
+    orakuploader_use_dragndrop : true,
     orakuploader_use_sortable   : true,
     orakuploader_main_path : 'uploads/temp/',
     orakuploader_thumbnail_path : 'uploads/temp/',
