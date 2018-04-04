@@ -61,7 +61,7 @@ class UserDepartmentController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -121,7 +121,7 @@ class UserDepartmentController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -147,7 +147,7 @@ class UserDepartmentController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
         }
         $return['title'] = 'ลบข้อมูล';
         return $return;

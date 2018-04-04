@@ -26,7 +26,7 @@
 	<!-- <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet"> -->
 </head>
 <body>
-	@if($check_amount_reward && $check_reward && $check_question && $activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
+	@if($check_amount_reward && $check_reward && $activity->status=="T" && date('Y-m-d H:i:s') >= $activity->working_time_start && date('Y-m-d H:i:s') <= $activity->working_time_end)
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4 logo-margin">
 			<img src="{{asset('uploads/logo original.JPG')}}" class="img-responsive center-block respon" alt="Yout Logo Here">

@@ -18,6 +18,7 @@
 					<tr>
 						<th>ลำดับ</th>
 						<th>ชื่อเรื่อง</th>
+						<th>ประเภทคำถาม</th>
 						<th>สถานะ</th>
 						<th>วันที่สร้าง</th>
 						<th></th>
@@ -55,7 +56,17 @@
 							<label for="add_status2"> ไม่แสดง </label>
 						</div>
 					</div>
-
+					<div class="form-group">
+						<label for="status">ประเภทคำถาม</label>
+						<div class="radio radio-primary">
+							<input type="radio" name="free_form" id="add_free_form1" value="T">
+							<label for="add_free_form1"> อัตนัย </label>
+						</div>
+						<div class="radio radio-primary">
+							<input type="radio" name="free_form" id="add_free_form2" value="F">
+							<label for="add_free_form2"> ปรนัย </label>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">ปิด</button>
@@ -93,13 +104,74 @@
 							<label class="form-check-label" for="edit_status2">ไม่แสดง</label>
 						</div>
 					</div>
-
+					<div class="form-group">
+						<label for="status">ประเภทคำถาม</label>
+						<div class="radio radio-primary">
+							<input type="radio" name="free_form" id="add_free_form1" value="T">
+							<label for="add_free_form1"> อัตนัย </label>
+						</div>
+						<div class="radio radio-primary">
+							<input type="radio" name="free_form" id="add_free_form2" value="F">
+							<label for="add_free_form2"> ปรนัย </label>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
 					<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="ModalAnswer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<input type="hidden" name="question_id" id="question_id">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูล {{$title_page or 'ข้อมูลใหม่'}}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="answer">
+					<form id="FormAddAnswer">
+						<div class="form-group row">
+							<input type="hidden" id="idQuestion" name="question_id">
+							<label for="textAnswer" class="col-sm-2 col-form-label"><h4>คำตอบ</h4></label>
+							<div class="col-sm-8">
+								<input type="text" name="text" class="form-control editor" id="textAnswer" placeholder="answer">
+							</div>
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-primary">เพิ่ม</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<form id="FormSaveAnswer">
+					<div class="answerContainer">
+						<h4>รายการแสดงคำตอบทั้งหมด</h4>
+						<table class="table table-bordered table-hover">
+							<col width="10%">
+							<col width="60%">
+							<col width="30%">
+							<thead>
+								<tr >
+									<th class="text-center" style="color:black;">ลำดับ</th>
+									<th class="text-center" style="color:black;">คำตอบ</th>
+									<th class="text-center" style="color:black;">ลบ</th>
+								</tr>
+							</thead>
+							<tbody id="listAnswer">
+
+							</tbody>
+						</table>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+				<button type="submit" class="btn btn-primary save_answer"><i class="fa fa-save"></i> บันทึก</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -120,9 +192,10 @@ var TableList = $('#TableList').dataTable({
 	"columns": [
 		{"data" : "id"},
 		{"data" : "text"},
+		{"data" : "free_form","searchable": false},
 		{"data" : "status"},
 		{"data" : "created_at"},
-		{ "data": "action","className":"action text-center" }
+		{ "data": "action","className":"action text-center" ,"searchable": false, "orderable": false}
 	]
 });
 $('body').on('click','.btn-add',function(data){
@@ -142,7 +215,8 @@ $('body').on('click','.btn-edit',function(data){
 	}).done(function(rec){
 		$('#edit_text').val(rec.text);
 		// $('#edit_status').val(rec.status);
-		$('input[value="'+rec.status+'"]').prop('checked',true);
+		$('input[name="status"][value="'+rec.status+'"]').prop('checked',true);
+		$('input[name="free_form"][value="'+rec.free_form+'"]').prop('checked',true);
 
 		btn.button("reset");
 		ShowModal('ModalEdit');
@@ -157,7 +231,9 @@ $('#FormAdd').validate({
 	errorClass: 'invalid-feedback',
 	focusInvalid: false,
 	rules: {
-
+		free_form: {
+			required: true,
+		},
 		text: {
 			required: true,
 		},
@@ -168,6 +244,9 @@ $('#FormAdd').validate({
 	messages: {
 
 		text: {
+			required: "กรุณาระบุ",
+		},
+		free_form: {
 			required: "กรุณาระบุ",
 		},
 		status: {
@@ -212,13 +291,127 @@ $('#FormAdd').validate({
 
 	}
 });
+$('body').on('click','.btn-add-answer',function(){
+	var question_id = $(this).data('id');
+	$('#idQuestion').val(question_id);
+	getQuestionAnswer(question_id);
+	// ShowModal('ModalAnswer');
+});
+$('#FormAddAnswer').validate({
+	errorElement: 'div',
+	errorClass: 'invalid-feedback',
+	focusInvalid: false,
+	rules: {
+		text: "required",
+	},
+	messages: {
+		text: "กรุณากรอกคำตอบก่อน",
+	},
+	highlight: function (e) {
+		validate_highlight(e);
+	},
+	success: function (e) {
+		validate_success(e);
+	},
 
+	errorPlacement: function (error, element) {
+		validate_errorplacement(error, element);
+	},
+	submitHandler: function (form){
+		var btn = $(form).find('[type="submit"]');
+		var data_ar = removePriceFormat(form,$(form).serializeArray());
+		btn.button("loading");
+		$.ajax({
+			method : "POST",
+			url : url_gb+"/admin/QuestionInit/AddAnswer",
+			dataType : 'json',
+			data : $(form).serialize(),
+		}).done(function(rec){
+			btn.button("reset");
+			if(rec.status==1){
+				TableList.api().ajax.reload();
+				resetFormCustom(form);
+				swal(rec.title,rec.content,"success");
+				getQuestionAnswer(rec.question_id);
+				//$('#ModalAdd').modal('hide');
+			}else{
+				swal(rec.title,rec.content,"error");
+			}
+		}).error(function(){
+			swal("system.system_alert","system.system_error","error");
+			btn.button("reset");
+		});
+	},
+	invalidHandler: function (form) {
+
+	}
+});
+function getQuestionAnswer(id){
+	$.ajax({
+		method : "POST",
+		url : url_gb+"/admin/QuestionInit/showAnswerQuestionInit/"+id,
+		dataType : 'json',
+	}).done(function(rec){
+		var str = '';
+		$.each(rec.listAnswer, function(i,val){
+			str +=
+			`<tr>
+			<td>
+			`+(i+1)+`
+			</label>
+			</td>
+			<td>`+val.text+`</td>
+			<td><center><button class="btn btn-sm btn-danger btn-delete-answer" data-id="`+val.answer_id+`" data-qid="`+val.question_id+`">ลบ</button></center></td>
+			</tr>`;
+		});
+		$('#listAnswer').html(str);
+		$('#question_id').val(id);
+		$('#textAnswer').removeClass('is-invalid');
+		ShowModal('ModalAnswer');
+	});
+}
+$('body').on('click','.btn-delete-answer',function(e){
+	e.preventDefault();
+	var btn = $(this);
+	var id = btn.data('id');
+	var qid = btn.data('qid');
+	swal({
+		title: "คุณต้องการลบคำตอบใช่หรือไม่",
+		text: "หากคุณลบจะไม่สามารถเรียกคืนข้อมูกลับมาได้",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "ใช่ ฉันต้องการลบ",
+		cancelButtonText: "ยกเลิก",
+		showLoaderOnConfirm: true,
+		closeOnConfirm: false
+	}, function(data) {
+		if(data){
+			$.ajax({
+				method : "POST",
+				url : url_gb+"/admin/QuestionInit/deleteAnswer/"+id,
+			}).done(function(rec){
+				if(rec.status==1){
+					swal(rec.title,rec.content,"success");
+					console.log(qid);
+					getQuestionAnswer(qid);
+				}else{
+					swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+				}
+			}).error(function(data){
+				swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+			});
+		}
+	});
+});
 $('#FormEdit').validate({
 	errorElement: 'div',
 	errorClass: 'invalid-feedback',
 	focusInvalid: false,
 	rules: {
-
+		free_form: {
+			required: true,
+		},
 		text: {
 			required: true,
 		},
@@ -229,6 +422,9 @@ $('#FormEdit').validate({
 	messages: {
 
 		text: {
+			required: "กรุณาระบุ",
+		},
+		free_form: {
 			required: "กรุณาระบุ",
 		},
 		status: {
@@ -246,11 +442,6 @@ $('#FormEdit').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		if(CKEDITOR!==undefined){
-			for ( instance in CKEDITOR.instances ){
-				CKEDITOR.instances[instance].updateElement();
-			}
-		}
 		var btn = $(form).find('[type="submit"]');
 		var id = $('#edit_user_id').val();
 		btn.button("loading");

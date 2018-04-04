@@ -72,7 +72,7 @@ class EmployeeController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -139,7 +139,7 @@ class EmployeeController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;

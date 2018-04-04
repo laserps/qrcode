@@ -11,6 +11,6 @@ class QuestionInit extends Model
     //protected $timestamps = true;
     public function Answer()
     {
-        return $this->hasMany('App\Models\Answer','question_id','id');
+        return $this->hasMany('App\Models\AnswerInit','question_id','id');
     }
 }

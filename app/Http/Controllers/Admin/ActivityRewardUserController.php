@@ -62,7 +62,7 @@ class ActivityRewardUserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -122,7 +122,7 @@ class ActivityRewardUserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -222,21 +222,27 @@ class ActivityRewardUserController extends Controller
         }
         $return['reward'] = \App\Models\Reward::find($check->reward_id);
         $return['pic'] = \App\Models\RewardPicture::where('reward_id',$check->reward_id)->first();
-        $question = \App\Models\AnswerHistory::where('activity_id',$check->activity_id)->where('user_id',$check->user_id)->first();
-        $remark = \App\Models\AnswerRight::where('question_id',$question->question_id)->first();
-        if($result!=null) {
-            if($result>0) {
-                $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
-            } else {
-                $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
-            }
-            $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$result);
-            // dd($return['img']);
+        $check_question = \App\Models\ActivityQuestion::where('activity_id',$check->activity_id)->first();
+        if($check_question->limit_random!=0 && sizeof(json_decode($check_question->question_group_id))!=0) {
+            $question = \App\Models\AnswerHistory::where('activity_id',$check->activity_id)->where('user_id',$check->user_id)->first();
+            $remark = \App\Models\AnswerRight::where('question_id',$question->question_id)->first();
+            if($result!=null) {
+                if($result>0) {
+                    $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
+                } else {
+                    $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
+                }
+                $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$result);
+                // dd($return['img']);
 
-            return View::make('Admin.randomRewardQrcode',$return);
-            // return View::make('Admin.randomReward',$return);
+                return View::make('Admin.randomRewardQrcode',$return);
+                // return View::make('Admin.randomReward',$return);
+            } else {
+                return redirect('admin/ActivityRewardUser');
+            }
         } else {
-            return redirect('admin/ActivityRewardUser');
+            $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$result);
+            return View::make('Admin.randomRewardQrcode',$return);
         }
     }
     public static function getRewardQrcode($id,$r) {

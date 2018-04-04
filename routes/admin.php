@@ -168,10 +168,13 @@
       Route::get('/QuestionInit', 'Admin\QuestionInitController@index');
         Route::get('/QuestionInit/Lists', 'Admin\QuestionInitController@Lists');
         Route::post('/QuestionInit', 'Admin\QuestionInitController@store');
+        Route::post('/QuestionInit/AddAnswer', 'Admin\QuestionInitController@AddAnswer');
         Route::get('/SpecialQuestion', 'Admin\QuestionInitController@GetSpecialQuestion');
         Route::get('/QuestionInit/{id}', 'Admin\QuestionInitController@show');
         Route::post('/QuestionInit/{id}', 'Admin\QuestionInitController@update');
         Route::post('/QuestionInit/Delete/{id}', 'Admin\QuestionInitController@destroy');
+        Route::post('/QuestionInit/deleteAnswer/{id}', 'Admin\QuestionInitController@deleteAnswer');
+        Route::post('/QuestionInit/showAnswerQuestionInit/{id}', 'Admin\QuestionInitController@showAnswerQuestionInit');
 
       ##ROUTEFORINSTALL##
       Route::get('/Question', 'Admin\QuestionController@index');

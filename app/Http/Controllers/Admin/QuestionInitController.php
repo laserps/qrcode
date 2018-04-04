@@ -44,11 +44,10 @@ class QuestionInitController extends Controller
         $input_all = $request->all();
         $input_all['created_at'] = date('Y-m-d H:i:s');
         $input_all['updated_at'] = date('Y-m-d H:i:s');
-
         $validator = Validator::make($request->all(), [
             'text' => 'required',
              'status' => 'required',
-
+             'free_form' => 'required',
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -61,7 +60,7 @@ class QuestionInitController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -110,7 +109,7 @@ class QuestionInitController extends Controller
         $validator = Validator::make($request->all(), [
             'text' => 'required',
              'status' => 'required',
-
+             'free_form' => 'required',
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -123,7 +122,7 @@ class QuestionInitController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -149,7 +148,7 @@ class QuestionInitController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
         }
         $return['title'] = 'ลบข่อมูล';
         return $return;
@@ -162,6 +161,9 @@ class QuestionInitController extends Controller
             $str =($rec->status == 'T')? 'แสดง':'ไม่แสดง';
             return $str;
         })
+        ->editColumn('free_form',function($rec) {
+            return ($rec->free_form=='T')?"อัตนัย":"ปรนัย";
+        })
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -171,6 +173,17 @@ class QuestionInitController extends Controller
                     <i class="ace-icon fa fa-trash bigger-120"></i>
                 </button>
             ';
+            if($rec->free_form=="F") {
+                $str .= '<button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ">
+                <i class="ace-icon fa fa-plus-square bigger-120"></i>
+                </button>
+                ';
+            }else{
+                $str .= '<button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ" disabled>
+                <i class="ace-icon fa fa-plus-square bigger-120"></i>
+                </button>
+                ';
+            }
             return $str;
         })->make(true);
     }
@@ -192,5 +205,85 @@ class QuestionInitController extends Controller
         if($length > mb_strlen($value)){$dot='';}else{$dot='...';}
         return mb_substr($value,0,$length).$dot; /* UTF8_SUBSTR */
     }
+    public function AnswerInit(Request $request)
+    {
+        $input_all = $request->all();
+        $input_all['created_at'] = date('Y-m-d H:i:s');
+        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $return['question_id'] = $request->input('question_id');
 
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\AnswerInit::insert($data_insert);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+    public function showAnswerQuestionInit($id)
+    {
+        $result['listAnswer'] = \App\Models\AnswerInit::where('question_id',$id)->get();
+
+        return json_encode($result);
+    }
+
+    public function deleteAnswer(Request $request,$id)
+    {
+        \DB::beginTransaction();
+        try {
+            \App\Models\AnswerInit::where('answer_id',$id)->delete();
+            \DB::commit();
+            $return['status'] = 1;
+            $return['content'] = 'สำเร็จ';
+        } catch (Exception $e) {
+            \DB::rollBack();
+            $return['status'] = 0;
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+        }
+        $return['title'] = 'ลบข้อมูล';
+        return $return;
+    }
+    public function AddAnswer(Request $request)
+    {
+        $input_all = $request->all();
+        $input_all['created_at'] = date('Y-m-d H:i:s');
+        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $return['question_id'] = $request->input('question_id');
+
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\AnswerInit::insert($data_insert);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
 }

@@ -66,7 +66,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -128,7 +128,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -154,7 +154,7 @@ class ActivitiesController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
         }
         $return['title'] = 'ลบข้อมูล';
         return $return;
@@ -306,7 +306,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         // }else{
         //     $return['status'] = 0;
@@ -332,9 +332,14 @@ class ActivitiesController extends Controller
     {
         $activity = \App\Models\Activities::where('code',$code)->first();
         $return['activity'] = $activity;
-        $return['check_amount_reward'] = 1;
         $res='';
-        $listRewards = \App\Models\ActivityReward::where(['activity_id' => $activity->activity_id])->get();
+        $listRewards = \App\Models\ActivityReward::where('activity_id',$activity->activity_id)->get();
+        $activityQuestion = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
+        if(sizeof(json_decode($activityQuestion->question_group_id))!=0 && $activityQuestion->limit_random!=0) {
+            $return['check_amount_reward'] = true;
+        } else {
+            $return['check_amount_reward'] = false;
+        }
         foreach ($listRewards as $key => $listReward) {
             $listReward = json_decode($listReward->reward_id);
             $res .= '(';
@@ -345,14 +350,20 @@ class ActivitiesController extends Controller
             $res .=')';
             $random = \DB::select("
             SELECT
-                id,reward_id,amount,(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity->activity_id.") as 'SUMALL',amount/(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity->activity_id.") as 'Percent'
-                FROM activity_reward_amount
-                WHERE amount <> 0 AND reward_id IN ".$res." AND activity_id = ".$activity->activity_id."
-                GROUP BY id,amount,reward_id
-                ORDER BY amount DESC
+            id,reward_id,amount,(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity->activity_id.") as 'SUMALL',amount/(SELECT SUM(amount) FROM activity_reward_amount WHERE reward_id IN ".$res." AND activity_id = ".$activity->activity_id.") as 'Percent'
+            FROM activity_reward_amount
+            WHERE amount <> 0 AND reward_id IN ".$res." AND activity_id = ".$activity->activity_id."
+            GROUP BY id,amount,reward_id
+            ORDER BY amount DESC
             ");
-            if(!$random) {
-                $return['check_amount_reward'] = 0;
+            if(sizeof(json_decode($activityQuestion->question_group_id))!=0 && $activityQuestion->limit_random!=0) {
+                if(sizeof($random)==0) {
+                    $return['check_amount_reward'] = false;
+                }
+            } else {
+                if($random) {
+                    $return['check_amount_reward'] = true;
+                }
             }
             $res = '';
         }
@@ -424,7 +435,7 @@ class ActivitiesController extends Controller
         $check              = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
         $check_init         = \App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first();
         $status_init        = ''; #if status init = 1 go to random main question
-        if($check_init && !empty(json_decode($check_init->question_group_id))) {
+        if($check_init && !empty(json_decode($check_init->question_group_id)) && $check_init->limit_random!=0) {
             // \DB::enableQueryLog();
             // dd(\DB::getQueryLog());
             $check_init_history = \App\Models\AnswerHistoryInit::where('activity_id',$activity->activity_id)->where('user_id',$userid)->first();
@@ -436,35 +447,39 @@ class ActivitiesController extends Controller
         } else {
             $status_init = 1;
         }
-        if($check || sizeof($check)==0) {
+        if($check) {
             if($status_init==0) {
                 return redirect('Activities/'.$code.'/'.$userid.'/getSpecialQuestion');
             } else {
-                $return['userid']   = $userid;
-                $return['code']     = $code;
-                $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
-                if($check_history) {
-                    $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
-                    $str = base64_encode($data_send);
-                    return redirect('Activities/randomReward/'.$str);
-                } else {
-                    $question_group_id  = json_decode($check->question_group_id);
-                    $return['activity'] = $activity;
-                    $test =[];
-                    $limit_question = $check->limit_random;
-                    for($i=0;$i<$limit_question;$i++) {
-                        if(sizeof($question_group_id)!=0) {
-                            $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
-                            foreach ($question_group_id as $key => $value) {
-                                if($value == $test[$i]['id']) {
-                                    unset($question_group_id[$key]);
+                if(sizeof(json_decode($check->question_group_id))!=0 && $check->limit_random!=0) {
+                    $return['userid']   = $userid;
+                    $return['code']     = $code;
+                    $check_history = \App\Models\AnswerHistory::where('user_id',$userid)->where('activity_id',$activity->activity_id)->first();
+                    if($check_history) {
+                        $data_send = $activity->activity_id.'/'.$userid.'/'.$check_history->result.'/'.$check_history->question_id;
+                        $str = base64_encode($data_send);
+                        return redirect('Activities/randomReward/'.$str);
+                    } else {
+                        $question_group_id  = json_decode($check->question_group_id);
+                        $return['activity'] = $activity;
+                        $test =[];
+                        $limit_question = $check->limit_random;
+                        for($i=0;$i<$limit_question;$i++) {
+                            if(sizeof($question_group_id)!=0) {
+                                $test[$i] = \App\Models\Question::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                                foreach ($question_group_id as $key => $value) {
+                                    if($value == $test[$i]['id']) {
+                                        unset($question_group_id[$key]);
+                                    }
                                 }
                             }
                         }
+                        $return['question'] = $test;
+                        // return $return['question'];
+                        return View::make('Admin.randomQuestion',$return);
                     }
-                    $return['question'] = $test;
-                    // return $return['question'];
-                    return View::make('Admin.randomQuestion',$return);
+                } else {
+                    return redirect('Activities/randomReward/'.base64_encode($activity->activity_id.'/'.$userid.'/1/0'));
                 }
             }
         } else {
@@ -475,7 +490,7 @@ class ActivitiesController extends Controller
         $activity           = \App\Models\Activities::where('code',$code)->first();
         $check              = \App\Models\ActivityQuestionInit::where('activity_id',$activity->activity_id)->first();
         $status_init        = ''; #if status init = 1 go to random main question
-        if($check && !empty(json_decode($check->question_group_id))) {
+        if($check && !empty(json_decode($check->question_group_id)) && $check->limit_random!=0) {
             // \DB::enableQueryLog();
             // dd(\DB::getQueryLog());
             $check_history = \App\Models\AnswerHistoryInit::where('activity_id',$activity->activity_id)->where('user_id',$userid)->first();
@@ -498,7 +513,7 @@ class ActivitiesController extends Controller
             $return['activity'] = $activity;
             for($i=0;$i<$limit_question;$i++) {
                 if(sizeof($question_group_id)!=0) {
-                    $test[$i] = \App\Models\QuestionInit::whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
+                    $test[$i] = \App\Models\QuestionInit::with('Answer')->whereIn('id',$question_group_id)->where('status','T')->orderBy(\DB::raw('rand()'))->limit(1)->get()[0];
                     foreach ($question_group_id as $key => $value) {
                         if($value == $test[$i]['id']) {
                             unset($question_group_id[$key]);
@@ -561,7 +576,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -577,6 +592,7 @@ class ActivitiesController extends Controller
         $activity_id   = $request->input('activity_id');
         $question_id   = $request->input('question_id');
         $answer_status = $request->input('answer_status');
+        $answer_text = $request->input('answer_text');
         $input_all     = $request->all();
         $validator = Validator::make($request->all(), []);
 
@@ -589,6 +605,17 @@ class ActivitiesController extends Controller
                     'user_id'       => $request->user_id,
                     'question_id'   => $key,
                     'answer_status' => $value,
+                    'answer_text' => '',
+                    'created_at'    => date('Y-m-d H:i:s')
+                    ];
+                }
+                foreach ($answer_text as $key => $value) {
+                    $data_insert[] = [
+                    'activity_id'   => $request->activity_id,
+                    'user_id'       => $request->user_id,
+                    'question_id'   => $key,
+                    'answer_status' => '',
+                    'answer_text' => $value,
                     'created_at'    => date('Y-m-d H:i:s')
                     ];
                 }
@@ -604,7 +631,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -714,17 +741,25 @@ class ActivitiesController extends Controller
         } else {
             $id = $check[0]->id;
         }
-        $remark = \App\Models\AnswerRight::where('question_id',$question_id)->first();
-        if($result>0) {
-            $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
+        $check_limit = \App\Models\ActivityQuestion::where('activity_id',$activity_id)->first()->limit_random;
+        if($check_limit==1) {
+            if($question_id!=0) {
+                $remark = \App\Models\AnswerRight::where('question_id',$question_id)->first();
+                if($result>0) {
+                    $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
+                } else {
+                    $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
+                }
+                $return['id'] = base64_encode($id.'/'.$id_reward);
+                $return['str'] = $str[2];
+                $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$str[2]);
+                return View::make('Admin.randomReward',$return);
+            } else {
+                return redirect('ActivityRewardUser/accept/'.base64_encode($id.'/'.$id_reward).'/'.$str[2]);
+            }
         } else {
-            $return['text'] = '<center>คุณตอบผิดนะ คำตอบที่ถูกต้องคือ</center><br>'.$remark->remark;
+            return redirect('ActivityRewardUser/accept/'.base64_encode($id.'/'.$id_reward).'/'.$str[2]);
         }
-        $return['id'] = base64_encode($id.'/'.$id_reward);
-        $return['str'] = $str[2];
-        $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$str[2]);
-        return View::make('Admin.randomReward',$return);
-        // return View::make('Admin.randomRewardQrcode',$return);
     }
     public function rewardCheckout($id_reward,$get_reward_balance,$activity_id) {
         \App\Models\ActivityRewardAmount::where(['activity_id'=>$activity_id, 'reward_id'=>$id_reward])->update([
@@ -769,7 +804,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -809,7 +844,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -853,7 +888,7 @@ class ActivitiesController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;

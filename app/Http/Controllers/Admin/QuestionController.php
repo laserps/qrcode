@@ -61,7 +61,7 @@ class QuestionController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -122,7 +122,7 @@ class QuestionController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -185,14 +185,6 @@ class QuestionController extends Controller
         ->rawColumns(['text','status', 'action'])
         ->make(true);
     }
-    public function addQuestion() {
-        $all = \App\Models\Question::where('status','T')->get();
-        foreach ($all as $k => $v) {
-            $result[$k]['id'] = $v->id;
-            $result[$k]['text'] = $this->getString($v->text,50);
-        }
-        return json_encode($result);
-    }
     public static function getString($string,$length){
 
         $value = strip_tags($string);
@@ -205,6 +197,14 @@ class QuestionController extends Controller
 
         if($length > mb_strlen($value)){$dot='';}else{$dot='...';}
         return mb_substr($value,0,$length).$dot; /* UTF8_SUBSTR */
+    }
+    public function addQuestion() {
+        $all = \App\Models\Question::where('status','T')->get();
+        foreach ($all as $k => $v) {
+            $result[$k]['id'] = $v->id;
+            $result[$k]['text'] = $this->getString($v->text,50);
+        }
+        return json_encode($result);
     }
     public function AnswerRight(Request $request,$id) {
         $input_all = $request->all();
@@ -228,7 +228,7 @@ class QuestionController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -255,7 +255,7 @@ class QuestionController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;

@@ -44,7 +44,7 @@
                 <div class="question-form">
 
                     <div class="question-title">
-                      <h2>{{$activity->activity_name}} {{$userid}}</h2>
+                      <h2>กิจกรรม {{$activity->activity_name}}</h2>
                     </div>
 
                     @foreach($SpecialQuestion as $key => $val)
@@ -54,13 +54,26 @@
                               {{$id++}}.) {{$val->text}} &nbsp;&nbsp;&nbsp;&nbsp;
                             </label>
                             <br>
-                            <label class="radio-inline">
+                            <!-- <label class="radio-inline">
                               <input type="radio" name="answer_status[{{$val->id}}]" id="answer{{$val->id}}" value="T"> ถูก
                             </label>
                             <br>
                             <label class="radio-inline">
                               <input type="radio" name="answer_status[{{$val->id}}]" id="answer{{$val->id}}" value="F"> ผิด
-                            </label>
+                            </label> -->
+                            @if($val->free_form=='F')
+                            @php $j=1; @endphp
+                            @foreach($val->answer as $ans)
+                                <div class="col-md-12">
+                                    <label class="checkbox-inline"><input type="radio" name="answer_status[{{$val->id}}]" value="{{$ans->answer_id}}">&nbsp;&nbsp;{{$j}} . {{$ans->text}}</label>
+                                </div><hr>
+                                @php $j++; @endphp
+                            @endforeach
+                            @else
+                            <div class="col-md-12">
+                                <textarea class="form-control" name="answer_text[{{$val->id}}]" rows="4" style="resize:none;"></textarea>
+                            </div><hr>
+                            @endif
                         </div>
                     @endforeach
 

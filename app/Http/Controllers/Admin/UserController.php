@@ -98,7 +98,7 @@ class UserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -187,7 +187,7 @@ class UserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
@@ -213,7 +213,7 @@ class UserController extends Controller
         } catch (Exception $e) {
             \DB::rollBack();
             $return['status'] = 0;
-            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+            $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
         }
         $return['title'] = 'ลบข่อมูล';
         return $return;
@@ -246,7 +246,7 @@ class UserController extends Controller
                     $str .= '<button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ" disabled>
                     <i class="ace-icon fa fa-trash bigger-120"></i>
                     </button>
-                    '; 
+                    ';
                 }
             return $str;
         })->make(true);
@@ -273,7 +273,7 @@ class UserController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();;
+                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
