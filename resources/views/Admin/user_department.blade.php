@@ -21,10 +21,10 @@
 				<col width="20%">
 				<thead>
 					<tr>
-						<th>ลำดับ</th>
-						<th>ชื่อแผนก</th>
-						<th>วันที่สร้าง</th>
-						<th></th>
+						<th class="text-center">ลำดับ</th>
+						<th class="text-center">ชื่อแผนก</th>
+						<th class="text-center">วันที่สร้าง</th>
+						<th class="text-center"></th>
 					</tr>
 				</thead>
 			</table>
@@ -100,7 +100,7 @@ var TableList = $('#TableList').dataTable({
 	"columns": [
 		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		{"data" : "department_name"},
-		{"data" : "created_at"},
+		{"data" : "created_at","className":"text-center"},
 		{ "data": "action","className":"action text-center","searchable":false,"orderable":false }
 	]
 });

@@ -14,14 +14,20 @@
 	<section class="widget widhget-min-hight">
 		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover" id="TableList">
+				<col width="10%">
+				<col width="35%">
+				<col width="10%">
+				<col width="15%">
+				<col width="15%">
+				<col width="15%">
 				<thead>
 					<tr>
-						<th>ลำดับ</th>
-						<th>ชื่อเรื่อง</th>
-						<th>ประเภทคำถาม</th>
-						<th>สถานะ</th>
-						<th>วันที่สร้าง</th>
-						<th></th>
+						<th class="text-center">ลำดับ</th>
+						<th class="text-center">คำถาม</th>
+						<th class="text-center">ประเภทคำถาม</th>
+						<th class="text-center">สถานะ</th>
+						<th class="text-center">วันที่สร้าง</th>
+						<th class="text-center"></th>
 					</tr>
 				</thead>
 			</table>
@@ -193,10 +199,28 @@ var TableList = $('#TableList').dataTable({
 		{"data" : "id"},
 		{"data" : "text"},
 		{"data" : "free_form","searchable": false},
-		{"data" : "status"},
-		{"data" : "created_at"},
+		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
+		{"data" : "created_at","className":"text-center"},
 		{ "data": "action","className":"action text-center" ,"searchable": false, "orderable": false}
 	]
+});
+$('body').on('change','.status',function() {
+	var id = $(this).data('id');
+	$.ajax({
+		method : "POST",
+		url : url_gb+"/admin/QuestionInit/updateStatus/"+id,
+		data : {status : $(this).val()},
+		dataType: 'json',
+	}).done(function(rec){
+		if(rec.status==1){
+			swal(rec.title,rec.content,"success");
+			TableList.api().ajax.reload();
+		}else{
+			swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+		}
+	}).error(function(data){
+		swal("ระบบมีปัญหา","กรุณาติดต่อผู้ดูแล","error");
+	});
 });
 $('body').on('click','.btn-add',function(data){
 	ShowModal('ModalAdd');

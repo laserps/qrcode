@@ -176,7 +176,11 @@ class ActivityRewardUserController extends Controller
         })
         ->addColumn('url',function($rec){
             // return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'</a>';
-            return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">ยืนยัน</a>';
+            if($rec->staff_id=='') {
+                return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">ยืนยัน</a>';
+            } else {
+                return '';
+            }
         })
         ->addColumn('qrcode',function($rec){
             return \QrCode::size(100)->generate(url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)));
@@ -225,8 +229,8 @@ class ActivityRewardUserController extends Controller
         $check_question = \App\Models\ActivityQuestion::where('activity_id',$check->activity_id)->first();
         if($check_question->limit_random!=0 && sizeof(json_decode($check_question->question_group_id))!=0) {
             $question = \App\Models\AnswerHistory::where('activity_id',$check->activity_id)->where('user_id',$check->user_id)->first();
-            $remark = \App\Models\AnswerRight::where('question_id',$question->question_id)->first();
             if($result!=null) {
+                $remark = \App\Models\AnswerRight::where('question_id',$question->question_id)->first();
                 if($result>0) {
                     $return['text'] = '<center>ยินดีด้วย คุณตอบถูกต้อง</center><br>'.$remark->remark;
                 } else {

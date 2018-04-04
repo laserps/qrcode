@@ -164,6 +164,15 @@ class QuestionInitController extends Controller
         ->editColumn('free_form',function($rec) {
             return ($rec->free_form=='T')?"อัตนัย":"ปรนัย";
         })
+        ->editColumn('status',function($rec) {
+            $str = '<select class="form-control status" name="status" data-id="'.$rec->id.'">';
+            if($rec->status == 'T')
+                $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
+            else
+                $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
+            $str .= '</select>';
+            return $str;
+        })
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
@@ -185,7 +194,9 @@ class QuestionInitController extends Controller
                 ';
             }
             return $str;
-        })->make(true);
+        })
+        ->rawColumns(['status', 'action'])
+        ->make(true);
     }
     public function GetSpecialQuestion() {
         $all = \App\Models\QuestionInit::where('status', 'T')->get();
@@ -278,12 +289,39 @@ class QuestionInitController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $return['status'] = 0;
-                $return['content'] = 'ไม่สำรเ็จ'.$e->getMessage();
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
             }
         }else{
             $return['status'] = 0;
         }
         $return['title'] = 'เพิ่มข้อมูล';
+        return json_encode($return);
+    }
+    public function updateStatus(Request $request,$id) {
+        $status = $request->status;
+
+        $input_all['updated_at'] = date('Y-m-d H:i:s');
+        $input_all['status'] = $status;
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if (!$validator->fails()) {
+            \DB::beginTransaction();
+            try {
+                $data_insert = $input_all;
+                \App\Models\questionInit::where('id',$id)->update($data_insert);
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
+            } catch (Exception $e) {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
+            }
+        }else{
+            $return['status'] = 0;
+        }
+        $return['title'] = 'เปลี่ยนสถานะ';
         return json_encode($return);
     }
 }

@@ -172,7 +172,7 @@ var TableList = $('#TableList').dataTable({
 		// {"data" : "id","searchable":false,"orderable":false},
 		{"data" : "text"},
 		{"data" : "status","searchable":false,"orderable":false,"className":"text-center"},
-		{"data" : "created_at"},
+		{"data" : "created_at","className":"text-center"},
 		{ "data": "action","className":"action text-center","searchable":false,"orderable":false }
 	]
 });

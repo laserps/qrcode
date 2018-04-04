@@ -170,6 +170,7 @@
         Route::post('/QuestionInit', 'Admin\QuestionInitController@store');
         Route::post('/QuestionInit/AddAnswer', 'Admin\QuestionInitController@AddAnswer');
         Route::get('/SpecialQuestion', 'Admin\QuestionInitController@GetSpecialQuestion');
+        Route::post('/QuestionInit/updateStatus/{id}', 'Admin\QuestionInitController@updateStatus');
         Route::get('/QuestionInit/{id}', 'Admin\QuestionInitController@show');
         Route::post('/QuestionInit/{id}', 'Admin\QuestionInitController@update');
         Route::post('/QuestionInit/Delete/{id}', 'Admin\QuestionInitController@destroy');

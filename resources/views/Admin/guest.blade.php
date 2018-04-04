@@ -16,14 +16,14 @@
 			<table class="table table-bordered table-hover table-sm" id="TableList">
 				<thead>
 					<tr>
-						<th>ลำดับ</th>
-						<th>กิจกรรม</th>
-						<th>โทรศัพท์</th>
-						<th>ชื่อ</th>
-						<th>นามสกุล</th>
-						<th>อีเมล</th>
-						<th>บริษัท</th>
-						<th>เภสัช?</th>
+						<th class="text-center">ลำดับ</th>
+						<th class="text-center">กิจกรรม</th>
+						<th class="text-center">โทรศัพท์</th>
+						<th class="text-center">ชื่อ</th>
+						<th class="text-center">นามสกุล</th>
+						<th class="text-center">อีเมล</th>
+						<th class="text-center">บริษัท</th>
+						<th class="text-center">เภสัช?</th>
 						<th></th>
 					</tr>
 				</thead>

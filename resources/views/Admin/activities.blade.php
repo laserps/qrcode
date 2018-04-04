@@ -542,7 +542,7 @@ var TableList = $('#TableList').dataTable({
 		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		{"data" : "activity_name"},
 		// {"data" : "qr_code","searchable":false,"orderable":false},
-		{"data" : "activity_url","searchable":false,"orderable":false},
+		{"data" : "activity_url","searchable":false,"orderable":false,"className":"text-center"},
 		{"data" : "working_time_start","className":"text-center"},
 		{"data" : "working_time_end","className":"text-center"},
 		{"data" : "created_at","className":"text-center"},

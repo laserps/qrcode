@@ -15,11 +15,11 @@
 		<div class="body no-margin table-responsive">
 			<table class="table table-bordered table-hover table-sm" id="TableList">
 				<col width="10%">
-				<col width="10%">
-				<col width="10%">
-				<col width="10%">
 				<col width="20%">
-				<col width="20%">
+				<col width="5%">
+				<col width="15%">
+				<col width="15%">
+				<col width="15%">
 				<col width="10%">
 				<col width="10%">
 				<thead>
@@ -145,7 +145,7 @@ var TableList = $('#TableList').dataTable({
 		// {"data" : "id","searchable":false,"orderable":false},
 		// {"data" : "qrcode","searchable":false,"orderable":false},
 		{"data" : "activity_name", "name" : "activity.activity_name"},
-		{"data" : "url","searchable":false,"orderable":false},
+		{"data" : "url","searchable":false,"orderable":false,"className":"text-center"},
 		{"data" : "name", "name" : "reward.name"},
 		{"data" : "user_id","searchable":false,"orderable":false},
 		// {"data" : "firstname", "name" : "users.firstname" ,"visible":false},
@@ -153,8 +153,8 @@ var TableList = $('#TableList').dataTable({
 		{"data" : "staff_id","searchable":false,"orderable":false},
 		// {"data" : "firstname", "name" : "admin_users.firstname" ,"visible":false},
 		// {"data" : "lastname", "name" : "admin_users.lastname" ,"visible":false},
-		{"data" : "created_at"},
-		{"data" : "updated_at"},
+		{"data" : "created_at","className":"text-center"},
+		{"data" : "updated_at","className":"text-center"},
 		// { "data": "action","className":"action text-center","searchable":false,"orderable":false }
 	]
 });
@@ -205,7 +205,7 @@ $('#FormAdd').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		
+
 		var btn = $(form).find('[type="submit"]');
 		var data_ar = removePriceFormat(form,$(form).serializeArray());
 		btn.button("loading");
@@ -255,7 +255,7 @@ $('#FormEdit').validate({
 		validate_errorplacement(error, element);
 	},
 	submitHandler: function (form) {
-		
+
 		var btn = $(form).find('[type="submit"]');
 		var id = $('#edit_user_id').val();
 		btn.button("loading");
