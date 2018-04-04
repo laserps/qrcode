@@ -20,9 +20,10 @@
 </head>
 <body>
 
-    <div class="container">
-
-      <div class="question-form">
+    <div class="container override" style="border-style: solid;
+    padding-bottom: 35px;
+    border-width: 1px;">
+       <div class="question-form">
 
           <div class="question-title-2">
               <h2>{{$activity->activity_name}} {{$userid}}</h2>
@@ -36,7 +37,7 @@
             <input type="hidden" name="activity_id" value="{{$activity->activity_id}}">
             <input type="hidden" name="user_id" value="{{$userid}}">
             @foreach($question as $qt)
-            <div class="col-md-10">
+            <div class="col-md-10 col-md-offset-1 padding-zero">
                 <!-- <div class="card border-dark mb-3"> -->
 
                     <div class="card-body text-dark">
@@ -52,7 +53,7 @@
                     @endif
                     @php $j=1; @endphp
                     @foreach($qt->answer as $ans)
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="checkbox-inline"><input type="radio" name="question_{{$ans->question_id}}" value="{{$ans->question_id}}|{{$ans->answer_id}}">&nbsp;&nbsp;{{$j}} . {{$ans->text}}</label>
                         </div>
                         @php $j++; @endphp
@@ -63,9 +64,11 @@
             @php $i++; @endphp
             @endforeach
 
-            <div class="offset-md-1 col-md-10">
+            <div class="offset-md-1 col-md-12">
                 <center>
-                    <button type="submit" class="btn btn-custom btn-block">ส่งคำตอบ</button>
+                    <button type="submit" class="btn btn-custom btn-block" style="    width: 17%;
+    margin: auto;
+    height: 45px;">ส่งคำตอบ</button>
                 </center>
             </div>
         </form>
@@ -73,8 +76,6 @@
 
 
     </div>
-
-
   </div>
 
 </body>
