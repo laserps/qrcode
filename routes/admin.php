@@ -196,6 +196,14 @@
         Route::get('/Reward/{id}', 'Admin\RewardController@show');
         Route::post('/Reward/{id}', 'Admin\RewardController@update');
         Route::post('/Reward/Delete/{id}', 'Admin\RewardController@destroy');
+
+        #REPORT
+        Route::get('/report',function(){
+          $data['main_menu'] = 'รายงาน';
+          $data['title_page'] = 'รายงาน';
+          $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
+          return view('admin.report',$data);
+        });
     });
 
     //Route::get('/Activities/randomReward/{aid}/{uid}/{result}', 'Admin\ActivitiesController@randomReward');
