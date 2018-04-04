@@ -197,8 +197,8 @@
 <script src="{{asset('assets/global/plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js')}}"></script>
 <script src="{{asset('assets/global/plugins/bootstrap-daterangepicker-master/daterangepicker.js')}}"></script>
 <script src="{{asset('assets/global/plugins/Jquery-Price-Format/jquery.priceformat.js')}}"></script>
-{{--  <script src="{{asset('assets/global/plugins/ckeditor/ckeditor.js')}}"></script>  --}}
-{{--  <script src="{{asset('assets/global/plugins/ckeditor/config.js')}}"></script>  --}}
+<!-- <script src="{{asset('assets/global/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('assets/global/plugins/ckeditor/config.js')}}"></script> -->
 <script src="{{asset('assets/admin/js/function.js')}}"></script>
 <script src="{{asset('assets/admin/js/jquery.timepicker.js')}}"></script>
 
@@ -206,6 +206,9 @@
 <script src="{{asset('assets/admin/plugin/tinymce/tinymce.min.js')}}"></script>
 <script src="{{asset('assets/admin/plugin/tinymce/jquery.tinymce.min.js')}}"></script>
 <script src="{{asset('assets/admin/plugin/tinymce/themes/modern/theme.min.js')}}"></script>
+
+<!-- chartjs -->
+<script src="{{asset('assets/admin/plugin/chart.js/dist/Chart.min.js')}}"></script>
 
 <!-- common templates -->
 <script type="text/template" id="settings-template">
