@@ -98,7 +98,7 @@
             $.each(rec.data, function(k,v) {
                 if(v.q_id!=id) {
                     $('.chart').append(`
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                         <canvas id="myChart_`+(num+1)+`"></canvas>
                         </div>
                     `);
