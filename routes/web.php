@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function(){
-    return view('welcome');
-});
+// Route::get('/', function(){
+//     return view('welcome');
+// });
+
+Route::get('/', 'Admin\HomeController@index');
 
 Route::get('/qrcode', function(){
     return QrCode::generate('Make me into a QrCode!');
