@@ -125,7 +125,6 @@ class InstallController extends Controller
             }else{
                 return false;
             }
-
         }
         return true;
     }
@@ -980,7 +979,7 @@ class InstallController extends Controller
             }
             unset($input_all[\'org_'.$FieldName.'\']);
             $input_all[\''.$FieldName.'\'] = json_encode($file_name);
-            
+
         ';
         $data['ControllerShow'] = '
             if($result){
@@ -1201,7 +1200,6 @@ class InstallController extends Controller
             $data = str_replace('##ROUTEFORINSTALL##', $str , $data);
             $path = "admin.php";
             Storage::disk('routes')->put($path,$data);
-
         }
         $result = \App\Models\AdminMenu::where('link',$name)->first();
         if(!$result){
