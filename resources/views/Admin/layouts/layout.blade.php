@@ -4,14 +4,14 @@
     <title>{{ isset($title_page)? $title_page.' |':'' }} WorkByThai</title>
     <!-- <link href="{{asset('assets/admin/css/application.css')}}" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{asset('assets/admin/css/application.css')}}" />
-    
+
     <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css')}}" />
     <!-- <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-daterangepicker-master/daterangepicker.css')}}" /> -->
     <link rel="stylesheet" href="{{asset('assets/global/plugins/orakuploader/orakuploader.css')}}" />
     <!-- <link rel="stylesheet" href="{{asset('assets/global/css/modal.css')}}" /> -->
     <link rel="stylesheet" href="{{asset('assets/admin/css/jquery.timepicker.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" />
-    
+
     <!-- tinymce -->
     <link rel="stylesheet" href="{{asset('assets/admin/plugin/tinymce/skins/lightgray/skin.min.css')}}">
 
