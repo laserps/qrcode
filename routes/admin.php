@@ -200,7 +200,7 @@
           $data['main_menu'] = 'รายงาน';
           $data['title_page'] = 'รายงาน';
           $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-          return view('admin.report',$data);
+          return view('Admin.report',$data);
         });
     });
 
