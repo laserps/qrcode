@@ -815,10 +815,12 @@ class ActivitiesController extends Controller
     public function AddStaff(Request $request, $id) {
         $staff = $request->staff_id;
         $staff_id = array();
-        if(sizeof($request->staff_id)!=0) {
+        if(isset($request->staff_id) || sizeof($request->staff_id)!=0) {
             foreach ($staff as $k => $v) {
                 $staff_id[$k] = $v;
             }
+        } else {
+            $staff_id = [];
         }
         $input_all['staff_id'] = json_encode($staff_id);
         $input_all['created_at']   = date('Y-m-d H:i:s');
@@ -832,12 +834,12 @@ class ActivitiesController extends Controller
                 $data_insert = $input_all;
                 $check  = \App\Models\ActivityStaff::where('activity_id',$id)->first();
                 // \App\Models\ActivityStaff::where('activity_id',$id)->delete();
-                if(sizeof($request->staff_id)!=0) {
+                // if(sizeof($request->staff_id)!=0) {
                     if($check)
                         \App\Models\ActivityStaff::where('activity_id',$id)->update($data_insert);
                     else
                         \App\Models\ActivityStaff::insert($data_insert);
-                }
+                // }
                 \DB::commit();
                 $return['status'] = 1;
                 $return['content'] = 'สำเร็จ';

@@ -184,6 +184,26 @@ $('body').on('click','.btn-edit',function(data){
 	});
 });
 
+$('body').on('click','button.accept',function() {
+	var btn = $(this);
+	btn.button('loading');
+	$.ajax({
+		method : "GET",
+		url : url_gb+"/ActivityRewardUser/accept/"+$(this).data('accept'),
+		dataType : 'json',
+	}).done(function(rec){
+		if(rec.status==1){
+			TableList.api().ajax.reload();
+			swal(rec.title,rec.content,"success");
+		}else{
+			swal(rec.title,rec.content,"error");
+		}
+	}).error(function(){
+		swal("system.system_alert","system.system_error","error");
+	});
+	btn.button("reset");
+});
+
 $('#FormAdd').validate({
 	errorElement: 'div',
 	errorClass: 'invalid-feedback',

@@ -20,9 +20,7 @@
 </head>
 <body>
 
-    <div class="container override" style="border-style: solid;
-    padding-bottom: 35px;
-    border-width: 1px;">
+    <div class="container override" style="border-style: solid;padding-bottom: 35px;border-width: 1px;">
        <div class="question-form">
 
           <div class="question-title-2">
@@ -66,9 +64,7 @@
 
             <div class="offset-md-1 col-md-12">
                 <center>
-                    <button type="submit" class="btn btn-custom btn-block" style="    width: 17%;
-    margin: auto;
-    height: 45px;">ส่งคำตอบ</button>
+                    <button type="submit" class="btn btn-custom btn-block" style="width: 17%;margin: auto;height: 45px;">ส่งคำตอบ</button>
                 </center>
             </div>
         </form>

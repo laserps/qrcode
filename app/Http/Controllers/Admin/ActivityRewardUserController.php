@@ -177,7 +177,12 @@ class ActivityRewardUserController extends Controller
         ->addColumn('url',function($rec){
             // return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'</a>';
             if($rec->staff_id=='') {
-                return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">ยืนยัน</a>';
+                // return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">ยืนยัน</a>';
+                // return '<button class="btn accept btn-warning" data-accept="'.base64_encode($rec->id.'/'.$rec->reward_id).'">ยืนยัน</button>';
+                return '<button  class="btn btn-xs btn-warning btn-condensed accept btn-tooltip" data-accept="'.base64_encode($rec->id.'/'.$rec->reward_id).'" data-rel="tooltip" title="ยืนยัน">
+                                <i class="ace-icon fa fa-edit bigger-120"></i>
+                            </button>
+                        ';
             } else {
                 return '';
             }
@@ -213,13 +218,18 @@ class ActivityRewardUserController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                     'staff_id' =>\Auth::guard('admin')->user()->id,
                 ]);
-
-
+                \DB::commit();
+                $return['status'] = 1;
+                $return['content'] = 'สำเร็จ';
                 // $get_reward_balance = \App\Models\Reward::find($val[1])->amount;
                 // \App\Models\Reward::where('id',$val[1])->update([
                 //     'updated_at' => date('Y-m-d H:i:s'),
                 //     'amount' => --$get_reward_balance,
                 // ]);
+            } else {
+                \DB::rollBack();
+                $return['status'] = 0;
+                $return['content'] = 'ไม่สำเร็จ';
             }
         } else {
             $check = \App\Models\ActivityRewardUser::where('id',$val[0])->first();
@@ -242,7 +252,9 @@ class ActivityRewardUserController extends Controller
                 return View::make('Admin.randomRewardQrcode',$return);
                 // return View::make('Admin.randomReward',$return);
             } else {
-                return redirect('admin/ActivityRewardUser');
+                $return['title'] = 'ยืนยันของรางวัล';
+                return $return;
+                // return redirect('admin/ActivityRewardUser');
             }
         } else {
             $return['img'] = App(ActivityRewardUserController::class)->getRewardQrcode($id,$result);
@@ -256,5 +268,29 @@ class ActivityRewardUserController extends Controller
         return '<img src="data:image/png;base64, '.base64_encode($data) .'">';
         // return "<a href='".url('ActivityRewardUser/accept/'.base64_encode($id.'/'.$result->reward_id).'/'.$r)."'>";
         // return "<a href='".url('ActivityRewardUser/accept/'.$id.'/'.$r)."'>";
+    }
+    public function report($start,$end) {
+        $s = '';
+        $e = '';
+        if($start < $end) {
+            $s = $start.' 00:00:00';
+            $e = $end.' 23:59:59';
+        } else {
+            $s = $end.' 00:00:00';
+            $e = $start.' 23:59:59';
+        }
+        $result['data'] = \DB::select('
+                    SELECT q.text as q_text, q.id as q_id, a.text as a_text, sum(ans_count) as ans_count, a.answer_id as a_id
+                    FROM question as q
+                    LEFT JOIN answer as a
+                    ON a.question_id = q.id
+                    LEFT JOIN (SELECT question_id,answer_id,COUNT(answer_id) as ans_count
+                    	FROM answer_history
+                    	WHERE created_at BETWEEN "'.$s.'" AND "'.$e.'"
+                    	GROUP BY answer_id) as qh
+                    ON q.id = qh.question_id AND a.answer_id = qh.answer_id
+                    GROUP BY a.answer_id
+                    ORDER BY q.id');
+        return json_encode($result);
     }
 }
