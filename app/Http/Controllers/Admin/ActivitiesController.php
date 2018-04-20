@@ -287,18 +287,28 @@ class ActivitiesController extends Controller
                 if(sizeof($reward_t)!=0) {
                     $reward_t = json_encode($reward_t);
                     $input_all['reward_id'] = $reward_t;
-                    // $input_all['status'] = 'T';
+                    $input_all['status'] = 'T';
                     $data_insert = $input_all;
-                    \App\Models\ActivityReward::where(['status'=>'T','activity_id'=>$request->activity_id])->update($data_insert);
-                    // \App\Models\ActivityReward::insert($data_insert);
+                    $check_update = \App\Models\ActivityReward::where(['status'=>'T','activity_id'=>$request->activity_id])->get();
+                    if(sizeof($check_update)!=0) {
+                        \App\Models\ActivityReward::where(['status'=>'T','activity_id'=>$request->activity_id])->update($data_insert);
+                    } else {
+                        // $data_insert['status'] = 'T';
+                        // dd($data_insert);
+                        \App\Models\ActivityReward::insert($data_insert);
+                    }
                 }
                 if(sizeof($reward_f)!=0) {
                     $reward_f = json_encode($reward_f);
                     $input_all['reward_id'] = $reward_f;
                     $input_all['status'] = 'F';
                     $data_insert = $input_all;
-                    // \App\Models\ActivityReward::insert($data_insert);
-                    \App\Models\ActivityReward::where(['status'=>'F','activity_id'=>$request->activity_id])->update($data_insert);
+                    $check_update = \App\Models\ActivityReward::where(['status'=>'F','activity_id'=>$request->activity_id])->get();
+                    if(sizeof($check_update)!=0) {
+                        \App\Models\ActivityReward::where(['status'=>'F','activity_id'=>$request->activity_id])->update($data_insert);
+                    } else {
+                        \App\Models\ActivityReward::insert($data_insert);
+                    }
                 }
                 \DB::commit();
                 $return['status'] = 1;
@@ -335,7 +345,7 @@ class ActivitiesController extends Controller
         $res='';
         $listRewards = \App\Models\ActivityReward::where('activity_id',$activity->activity_id)->get();
         $activityQuestion = \App\Models\ActivityQuestion::where('activity_id',$activity->activity_id)->first();
-        if(sizeof(json_decode($activityQuestion->question_group_id))!=0 && $activityQuestion->limit_random!=0) {
+        if($activityQuestion && sizeof(json_decode($activityQuestion->question_group_id))!=0 && $activityQuestion->limit_random!=0) {
             $return['check_amount_reward'] = true;
         } else {
             $return['check_amount_reward'] = false;
@@ -356,7 +366,7 @@ class ActivitiesController extends Controller
             GROUP BY id,amount,reward_id
             ORDER BY amount DESC
             ");
-            if(sizeof(json_decode($activityQuestion->question_group_id))!=0 && $activityQuestion->limit_random!=0) {
+            if($activityQuestion && sizeof(json_decode($activityQuestion->question_group_id))!=0 && $activityQuestion->limit_random!=0) {
                 if(sizeof($random)==0) {
                     $return['check_amount_reward'] = false;
                 }
