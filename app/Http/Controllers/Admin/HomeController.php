@@ -9,13 +9,17 @@ use App\Providers\Admin\PermissionCRUDProvider as Permission;
 class HomeController extends Controller
 {
     public function index(){
-        // return redirect('admin/Activities');/\
-    	//dd(\Session::get('permission'));
-    	$data['main_menu'] = 'dashboard';
-    	$data['sub_menu'] = '';
-    	$data['title_page'] = 'หน้าแรก';
-    	$data['permission'] = Permission::CheckPermission($data['main_menu'],$data['sub_menu']);
-    	$data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
-    	return view('Admin.dashboard',$data);
+        $permission = \App\Models\AdminMenu::ActiveMenu()->get();
+        // if(sizeof($permission)!=0) {
+            //dd(\Session::get('permission'));
+        //     return redirect('admin/Activities');
+        // } else {
+            $data['main_menu'] = 'dashboard';
+            $data['sub_menu'] = '';
+            $data['title_page'] = 'หน้าแรก';
+            $data['permission'] = Permission::CheckPermission($data['main_menu'],$data['sub_menu']);
+            $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
+            return view('Admin.dashboard',$data);
+        // }
     }
 }
