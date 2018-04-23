@@ -9,7 +9,7 @@ use App\Providers\Admin\PermissionCRUDProvider as Permission;
 class HomeController extends Controller
 {
     public function index(){
-        return redirect('admin/Activities');
+        // return redirect('admin/Activities');/\
     	//dd(\Session::get('permission'));
     	$data['main_menu'] = 'dashboard';
     	$data['sub_menu'] = '';
