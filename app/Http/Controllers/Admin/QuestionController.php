@@ -15,6 +15,7 @@ class QuestionController extends Controller
     */
     public function index()
     {
+        $data['permission'] = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 9])->first()->created;
         $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'คำถาม';
         $data['title_page'] = 'คำถาม';
@@ -159,13 +160,16 @@ class QuestionController extends Controller
         $result = \App\Models\Question::select();
         return \Datatables::of($result)
         ->addIndexcolumn()
-        ->editColumn('status',function($rec) {
-            $str = '<select class="form-control status" name="status" data-id="'.$rec->id.'">';
-            if($rec->status == 'T')
-                $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
-            else
-                $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
-            $str .= '</select>';
+        ->editColumn('status',function($rec) use ($permission) {
+            $str = '';
+            if($permission->updated == 'T') {
+                $str .= '<select class="form-control status" name="status" data-id="'.$rec->id.'">';
+                if($rec->status == 'T')
+                    $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
+                else
+                    $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
+                $str .= '</select>';
+            }
             return $str;
         })
         ->addColumn('action',function($rec) use ($permission){

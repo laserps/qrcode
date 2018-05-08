@@ -7,9 +7,11 @@
 	<h2 class="page-title">
 		{{$title_page or '' }}
 		<div class="pull-right">
+			@if($permission == 'T')
 			<button class="btn btn-success btn-add">
 				+ เพิ่ม{{$title_page or '' }}
 			</button>
+			@endif
 		</div>
 	</h2>
 	<section class="widget widhget-min-hight">

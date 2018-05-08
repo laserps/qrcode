@@ -15,6 +15,7 @@ class GuestController extends Controller
      */
     public function index()
     {
+        $data['permission'] = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 11])->first()->created;
         $data['main_menu'] = 'ผู้เข้าร่วมกิจกรรม';
         $data['sub_menu'] = 'ผู้เข้าร่วมกิจกรรม';
         $data['title_page'] = 'ผู้เข้าร่วมกิจกรรม';

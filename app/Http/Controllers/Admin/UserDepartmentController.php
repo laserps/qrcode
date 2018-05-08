@@ -15,6 +15,7 @@ class UserDepartmentController extends Controller
      */
     public function index()
     {
+        $data['permission'] = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 10])->first()->created;
         $data['main_menu'] = 'ตั้งค่า';
         $data['sub_menu'] = 'จักการแผนก';
         $data['title_page'] = 'จักการแผนก';

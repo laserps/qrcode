@@ -19,7 +19,7 @@ class ActivitiesController extends Controller
      */
     public function index()
     {
-
+        $data['permission'] = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 12])->first()->created;
         $data['main_menu'] = 'กิจกรรม';
         $data['sub_menu'] = 'กิจกรรม';
         $data['title_page'] = 'กิจกรรม';
@@ -165,13 +165,16 @@ class ActivitiesController extends Controller
         $result = \App\Models\Activities::select();
         return \Datatables::of($result)
         ->addIndexColumn()
-        ->editColumn('status', function($rec){
-            $str = '<select class="form-control status" name="status" data-id="'.$rec->activity_id.'">';
-            if($rec->status == 'T')
-                $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
-            else
-                $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
-            $str .= '</select>';
+        ->editColumn('status', function($rec) use ($permission){
+            $str = '';
+            if($permission->updated == 'T') {
+                $str .= '<select class="form-control status" name="status" data-id="'.$rec->activity_id.'">';
+                if($rec->status == 'T')
+                    $str .= '<option value="T">เปิดใช้งาน</option><option value="F">ไม่เปิดใช้งาน</option>';
+                else
+                    $str .= '<option value="F">ไม่เปิดใช้งาน</option><option value="T">เปิดใช้งาน</option>';
+                $str .= '</select>';
+            }
             return $str;
         })
         ->editColumn('activity_url', function($rec){

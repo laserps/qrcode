@@ -20,6 +20,7 @@ class UserController extends Controller
         $data['title_page'] = 'ผู้ดูแลระบบ';
         $data['department'] = \App\Models\UserDepartment::get();
         $data['menus'] = \App\Models\AdminMenu::ActiveMenu()->get();
+        $data['permission'] = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 2])->first()->created;
         $data['menu_all'] = \App\Models\AdminMenu::with(['SubMenu','MainMenu'])->where('show','=','T')->get();
         return view('Admin.user',$data);
     }

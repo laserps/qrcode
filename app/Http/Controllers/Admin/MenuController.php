@@ -47,7 +47,7 @@ class MenuController extends Controller
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -78,7 +78,7 @@ class MenuController extends Controller
     public function show($id)
     {
         $result = \App\Models\AdminMenu::find($id);
-        
+
         return json_encode($result);
     }
 
@@ -107,7 +107,7 @@ class MenuController extends Controller
         $input_all['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if (!$validator->fails()) {
             \DB::beginTransaction();
@@ -169,7 +169,7 @@ class MenuController extends Controller
                 return $rec->sort_id;
             }
         })
-        
+
         ->addColumn('action',function($rec){
             $str='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
