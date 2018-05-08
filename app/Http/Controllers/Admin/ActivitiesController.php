@@ -609,25 +609,29 @@ class ActivitiesController extends Controller
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
-                foreach ($answer_status as $key => $value) {
-                    $data_insert[] = [
-                    'activity_id'   => $request->activity_id,
-                    'user_id'       => $request->user_id,
-                    'question_id'   => $key,
-                    'answer_status' => $value,
-                    'answer_text' => '',
-                    'created_at'    => date('Y-m-d H:i:s')
-                    ];
+                if(sizeof($answer_status)!=0) {
+                    foreach ($answer_status as $key => $value) {
+                        $data_insert[] = [
+                        'activity_id'   => $request->activity_id,
+                        'user_id'       => $request->user_id,
+                        'question_id'   => $key,
+                        'answer_status' => $value,
+                        'answer_text' => '',
+                        'created_at'    => date('Y-m-d H:i:s')
+                        ];
+                    }
                 }
-                foreach ($answer_text as $key => $value) {
-                    $data_insert[] = [
-                    'activity_id'   => $request->activity_id,
-                    'user_id'       => $request->user_id,
-                    'question_id'   => $key,
-                    'answer_status' => '',
-                    'answer_text' => $value,
-                    'created_at'    => date('Y-m-d H:i:s')
-                    ];
+                if(sizeof($answer_text)!=0) {
+                    foreach ($answer_text as $key => $value) {
+                        $data_insert[] = [
+                        'activity_id'   => $request->activity_id,
+                        'user_id'       => $request->user_id,
+                        'question_id'   => $key,
+                        'answer_status' => '',
+                        'answer_text' => $value,
+                        'created_at'    => date('Y-m-d H:i:s')
+                        ];
+                    }
                 }
                 // return $data_insert;
                 $result = \App\Models\AnswerHistoryInit::insert($data_insert);
