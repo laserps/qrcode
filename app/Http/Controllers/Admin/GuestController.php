@@ -165,6 +165,7 @@ class GuestController extends Controller
     }
 
     public function Lists(){
+        $permission = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 11])->first();
         $result = \App\Models\Guest::leftjoin('answer_history','guests.guest_id','=','answer_history.user_id')->leftjoin('activity','answer_history.activity_id','=','activity.activity_id')->select();
         return \Datatables::of($result)
         ->addIndexColumn()
@@ -172,15 +173,22 @@ class GuestController extends Controller
             $str =($rec->guest_type_id == 'T')? 'ใช่':'ไมใช่';
             return $str;
         })
-        ->addColumn('action',function($rec){
-            $str='
+        ->addColumn('action',function($rec) use ($permission){
+            $str = '';
+            if($permission->updated == 'T') {
+                $str.='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->guest_id.'" title="แก้ไข">
-                    <i class="ace-icon fa fa-edit bigger-120"></i>
+                <i class="ace-icon fa fa-edit bigger-120"></i>
                 </button>
+                ';
+            }
+            if($permission->deleted == 'T') {
+                $str.= '
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->guest_id.'" data-rel="tooltip" title="ลบ">
-                    <i class="ace-icon fa fa-trash bigger-120"></i>
+                <i class="ace-icon fa fa-trash bigger-120"></i>
                 </button>
-            ';
+                ';
+            }
             return $str;
         })->make(true);
     }

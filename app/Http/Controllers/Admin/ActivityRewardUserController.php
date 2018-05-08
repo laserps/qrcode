@@ -155,6 +155,7 @@ class ActivityRewardUserController extends Controller
     }
 
     public function Lists(){
+        $permission = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 14])->first();
         $result = \App\Models\ActivityRewardUser::leftjoin('users','activity_reward_user.user_id','=','users.id')
         ->leftjoin('reward','activity_reward_user.reward_id','=','reward.id')
         ->leftjoin('activity','activity_reward_user.activity_id','=','activity.activity_id')
@@ -174,15 +175,19 @@ class ActivityRewardUserController extends Controller
         ->editColumn('reward_id', function($rec) {
             return $rec->name;
         })
-        ->addColumn('url',function($rec){
+        ->addColumn('url',function($rec) use ($permission) {
             // return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'</a>';
             if($rec->staff_id=='') {
+                if($permission->updated == 'T' || $permission->created == 'T') {
                 // return '<a href="'.url("ActivityRewardUser/accept/".base64_encode($rec->id.'/'.$rec->reward_id)).'">ยืนยัน</a>';
                 // return '<button class="btn accept btn-warning" data-accept="'.base64_encode($rec->id.'/'.$rec->reward_id).'">ยืนยัน</button>';
-                return '<button  class="btn btn-xs btn-warning btn-condensed accept btn-tooltip" data-accept="'.base64_encode($rec->id.'/'.$rec->reward_id).'" data-rel="tooltip" title="ยืนยัน">
+                    return '<button  class="btn btn-xs btn-warning btn-condensed accept btn-tooltip" data-accept="'.base64_encode($rec->id.'/'.$rec->reward_id).'" data-rel="tooltip" title="ยืนยัน">
                                 <i class="ace-icon fa fa-edit bigger-120"></i>
                             </button>
                         ';
+                } else {
+                    return '';
+                }
             } else {
                 return '';
             }

@@ -161,6 +161,7 @@ class ActivitiesController extends Controller
     }
 
     public function Lists(){
+        $permission = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 12])->first();
         $result = \App\Models\Activities::select();
         return \Datatables::of($result)
         ->addIndexColumn()
@@ -183,30 +184,36 @@ class ActivitiesController extends Controller
             // return '<img src="'.url('admin/gen_qr_code').'?url='.url("admin/Activities/".$rec->code).'" width="150px" height="150px">';
             return \QrCode::size(100)->generate(url("/QRCODE/".$rec->code));
         })
-        ->addColumn('action',function($rec){
-            $str='
-                <button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
-                    <i class="ace-icon fa fa-question-circle bigger-120"></i>
-                </button>
-                <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำถาม">
-                    <i class="ace-icon fa fa-plus-square bigger-120"></i>
-                </button>
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
-                    <i class="ace-icon fa fa-cube bigger-120"></i>
-                </button>
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-staff btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
-                    <i class="ace-icon fa fa-user bigger-120"></i>
-                </button>
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-default btn-condensed btn-qrcode btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="สร้าง QRCode">
-                    <i class="ace-icon fa fa-qrcode bigger-120"></i>
-                </button>
-                <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="แก้ไข">
-                    <i class="ace-icon fa fa-edit bigger-120"></i>
-                </button>
+        ->addColumn('action',function($rec) use ($permission) {
+            $str = '';
+            if($permission->created == 'T' || $permission->updated == 'T') {
+                $str.='
+                    <button class="btn btn-xs btn-info btn-condensed btn-add-init-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำตอบพิเศษ">
+                        <i class="ace-icon fa fa-question-circle bigger-120"></i>
+                    </button>
+                    <button class="btn btn-xs btn-primary btn-condensed btn-add-question btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="" data-original-title="เพิ่มคำถาม">
+                        <i class="ace-icon fa fa-plus-square bigger-120"></i>
+                    </button>
+                    <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-reward btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการของรางวัล">
+                        <i class="ace-icon fa fa-cube bigger-120"></i>
+                    </button>
+                    <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-info btn-condensed btn-staff btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="จัดการผู้ใช้งาน">
+                        <i class="ace-icon fa fa-user bigger-120"></i>
+                    </button>
+                    <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-default btn-condensed btn-qrcode btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="สร้าง QRCode">
+                        <i class="ace-icon fa fa-qrcode bigger-120"></i>
+                    </button>
+                    <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->activity_id.'" title="แก้ไข">
+                        <i class="ace-icon fa fa-edit bigger-120"></i>
+                    </button>
+                ';
+            }
+            if($permission->deleted == 'T') {
+                $str .='
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->activity_id.'" data-rel="tooltip" title="ลบ">
                      <i class="ace-icon fa fa-trash bigger-120"></i>
-                </button>
-            ';
+                </button>';
+            }
             return $str;
         })
         ->rawColumns(['status','activity_url','qr_code', 'action'])
@@ -214,6 +221,7 @@ class ActivitiesController extends Controller
     }
     public function RewardLists() {
         $result = \App\Models\Reward::select();
+        $permission = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 12])->first();
         return \Datatables::of($result)
         ->editColumn('amount',function($rec) {
             $str='
@@ -238,15 +246,16 @@ class ActivitiesController extends Controller
             ';
             return $str;
         })
-        ->addColumn('action',function($rec){
-            $str='
-            <button type="button" class="btn btn-xs btn-info btn-condensed btn-import btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำเข้า">
-                <i class="ace-icon fa fa-arrow-down bigger-120"></i>
-            </button>
-            <button type="button" class="btn btn-xs btn-info btn-condensed btn-export btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำออก">
-                <i class="ace-icon fa fa-arrow-up bigger-120"></i>
-            </button>
-            ';
+        ->addColumn('action',function($rec) use ($permission) {
+            $str = '';
+            if($permission->created == 'T' || $permission->updated == 'T'){
+                $str.='<button type="button" class="btn btn-xs btn-info btn-condensed btn-import btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำเข้า">
+                    <i class="ace-icon fa fa-arrow-down bigger-120"></i>
+                </button>
+                <button type="button" class="btn btn-xs btn-info btn-condensed btn-export btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="นำออก">
+                    <i class="ace-icon fa fa-arrow-up bigger-120"></i>
+                </button>';
+            }
             return $str;
         })
         ->rawColumns(['reward','amount','action','check'])

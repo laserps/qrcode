@@ -155,6 +155,7 @@ class QuestionInitController extends Controller
     }
 
     public function Lists(){
+        $permission = \App\Models\CrudPermission::where(['admin_user_id' => \Auth::guard('admin')->user()->id, 'menu_id' => 15])->first();
         $result = \App\Models\QuestionInit::select();
         return \Datatables::of($result)
         ->editColumn('status', function($rec){
@@ -173,25 +174,31 @@ class QuestionInitController extends Controller
             $str .= '</select>';
             return $str;
         })
-        ->addColumn('action',function($rec){
-            $str='
+        ->addColumn('action',function($rec) use ($permission){
+            $str = '';
+            if($permission->updated == 'T') {
+                $str.='
                 <button data-loading-text="<i class=\'fa fa-refresh fa-spin\'></i>" class="btn btn-xs btn-warning btn-condensed btn-edit btn-tooltip" data-rel="tooltip" data-id="'.$rec->id.'" title="แก้ไข">
-                    <i class="ace-icon fa fa-edit bigger-120"></i>
+                <i class="ace-icon fa fa-edit bigger-120"></i>
                 </button>
+                ';
+                if($rec->free_form=="F") {
+                    $str .= '<button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ">
+                    <i class="ace-icon fa fa-plus-square bigger-120"></i>
+                    </button>
+                    ';
+                }else{
+                    $str .= '<button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ" disabled>
+                    <i class="ace-icon fa fa-plus-square bigger-120"></i>
+                    </button>
+                    ';
+                }
+            }
+            if($permission->deleted == 'T') {
+                $str .='
                 <button  class="btn btn-xs btn-danger btn-condensed btn-delete btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="ลบ">
-                    <i class="ace-icon fa fa-trash bigger-120"></i>
-                </button>
-            ';
-            if($rec->free_form=="F") {
-                $str .= '<button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ">
-                <i class="ace-icon fa fa-plus-square bigger-120"></i>
-                </button>
-                ';
-            }else{
-                $str .= '<button  class="btn btn-xs btn-primary btn-condensed btn-add-answer btn-tooltip" data-id="'.$rec->id.'" data-rel="tooltip" title="เพิ่มคำตอบ" disabled>
-                <i class="ace-icon fa fa-plus-square bigger-120"></i>
-                </button>
-                ';
+                <i class="ace-icon fa fa-trash bigger-120"></i>
+                </button>';
             }
             return $str;
         })
