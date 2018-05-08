@@ -618,29 +618,47 @@ class ActivitiesController extends Controller
         if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
+<<<<<<< HEAD
+
+                foreach ($answer_status as $key => $value) {
+                    $data_insert[] = [
+=======
                 if(sizeof($answer_status)!=0) {
                     foreach ($answer_status as $key => $value) {
                         $data_insert[] = [
+>>>>>>> 21f2d66b069b8284cb446b1f6b4482345030441b
                         'activity_id'   => $request->activity_id,
                         'user_id'       => $request->user_id,
                         'question_id'   => $key,
                         'answer_status' => $value,
                         'answer_text' => '',
                         'created_at'    => date('Y-m-d H:i:s')
+<<<<<<< HEAD
+                    ];
+                }
+
+                foreach ($answer_text as $key => $value){
+                    $data_insert[] = [
+=======
                         ];
                     }
                 }
                 if(sizeof($answer_text)!=0) {
                     foreach ($answer_text as $key => $value) {
                         $data_insert[] = [
+>>>>>>> 21f2d66b069b8284cb446b1f6b4482345030441b
                         'activity_id'   => $request->activity_id,
                         'user_id'       => $request->user_id,
                         'question_id'   => $key,
                         'answer_status' => '',
                         'answer_text' => $value,
                         'created_at'    => date('Y-m-d H:i:s')
+<<<<<<< HEAD
+                    ];
+=======
                         ];
                     }
+>>>>>>> 21f2d66b069b8284cb446b1f6b4482345030441b
                 }
                 // return $data_insert;
                 $result = \App\Models\AnswerHistoryInit::insert($data_insert);
@@ -651,7 +669,7 @@ class ActivitiesController extends Controller
                 }else{
                     throw new $e;
                 }
-            } catch (Exception $e) {
+            }catch (Exception $e){
                 \DB::rollBack();
                 $return['status'] = 0;
                 $return['content'] = 'ไม่สำเร็จ'.$e->getMessage();
