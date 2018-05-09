@@ -238,7 +238,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-
         'Datatables' => Yajra\Datatables\DatatablesServiceProvider::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
