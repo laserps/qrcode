@@ -20,3 +20,7 @@ Route::get('/', 'Admin\HomeController@index');
 Route::get('/qrcode', function(){
     return QrCode::generate('Make me into a QrCode!');
 });
+
+Route::get('/phpinfo', function(){
+    phpinfo();
+});
