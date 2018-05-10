@@ -216,7 +216,7 @@ class ActivityRewardUserController extends Controller
         $encode = base64_decode($id);
         $val = explode('/',$encode);
         $check = \App\Models\ActivityRewardUser::where('id',$val[0])->where('staff_id',NULL)->first();
-        if($check) {
+        if($check && \Auth::guard('admin')->user()) {
             $staff = \App\Models\ActivityStaff::where('activity_id',$check->activity_id)->first();
             if (in_array(\Auth::guard('admin')->user()->id, json_decode($staff->staff_id))){
                 \App\Models\ActivityRewardUser::where('id',$val[0])->update([

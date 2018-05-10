@@ -146,7 +146,6 @@
         Route::post('/Activities/AddSpecialQuestion/{id}', 'Admin\ActivitiesController@AddSpecialQuestion');
         Route::post('/Activities/{id}', 'Admin\ActivitiesController@update');
         Route::post('/Activities/Delete/{id}', 'Admin\ActivitiesController@destroy');
-        Route::post('/AnswerHistoryInit', 'Admin\ActivitiesController@storeHistoryInit');
         Route::get('/Activities/GetSpecQuestion/{id}', 'Admin\ActivitiesController@GetSpecQuestion');
 
 
@@ -225,4 +224,5 @@
     Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
     Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
     Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
+    Route::post('/AnswerHistoryInit', 'Admin\ActivitiesController@storeHistoryInit');
 ?>
