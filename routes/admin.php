@@ -223,6 +223,6 @@
     Route::post('/QRCODE', 'Admin\ActivitiesController@StoreQRCODE');
     Route::get('/Activities/{code}/{userid}/getQuestion', 'Admin\ActivitiesController@getQuestion');
     Route::get('/Activities/{code}/{userid}/getSpecialQuestion', 'Admin\ActivitiesController@getAllSpecialQuestion');
-    Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
     Route::post('/AnswerHistoryInit', 'Admin\ActivitiesController@storeHistoryInit');
+    Route::post('/AnswerHistory', 'Admin\ActivitiesController@storeHistory');
 ?>

@@ -109,7 +109,7 @@
          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
      },
      method : "POST",
-     url : "{{url('/admin/AnswerHistoryInit')}}",
+     url : "{{url('/AnswerHistoryInit')}}",
      dataType : 'json',
      data :$(this).serialize()
  }).done(function(rec){
