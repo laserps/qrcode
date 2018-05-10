@@ -45,10 +45,10 @@
 							<label for="add_phone" class="custom-add-phone">เบอร์โทรศัพท์ : </label>
 							<input type="text" class="form-control" name="phone" id="add_phone" placeholder="กรอกข้อมูลเบอร์โทรศัพท์">
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label for="add_branch" class="custom-add-branch" style="font-size:18px;">สาขา : </label>
 							<input type="text" class="form-control" name="branch" id="add_branch" placeholder="กรอกสาขา">
-						</div>
+						</div> -->
 						<button type="submit" class="btn btn-custom">บันทึกข้อมูล</button>
 					</form>
 				</div>
