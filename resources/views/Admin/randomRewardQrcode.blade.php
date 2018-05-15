@@ -459,7 +459,7 @@ html.modal_openoverflow {
     <div class="row" style="margin:0px;">
         <div class="col-12">
             <img height="auto" src="{{asset('uploads/temp/'.$pic->path_picture)}}" class="img-responsive reward-img" alt="Image" /><br>
-            {!!$img!!}
+            <!--{!!$img!!}-->
         </div>
     </div>
     <!-- <span class="left bottom">tel: 530 283 ****</span>
