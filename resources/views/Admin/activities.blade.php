@@ -540,6 +540,7 @@ var TableList = $('#TableList').dataTable({
 			// etc
 		}
 	},
+	"order": [[ 5, "desc" ]],
 	"columns": [
 		{ "data": "DT_Row_Index" , "className": "text-center", "orderable": false , "searchable": false },
 		{"data" : "activity_name"},

@@ -137,6 +137,9 @@
 							</tbody>
 
 						</table>
+						<div class="form-group">
+							<textarea class="form-control editor description" name="remark" id="description" required=""></textarea>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -712,133 +715,133 @@ $('body').on('click','.btn-delete',function(e){
 </script>
 <!-- <script src="{{asset('assets/global/plugins/tinymce/js/tinymce/tinymce.min.js')}}"></script> -->
 <script>
-// var editor_config = {
-//     path_absolute : "",
-//     selector: "textarea.text_question",
-//     plugins: [
-//         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-//         "searchreplace wordcount visualblocks visualchars code fullscreen",
-//         "insertdatetime media nonbreaking save table contextmenu directionality",
-//         "emoticons template paste textcolor colorpicker textpattern"
-//     ],
-//     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-//     relative_urls: false,
-//     file_browser_callback : function(field_name, url, type, win) {
-//         var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-//         var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+var editor_config = {
+    path_absolute : "",
+    selector: "textarea.text_question",
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    relative_urls: false,
+    file_browser_callback : function(field_name, url, type, win) {
+        var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+        var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-//         var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-//         if(type == 'image'){
-//             cmsURL = cmsURL + "&type=Images";
-//         }else{
-//             cmsURL = cmsURL + "&type=Files";
-//         }
+        var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+        if(type == 'image'){
+            cmsURL = cmsURL + "&type=Images";
+        }else{
+            cmsURL = cmsURL + "&type=Files";
+        }
 
-//         tinyMCE.activeEditor.windowManager.open({
-//             file : cmsURL,
-//             title : 'Filemanager',
-//             width : x * 0.8,
-//             height : y * 0.8,
-//             resizable : "yes",
-//             close_previous : "no"
-//         });
-//     },
-//     height : 400,
-//     init_instance_callback: function(editor){
-//         editor.on('NodeChange', function (e){
-//             editor.save();
-//             $("textarea.text_question").val( $("textarea.text_question").val() );
-//             console.log($("textarea.text_question").val());
-//         });
-//     },
+        tinyMCE.activeEditor.windowManager.open({
+            file : cmsURL,
+            title : 'Filemanager',
+            width : x * 0.8,
+            height : y * 0.8,
+            resizable : "yes",
+            close_previous : "no"
+        });
+    },
+    height : 400,
+    init_instance_callback: function(editor){
+        editor.on('NodeChange', function (e){
+            editor.save();
+            $("textarea#description").val( $("textarea#description").val() );
+            console.log($("textarea#description").val());
+        });
+    },
 
-// };
-// tinymce.init(editor_config);
+};
+tinymce.init(editor_config);
 
-// var edit_config = {
-//     path_absolute : "",
-//     selector: "#ModalEdit #edit_text",
-//     plugins: [
-//         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-//         "searchreplace wordcount visualblocks visualchars code fullscreen",
-//         "insertdatetime media nonbreaking save table contextmenu directionality",
-//         "emoticons template paste textcolor colorpicker textpattern"
-//     ],
-//     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-//     relative_urls: false,
-//     file_browser_callback : function(field_name, url, type, win) {
-//         var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-//         var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+var edit_config = {
+    path_absolute : "",
+    selector: "#ModalEdit #edit_text",
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    relative_urls: false,
+    file_browser_callback : function(field_name, url, type, win) {
+        var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+        var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-//         var cmsURL = edit_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-//         if(type == 'image'){
-//             cmsURL = cmsURL + "&type=Images";
-//         }else{
-//             cmsURL = cmsURL + "&type=Files";
-//         }
+        var cmsURL = edit_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+        if(type == 'image'){
+            cmsURL = cmsURL + "&type=Images";
+        }else{
+            cmsURL = cmsURL + "&type=Files";
+        }
 
-//         tinyMCE.activeEditor.windowManager.open({
-//             file : cmsURL,
-//             title : 'Filemanager',
-//             width : x * 0.8,
-//             height : y * 0.8,
-//             resizable : "yes",
-//             close_previous : "no"
-//         });
-//     },
-//     height : 400,
-//     init_instance_callback: function(editor){
-//         editor.on('NodeChange', function (e){
-//             editor.save();
-//             $("textarea#edit_text").val( $("textarea#edit_text").val() );
-//             console.log($("textarea#edit_text").val());
-//         });
-//     },
-// };
-//tinymce.init(edit_config);
+        tinyMCE.activeEditor.windowManager.open({
+            file : cmsURL,
+            title : 'Filemanager',
+            width : x * 0.8,
+            height : y * 0.8,
+            resizable : "yes",
+            close_previous : "no"
+        });
+    },
+    height : 400,
+    init_instance_callback: function(editor){
+        editor.on('NodeChange', function (e){
+            editor.save();
+            $("textarea#edit_text").val( $("textarea#edit_text").val() );
+            console.log($("textarea#edit_text").val());
+        });
+    },
+};
+tinymce.init(edit_config);
 
-// var right_config = {
-//     path_absolute : "",
-//     selector: "textarea#description",
-//     plugins: [
-//         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-//         "searchreplace wordcount visualblocks visualchars code fullscreen",
-//         "insertdatetime media nonbreaking save table contextmenu directionality",
-//         "emoticons template paste textcolor colorpicker textpattern"
-//     ],
-//     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-//     relative_urls: false,
-//     file_browser_callback : function(field_name, url, type, win) {
-//         var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-//         var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+var right_config = {
+    path_absolute : "",
+    selector: "textarea#description",
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    relative_urls: false,
+    file_browser_callback : function(field_name, url, type, win) {
+        var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+        var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-//         var cmsURL = right_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-//         if(type == 'image'){
-//             cmsURL = cmsURL + "&type=Images";
-//         }else{
-//             cmsURL = cmsURL + "&type=Files";
-//         }
+        var cmsURL = right_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+        if(type == 'image'){
+            cmsURL = cmsURL + "&type=Images";
+        }else{
+            cmsURL = cmsURL + "&type=Files";
+        }
 
-//         tinyMCE.activeEditor.windowManager.open({
-//             file : cmsURL,
-//             title : 'Filemanager',
-//             width : x * 0.8,
-//             height : y * 0.8,
-//             resizable : "yes",
-//             close_previous : "no"
-//         });
-//     },
-//     height : 400,
-//     init_instance_callback: function(editor){
-//         editor.on('NodeChange', function (e){
-//             editor.save();
-//             $("textarea.text_question").val( $("textarea.text_question").val() );
-//             console.log($("textarea.text_question").val());
-//         });
-//     },
+        tinyMCE.activeEditor.windowManager.open({
+            file : cmsURL,
+            title : 'Filemanager',
+            width : x * 0.8,
+            height : y * 0.8,
+            resizable : "yes",
+            close_previous : "no"
+        });
+    },
+    height : 400,
+    init_instance_callback: function(editor){
+        editor.on('NodeChange', function (e){
+            editor.save();
+            $("textarea.text_question").val( $("textarea.text_question").val() );
+            console.log($("textarea.text_question").val());
+        });
+    },
 
-// };
-// tinymce.init(right_config);
+};
+tinymce.init(right_config);
 $('body').on('change','.status',function() {
 	var id = $(this).data('id');
 	$.ajax({
