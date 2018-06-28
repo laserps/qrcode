@@ -62,9 +62,9 @@
             @php $i++; @endphp
             @endforeach
 
-            <div class="offset-md-1 col-md-12">
+            <div class="col-offset-md-12 col-md-12">
                 <center>
-                    <button type="submit" class="btn btn-custom btn-block" style="width: 17%;margin: auto;height: 45px;">ส่งคำตอบ</button>
+                    <button type="submit" class="btn btn-custom submit-margin">ส่งคำตอบ</button>
                 </center>
             </div>
         </form>

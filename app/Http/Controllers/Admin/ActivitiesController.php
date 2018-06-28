@@ -233,7 +233,7 @@ class ActivitiesController extends Controller
             return $str;
         })
         ->addColumn('reward',function($rec) {
-            $str = '<input class="checkbox" type="checkbox" name="reward_id[]" value="'.$rec->id.'">';
+            $str = '<input class="checkbox" type="checkbox" name="reward_id[]" data-id="'.$rec->id.'" value="'.$rec->id.'">';
             return $str;
         })
         ->addColumn('check',function($rec){
@@ -267,29 +267,36 @@ class ActivitiesController extends Controller
     public function RewardAccept(Request $request) {
         $input_all = $request->all();
         $input_all['created_at'] = date('Y-m-d H:i:s');
-
         // $validator = Validator::make($request->all(), [
         //
         // ]);
         // if (!$validator->fails()) {
             \DB::beginTransaction();
             try {
-                $reward_t = array();
-                $reward_f = array();
+                #old process
+                // $reward_t = array();
+                // $reward_f = array();
+
+                #new process
+                $reward_t = $request->status_t;
+                $reward_f = $request->status_f;
                 \App\Models\ActivityRewardAmount::where('activity_id',$request->activity_id)->update(['amount'=>0]);
                 foreach ($request->reward_id as $key => $value) {
                     $check = \App\Models\ActivityRewardAmount::where(['activity_id'=>$request->activity_id,'reward_id'=>$value])->first();
                     $amount = isset($request->amount[$value])?$request->amount[$value]:0;
-                    if($check)
+                    if($check) {
                         \App\Models\ActivityRewardAmount::where('id',$check->id)->update(['amount'=>$amount,'updated_at'=>date('Y-m-d H:i:s')]);
-                    else
+                    } else {
                         \App\Models\ActivityRewardAmount::insert(['activity_id'=>$request->activity_id,'reward_id'=>$value,'amount'=>$amount,'created_at'=>date('Y-m-d H:i:s')]);
-                    if(!empty($request->status_t[$value])) {
-                        $reward_t[] = $value;
                     }
-                    if(!empty($request->status_f[$value])) {
-                        $reward_f[] = $value;
-                    }
+
+                    #old process
+                    // if(!empty($request->status_t[$key][$value])) {
+                    //     $reward_t[] = $value;
+                    // }
+                    // if(!empty($request->status_f[$key][$value])) {
+                    //     $reward_f[] = $value;
+                    // }
                 }
                 unset($input_all['amount']);
                 unset($input_all['status_f']);

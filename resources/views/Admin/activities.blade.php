@@ -593,9 +593,36 @@ $('body').on('click','.checkbox[name*="status_t"]',function() {
 	checked_checkbox($(this),'f')
 });
 function checked_checkbox(this_check,find_check) {
+	id = this_check.closest('tr').find('td:first').next().children().data('id').toString();
 	if(this_check.prop('checked')==true) {
+		if(find_check=='f') {
+			arr_reward_t[(arr_reward_t.length)] = id;
+		} else {
+			arr_reward_f[(arr_reward_f.length)] = id;
+		}
 		this_check.closest('tr').find('td:first').next().children().prop('checked',true);
 	} else {
+		var check_index_reward = [];
+		check_index_reward.length = 0;
+		if(find_check=='f') {
+			var i = 0;
+			$.each(arr_reward_t,function(k,v) {
+				if(v==id) {
+			  	check_index_reward[i] = v;
+			    i++;
+			  }
+			});
+			arr_reward_t.splice( $.inArray(id,arr_reward_t) , check_index_reward.length);
+		} else {
+			var i = 0;
+			$.each(arr_reward_f,function(k,v) {
+				if(v==id) {
+			  	check_index_reward[i] = v;
+			    i++;
+			  }
+			});
+			arr_reward_f.splice( $.inArray(id,arr_reward_f) , check_index_reward.length);
+		}
 		if(this_check.closest('tr').find('.checkbox[name*="status_'+find_check+'"]').prop('checked')==true) {
 			this_check.closest('tr').find('td:first').next().children().prop('checked',true);
 		} else {
@@ -604,7 +631,6 @@ function checked_checkbox(this_check,find_check) {
 	}
 }
 $('body').on('click','.btn-add-init-question', function(data){
-	console.log($(this).data('id'));
 	var str = "";
 	add_index = 0;
 	add_check.length = 0;
@@ -762,17 +788,24 @@ $('body').on('click','.btn-add',function(data){
 	ShowModal('ModalAdd');
 });
 function putvalue() {
+	// reward_id.length = 0;
 	for (i = 0; i < arr_reward_f.length; i++) {
+		// if($.inArray(reward_id,arr_reward_f[i])==-1) {
+		// 	reward_id[(reward_id.length)] = parseInt(arr_reward_f[i]);
+		// }
 		$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_f[i]+'"]').prop('checked',true);
 		$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_f[i]+'"]').closest('tr').find('input:checkbox[name*="status_f"]').prop('checked',true);
 	}
 	for (i = 0; i < arr_reward_t.length; i++) {
+		// if($.inArray(reward_id,arr_reward_t[i])==-1) {
+		// 	reward_id[(reward_id.length)] = parseInt(arr_reward_t[i]);
+		// }
 		$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_t[i]+'"]').prop('checked',true);
 		$('#ModalReward').find('tbody').find('input:checkbox[value="'+arr_reward_t[i]+'"]').closest('tr').find('input:checkbox[name*="status_t"]').prop('checked',true);
 	}
-	for (i = 0; i < reward_id.length; i++) {
-		$('#ModalReward').find('tbody').find('input[name="amount['+reward_id[i]+']"]').val(amount[i]);
-	}
+	$.each(reward_id, function(k,v) {
+			$('#ModalReward').find('tbody').find('input[name="amount['+v+']"]').val(amount[v]);
+	});
 }
 $('body').on('click','.btn-reward',function(data){
 	var btn = $(this);
@@ -802,7 +835,9 @@ $('body').on('click','.btn-reward',function(data){
 		RewardList.api().ajax.reload();
 		$.each(rec.amount,function(k,v) {
 			reward_id[k] = v.reward_id;
-			amount[k] = v.amount;
+			// amount[v.reward_id] = [];
+			// amount[v.reward_id][0] = v.amount;
+			amount[v.reward_id] = v.amount;
 		});
 	});
 	ShowModal('ModalReward');
@@ -1241,7 +1276,14 @@ $('#FormReward').validate({
 			method : "POST",
 			url : url_gb+"/admin/Activities/RewardAccept",
 			dataType : 'json',
-			data : $(form).serialize()
+			// data : $(form).serialize()
+			data : {
+				status_f : arr_reward_f,
+				status_t : arr_reward_t,
+				amount : amount,
+				reward_id : reward_id,
+				activity_id : $('#ModalReward').find('#activity_id').val(),
+			}
 		}).done(function(rec){
 			btn.button("reset");
 			if(rec.status==1){
@@ -1336,18 +1378,25 @@ $('#FormExport').find('button.btn-primary').on('click',function(e) {
 	$('#ModalExport').modal('hide');
 });
 
-function sum_amount(reward_id, amount, type) {
-	sum = parseInt($('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val()?$('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val():0);
+function sum_amount(reward, amount_val, type) {
+	sum = parseInt($('#ModalReward').find('tbody').find('input[name="amount['+reward+']"]').val()?$('#ModalReward').find('tbody').find('input[name="amount['+reward+']"]').val():0);
 	if(type=="in") {
-		sum += parseInt(amount);
+		sum += parseInt(amount_val);
 	} else {
-		if(sum>amount) {
-			sum -= amount;
+		if(sum>amount_val) {
+			sum -= amount_val;
 		} else {
 			sum = 0;
 		}
 	}
-	$('#ModalReward').find('tbody').find('input[name="amount['+reward_id+']"]').val(sum);
+	if($.inArray(reward_id,reward)==-1) {
+		reward_id[(reward_id.length)] = parseInt(reward);
+		// amount[reward] = [];
+		// amount[reward].length = 0;
+		// amount[reward][0] = parseInt(amount_val);
+		amount[reward] = parseInt(sum);
+	}
+	$('#ModalReward').find('tbody').find('input[name="amount['+reward+']"]').val(sum);
 }
 $('#ModalImport, #ModalExport').find('.btn-default, .close').on('click',function() {
 	$('#ModalReward').addClass('in');
