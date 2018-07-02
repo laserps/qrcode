@@ -15,7 +15,7 @@
         return \Auth::guard('admin')->user();
     });
 
-    Route::get('/admin/login', 'Admin\AuthController@login');
+    Route::get('/', 'Admin\AuthController@login');
     Route::post('/admin/CheckLogin', 'Admin\AuthController@CheckLogin');
     Route::get('/admin/debug', function(){
         return view('debug');
