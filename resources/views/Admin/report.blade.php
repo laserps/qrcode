@@ -27,6 +27,9 @@
                 <label for="add_activity_name">วันสิ้นสุด</label>
             <input type="text" class="date form-control" name="end" id="end"  placeholder="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
             </div>
+            <div class="col-md-3 form-group">
+                <button class="text-center btn btn-default btn-excel" data-url="{{url('admin/ActivityRewardUser/excel')}}" type="button" name="button">Export Excel</button>
+            </div>
         </div>
 		<div class="body no-margin table-responsive chart">
             <!-- <div class="col-md-6">
@@ -138,5 +141,8 @@
             }
         });
     }
+    $('.btn-excel').click(function() {
+        window.location.href = $(this).data('url')+'/'+$('#start').val()+'/'+$('#end').val();
+    });
 </script>
 @endsection

@@ -1008,6 +1008,10 @@ class ActivitiesController extends Controller
     public function getDownloadQrcode($id) {
         $result = \App\Models\Activities::where('activity_id',$id)->first();
         $data = \QrCode::format('png')->encoding('UTF-8')->size(750)->generate(url("/QRCODE/".$result->code));
-        return '<img name="'.$result->code.'" class="download" src="data:image/png;base64, '.base64_encode($data) .'" title="click for download">';
+        # Old qrcode image
+        // return '<img name="'.$result->code.'" class="download" src="data:image/png;base64, '.base64_encode($data) .'" title="click for download">';
+
+        #new qrcode image
+        return '<img name="'.$result->code.'" class="download" src="data:image/png;base64, '.base64_encode($data) .'" title="click for download"><h4 style="text-align:center;">'.url("/QRCODE/".$result->code).'</h4>';
     }
 }

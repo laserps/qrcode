@@ -209,6 +209,7 @@
 
 <!-- chartjs -->
 <script src="{{asset('assets/admin/plugin/chart.js/dist/Chart.min.js')}}"></script>
+<script src="{{asset('assets/admin/js/canvas2image/canvas2image.js')}}"></script>
 
 <!-- common templates -->
 <script type="text/template" id="settings-template">

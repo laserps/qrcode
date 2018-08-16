@@ -298,4 +298,34 @@ class ActivityRewardUserController extends Controller
                     ORDER BY q.id');
         return json_encode($result);
     }
+
+    public function Excel($start,$end) {
+        $s = '';
+        $e = '';
+        if($start < $end) {
+            $s = $start.' 00:00:00';
+            $e = $end.' 23:59:59';
+        } else {
+            $s = $end.' 00:00:00';
+            $e = $start.' 23:59:59';
+        }
+        $data = \DB::select('
+                    SELECT q.text as q_text, q.id as q_id, a.text as a_text, sum(ans_count) as ans_count, a.answer_id as a_id
+                    FROM question as q
+                    LEFT JOIN answer as a
+                    ON a.question_id = q.id
+                    LEFT JOIN (SELECT question_id,answer_id,COUNT(answer_id) as ans_count
+                    	FROM answer_history
+                    	WHERE created_at BETWEEN "'.$s.'" AND "'.$e.'"
+                    	GROUP BY answer_id) as qh
+                    ON q.id = qh.question_id AND a.answer_id = qh.answer_id
+                    GROUP BY a.answer_id
+                    ORDER BY q.id');
+        \Excel::create('Question report', function($excel) use ($data) {
+            $excel->sheet('Question report', function($sheet) use ($data) {
+                $sheet->loadView('Admin.Exports.questionreport')->with('data',$data);
+                $sheet->setOrientation('landscape');
+            });
+        })->export('xls');
+    }
 }

@@ -163,6 +163,7 @@
         Route::post('/ActivityRewardUser', 'Admin\ActivityRewardUserController@store');
         Route::get('/ActivityRewardUser/{id}', 'Admin\ActivityRewardUserController@show');
         Route::get('/ActivityRewardUser/report/{start}/{end}', 'Admin\ActivityRewardUserController@report');
+        Route::get('/ActivityRewardUser/excel/{start}/{end}', 'Admin\ActivityRewardUserController@Excel');
         Route::post('/ActivityRewardUser/{id}', 'Admin\ActivityRewardUserController@update');
         Route::post('/ActivityRewardUser/Delete/{id}', 'Admin\ActivityRewardUserController@destroy');
 

@@ -428,7 +428,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-lg-12 downloadQrcode" align="center">
+					<div class="col-lg-12 downloadQrcode" id="downloadQrcode" align="center">
 
 					</div>
 				</div>
@@ -462,7 +462,8 @@
         </div>
     </div>
 </div>
-
+<canvas style="display:none;" class="img-out" id="img-out">
+</canvas>
 <!-- Modal -->
 <div class="modal fade" id="ModalExport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -856,9 +857,79 @@ $('body').on('click','.btn-qrcode',function(data){
 	});
 	ShowModal('ModalDownload');
 });
+
+var canvas, ctx, bMouseIsDown = false, iLastX, iLastY,
+   $save, $imgs,
+   $convert, $imgW, $imgH,
+   $sel;
+function init () {
+   $save = document.getElementById('save');
+   // $convert = document.getElementsByClassName('download');
+   // $imgs = document.getElementById('img-out');
+   $convert = $('body').find('img.download');
+   $imgs = $('.img-out');
+   bind();
+   // draw();
+}
+function bind () {
+	// console.log(123);
+   // $convert.onclick = function (e) {
+	//    console.log(456);
+	//    var type = "PNG",
+	// 	   w = "500",
+	// 	   h = "500";
+	//    // Canvas2Image.saveAsImage(canvas, w, h, type);
+	//    var base64 = Canvas2Image.getBase64Image (canvas, w, h, type);
+	//    console.log(base64);
+	// 	$imgs.innerHTML(Canvas2Image.convertToImage(canvas, w, h, type));
+   // }
+}
+onload = init;
+
 $('body').on('click','img.download',function() {
+	canvas =  document.getElementsByClassName('downloadQrcode')[0];
+	console.log(canvas);
+	// ctx = canvas.getContext('2d');
+	// console.log(ctx);
 	// $(this).prop('download',true);
-	$(this).wrap('<a href="' + $(this).attr('src') + '" download="'+$(this).attr('name')+'" />');
+	/*
+	 * Download inage old version
+	 */
+	// $(this).wrap('<a href="' + $(this).attr('src') + '" download="'+$(this).attr('name')+'" />');
+
+	/*
+	 * Download image new version
+	 */
+	 console.log($imgs);
+ 	   var type = "PNG",
+ 		   w = "500",
+ 		   h = "500";
+ 	   // Canvas2Image.saveAsImage(canvas, w, h, type);
+ 	   	var base64 = Canvas2Image.getBase64Image (canvas, w, h, type);
+	   	console.log(base64);
+		$imgs.innerHTML(Canvas2Image.convertToImage(canvas, w, h, type));
+ 	// html2canvas($(this).closest('.downloadQrcode'), {
+	//     onrendered: function (canvas) {
+	//         var data = canvas.toDataURL('image/png');
+	//         var image = new Image();
+	//         image.src = data;
+	//         var alink = "<a href="+data+" download='filename.jpg'>!!!</a>"
+	//         document.getElementById('image').appendChild(image);
+	//          $('.img-out').html(alink);
+	//     }
+	// });
+	//  html2canvas($(this).closest('.downloadQrcode'), {
+    //     onrendered: function(canvas) {
+    //         theCanvas = canvas;
+    //         document.body.appendChild(canvas);
+	//
+    //         // Convert and download as image
+    //         Canvas2Image.saveAsPNG(canvas);
+    //         $(".img-out").html(canvas);
+    //         // Clean up
+    //         //document.body.removeChild(canvas);
+    //     }
+    // });
 });
 
 $('body').on('click','.addQue',function(e){
